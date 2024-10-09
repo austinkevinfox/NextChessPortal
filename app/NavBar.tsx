@@ -1,7 +1,11 @@
+'use client'
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FaChessKing } from "react-icons/fa";
+import classnames from "classnames";
 
 const NavBar = () => {
+    const currentPath = usePathname();
     const links = [
         { id: 0, label: "Historic Games", href: "/HistoricGames" },
         { id: 1, label: "Live Game", href: "/LiveGame" },
@@ -15,7 +19,11 @@ const NavBar = () => {
                 {links.map((link) => (
                     <li key={link.id}>
                         <Link
-                            className="text-zinc-500 hover:text-zinc-800 transition-colors"
+                            className={classnames({
+                                "text-zinc-500": link.href !== currentPath,
+                                "text-zinc-900": link.href === currentPath,
+                                "hover:text-zinc-800 transition-colors": true,
+                            })}
                             href={link.href}
                         >
                             {link.label}
