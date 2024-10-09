@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaChessKing } from "react-icons/fa";
@@ -7,8 +7,8 @@ import classnames from "classnames";
 const NavBar = () => {
     const currentPath = usePathname();
     const links = [
-        { id: 0, label: "Historic Games", href: "/HistoricGames" },
-        { id: 1, label: "Live Game", href: "/LiveGame" },
+        { id: 0, label: "Historic Games", href: "/historic-games" },
+        { id: 1, label: "Live Game", href: "/live-game" },
     ];
     return (
         <nav className="flex space-x-6 border-b mb-5 px-5 h-14 items-center">
