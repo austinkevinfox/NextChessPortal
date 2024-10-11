@@ -1,0 +1,17 @@
+-- CreateTable
+CREATE TABLE `Game` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255) NOT NULL,
+    `event` VARCHAR(255) NULL,
+    `eventDate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `addedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `location` VARCHAR(191) NULL,
+    `white` VARCHAR(191) NOT NULL,
+    `black` VARCHAR(191) NOT NULL,
+    `result` ENUM('WHITE', 'BLACK', 'DRAW', 'IN_PROGRESS') NOT NULL DEFAULT 'IN_PROGRESS',
+    `url` TEXT NULL,
+    `moves` TEXT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

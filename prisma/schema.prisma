@@ -12,3 +12,25 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Game {
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(255)
+  event     String?  @db.VarChar(255)
+  eventDate DateTime @default(now())
+  addedAt   DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  location  String?
+  white     String
+  black     String
+  result    Result   @default(IN_PROGRESS)
+  url       String?  @db.Text
+  moves     String?  @db.Text
+}
+
+enum Result {
+  WHITE
+  BLACK
+  DRAW
+  IN_PROGRESS
+}
