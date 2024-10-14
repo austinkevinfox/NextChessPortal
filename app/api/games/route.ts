@@ -1,12 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 import prisma from "@/prisma/client";
-
-const createGameSchema = z.object({
-    title: z.string().min(1).max(255),
-    white: z.string().min(1).max(190),
-    black: z.string().min(1).max(190),
-});
+import { createGameSchema } from "@/app/validationSchemas";
 
 export const POST = async (request: NextRequest) => {
     const body = await request.json();
