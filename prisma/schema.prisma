@@ -23,7 +23,14 @@ model Game {
   location  String?
   white     String
   black     String
-  result    String   @db.VarChar(50)
+  result    Result   @default(IN_PROGRESS)
   url       String?  @db.VarChar(255)
-  moves     String?   @db.VarChar(2550)
+  moves     String?  @db.VarChar(2550)
+}
+
+enum Result {
+  WHITE
+  BLACK
+  DRAW
+  IN_PROGRESS
 }
