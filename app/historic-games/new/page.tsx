@@ -5,16 +5,21 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useState } from "react";
 import { LuAlertTriangle } from "react-icons/lu";
-import { z } from 'zod';
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createGameSchema } from "@/app/validationSchemas";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
 type NewHistoricGameForm = z.infer<typeof createGameSchema>;
 
 const NewHistoricGame = () => {
     const [error, setError] = useState("");
     const router = useRouter();
-    const { register, handleSubmit, formState: {errors} } = useForm<NewHistoricGameForm>({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<NewHistoricGameForm>({
         resolver: zodResolver(createGameSchema),
     });
 
@@ -42,23 +47,20 @@ const NewHistoricGame = () => {
                     placeholder="Title"
                     {...register("title")}
                 ></TextField.Root>
-                {errors.title && (
-                    <Text color="red">{errors.title.message}</Text>
-                )}
+                <ErrorMessage>{errors.title?.message}</ErrorMessage>
+
                 <TextField.Root
                     placeholder="White player name"
                     {...register("white")}
                 ></TextField.Root>
-                {errors.white && (
-                    <Text color="red">{errors.white.message}</Text>
-                )}
+                <ErrorMessage>{errors.white?.message}</ErrorMessage>
+
                 <TextField.Root
                     placeholder="Black player name"
                     {...register("black")}
                 ></TextField.Root>
-                {errors.black && (
-                    <Text color="red">{errors.black.message}</Text>
-                )}
+                <ErrorMessage>{errors.black?.message}</ErrorMessage>
+
                 <TextField.Root
                     placeholder="Result"
                     {...register("result")}
