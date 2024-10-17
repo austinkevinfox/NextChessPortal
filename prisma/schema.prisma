@@ -25,5 +25,5 @@ model Game {
   black     String
   result    String   @db.VarChar(50)
   url       String?  @db.VarChar(255)
-  moves     String?  @db.Text
+  moves     String?   @db.VarChar(2550)
 }

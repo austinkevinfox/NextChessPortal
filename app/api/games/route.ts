@@ -11,7 +11,16 @@ export const POST = async (request: NextRequest) => {
     }
 
     const newGame = await prisma.game.create({
-        data: { title: body.title, white: body.white, black: body.black, result: body.result },
+        data: {
+            title: body.title,
+            event: body.event,
+            location: body.location,
+            white: body.white,
+            black: body.black,
+            result: body.result,
+            moves: body.moves,
+            url: body.url,
+        },
     });
 
     return NextResponse.json(newGame, { status: 201 });
