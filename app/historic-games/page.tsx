@@ -3,6 +3,7 @@ import Link from "next/link";
 import prisma from "@/prisma/client";
 import { FaChessBoard } from "react-icons/fa";
 import { RxOpenInNewWindow } from "react-icons/rx";
+import GameStatusBadge from "./_components/GameStatusBadge";
 
 const HistoricGames = async () => {
     const games = await prisma.game.findMany();
@@ -41,7 +42,7 @@ const HistoricGames = async () => {
                             <Table.Cell>
                                 {game.title}
                                 <div className="block md:hidden">
-                                    Result: {game.result}
+                                    <GameStatusBadge status={game.result} />
                                 </div>
                             </Table.Cell>
                             <Table.Cell className="hidden md:table-cell">
@@ -51,7 +52,7 @@ const HistoricGames = async () => {
                                 {game.black}
                             </Table.Cell>
                             <Table.Cell className="hidden md:table-cell">
-                                {game.result}
+                                <GameStatusBadge status={game.result} />
                             </Table.Cell>
                             <Table.Cell className="hidden md:table-cell">
                                 {game.moves}
@@ -64,10 +65,7 @@ const HistoricGames = async () => {
                                             <FaChessBoard />
                                         )}
                                     {game.url && (
-                                        <Link
-                                            href={game.url}
-                                            target="_blank"
-                                        >
+                                        <Link href={game.url} target="_blank">
                                             <RxOpenInNewWindow />
                                         </Link>
                                     )}
