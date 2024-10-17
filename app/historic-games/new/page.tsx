@@ -9,11 +9,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createGameSchema } from "@/app/validationSchemas";
 import ErrorMessage from "@/app/components/ErrorMessage";
+import Spinner from "@/app/components/Spinner";
 
 type NewHistoricGameForm = z.infer<typeof createGameSchema>;
 
 const NewHistoricGame = () => {
     const [error, setError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
     const {
         register,
@@ -25,10 +27,12 @@ const NewHistoricGame = () => {
 
     const onSubmit = async (data: NewHistoricGameForm) => {
         try {
+            setIsSubmitting(true);
             await axios.post("/api/games", data);
             router.push("/historic-games");
         } catch (error) {
             setError("An unexpected error occurred");
+            setIsSubmitting(false);
         }
     };
 
@@ -67,7 +71,7 @@ const NewHistoricGame = () => {
                 ></TextField.Root>
 
                 <TextArea placeholder="Moves…" {...register("moves")} />
-                <Button>Add new game</Button>
+                <Button disabled={isSubmitting}>Add new game {isSubmitting && <Spinner />}</Button>
             </form>
         </div>
     );
