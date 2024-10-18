@@ -46,7 +46,7 @@ const NewHistoricGame = () => {
     };
 
     return (
-        <div className="max-w-lg px-4">
+        <div className="max-w-lg">
             {error && (
                 <Callout.Root color="red" className="mb-5">
                     <Callout.Icon>
