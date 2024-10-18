@@ -1,20 +1,14 @@
 import { Table } from "@radix-ui/themes";
-import Link from "next/link";
-import prisma from "@/prisma/client";
-import { FaChessBoard } from "react-icons/fa";
-import { RxOpenInNewWindow } from "react-icons/rx";
-import GameStatusBadge from "./_components/GameStatusBadge";
-import delay from 'delay';
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import NewGameButton from "./_components/NewGameButton";
 
-const HistoricGames = async () => {
-    const games = await prisma.game.findMany();
-    await delay(5000);
+const HistoricGamesLoadingPage = () => {
+    const games = [1, 2, 3, 4, 5];
 
     return (
         <div className="px-5">
             <NewGameButton />
-
             <Table.Root variant="surface">
                 <Table.Header>
                     <Table.Row>
@@ -37,37 +31,29 @@ const HistoricGames = async () => {
 
                 <Table.Body>
                     {games.map((game) => (
-                        <Table.Row key={game.id}>
+                        <Table.Row key={game}>
                             <Table.Cell>
-                                {game.title}
+                                <Skeleton />
                                 <div className="block md:hidden">
-                                    <GameStatusBadge status={game.result} />
+                                    <Skeleton />
                                 </div>
                             </Table.Cell>
                             <Table.Cell className="hidden md:table-cell">
-                                {game.white}
+                                <Skeleton />
                             </Table.Cell>
                             <Table.Cell className="hidden md:table-cell">
-                                {game.black}
+                                <Skeleton />
                             </Table.Cell>
                             <Table.Cell className="hidden md:table-cell">
-                                <GameStatusBadge status={game.result} />
+                                <Skeleton />
                             </Table.Cell>
                             <Table.Cell className="hidden md:table-cell">
-                                {game.moves}
+                                <Skeleton />
                             </Table.Cell>
 
                             <Table.Cell className="hidden md:table-cell">
                                 <div className="flex space-x-2">
-                                    {game.moves?.length &&
-                                        game.moves.length > 0 && (
-                                            <FaChessBoard />
-                                        )}
-                                    {game.url && (
-                                        <Link href={game.url} target="_blank">
-                                            <RxOpenInNewWindow />
-                                        </Link>
-                                    )}
+                                    <Skeleton />
                                 </div>
                             </Table.Cell>
                         </Table.Row>
@@ -78,4 +64,4 @@ const HistoricGames = async () => {
     );
 };
 
-export default HistoricGames;
+export default HistoricGamesLoadingPage;
