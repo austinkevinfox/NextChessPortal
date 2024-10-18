@@ -1,7 +1,7 @@
 "use client";
-import { Button, Callout, Text, TextArea, TextField } from "@radix-ui/themes";
+import { Button, Callout, Select, TextArea, TextField } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { useState } from "react";
 import { LuAlertTriangle } from "react-icons/lu";
@@ -10,8 +10,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createGameSchema } from "@/app/validationSchemas";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
+import { Result } from "@prisma/client";
 
 type NewHistoricGameForm = z.infer<typeof createGameSchema>;
+
+const resultOptions: { label: string; value?: Result }[] = [
+    { label: "White", value: "WHITE" },
+    { label: "Black", value: "BLACK" },
+    { label: "Draw", value: "DRAW" },
+    { label: "In Progress", value: "IN_PROGRESS" },
+];
 
 const NewHistoricGame = () => {
     const [error, setError] = useState("");
@@ -19,6 +27,7 @@ const NewHistoricGame = () => {
     const router = useRouter();
     const {
         register,
+        control,
         handleSubmit,
         formState: { errors },
     } = useForm<NewHistoricGameForm>({
@@ -65,13 +74,36 @@ const NewHistoricGame = () => {
                 ></TextField.Root>
                 <ErrorMessage>{errors.black?.message}</ErrorMessage>
 
-                <TextField.Root
-                    placeholder="Result"
-                    {...register("result")}
-                ></TextField.Root>
+                <Controller
+                    name="result"
+                    control={control}
+                    render={({ field }) => (
+                        <Select.Root
+                            defaultValue="IN_PROGRESS"
+                            onValueChange={field.onChange}
+                        >
+                            <Select.Trigger />
+                            <Select.Content>
+                                <Select.Group>
+                                    <Select.Label>Result</Select.Label>
+                                    {resultOptions.map((option) => (
+                                        <Select.Item
+                                            key={option.value!}
+                                            value={option.value!}
+                                        >
+                                            {option.value!}
+                                        </Select.Item>
+                                    ))}
+                                </Select.Group>
+                            </Select.Content>
+                        </Select.Root>
+                    )}
+                />
 
                 <TextArea placeholder="Moves…" {...register("moves")} />
-                <Button disabled={isSubmitting}>Add new game {isSubmitting && <Spinner />}</Button>
+                <Button disabled={isSubmitting}>
+                    Add new game {isSubmitting && <Spinner />}
+                </Button>
             </form>
         </div>
     );
