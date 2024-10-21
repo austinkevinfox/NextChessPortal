@@ -70,7 +70,11 @@ const HistoricGames = async () => {
 
                                     {game.moves?.length &&
                                         game.moves.length > 0 && (
-                                            <FaChessBoard />
+                                            <NextLink
+                                                href={`/historic-games/${game.id}/play`}
+                                            >
+                                                <FaChessBoard />
+                                            </NextLink>
                                         )}
                                     {game.url && (
                                         <NextLink
