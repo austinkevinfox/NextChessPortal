@@ -1,5 +1,6 @@
 import { Table } from "@radix-ui/themes";
-import Link from "next/link";
+import NextLink from "next/link";
+import Link from "../components/Link";
 import prisma from "@/prisma/client";
 import { FaChessBoard } from "react-icons/fa";
 import { PiTextAlignLeft } from "react-icons/pi";
@@ -38,7 +39,9 @@ const HistoricGames = async () => {
                     {games.map((game) => (
                         <Table.Row key={game.id}>
                             <Table.Cell>
-                                {game.title}
+                                <Link href={`/historic-games/${game.id}`}>
+                                    {game.title}
+                                </Link>
                                 <div className="block md:hidden">
                                     <GameStatusBadge status={game.result} />
                                 </div>
@@ -60,18 +63,18 @@ const HistoricGames = async () => {
 
                             <Table.Cell className="hidden md:table-cell">
                                 <div className="flex space-x-2">
-                                    <Link href={`/historic-games/${game.id}`}>
+                                    <NextLink href={`/historic-games/${game.id}`}>
                                         <PiTextAlignLeft />
-                                    </Link>
+                                    </NextLink>
 
                                     {game.moves?.length &&
                                         game.moves.length > 0 && (
                                             <FaChessBoard />
                                         )}
                                     {game.url && (
-                                        <Link href={game.url} target="_blank">
+                                        <NextLink href={game.url} target="_blank">
                                             <RxOpenInNewWindow />
-                                        </Link>
+                                        </NextLink>
                                     )}
                                 </div>
                             </Table.Cell>
