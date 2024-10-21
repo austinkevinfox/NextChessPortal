@@ -28,7 +28,7 @@ const HistoricGames = async () => {
                             Result
                         </Table.ColumnHeaderCell>
                         <Table.ColumnHeaderCell className="hidden md:table-cell">
-                            Moves
+                            Opening
                         </Table.ColumnHeaderCell>
                         <Table.ColumnHeaderCell className="hidden md:table-cell"></Table.ColumnHeaderCell>
                     </Table.Row>
@@ -53,7 +53,9 @@ const HistoricGames = async () => {
                                 <GameStatusBadge status={game.result} />
                             </Table.Cell>
                             <Table.Cell className="hidden md:table-cell">
-                                {game.moves}
+                                <div className="w-40 truncate">
+                                    {game.moves}
+                                </div>
                             </Table.Cell>
 
                             <Table.Cell className="hidden md:table-cell">

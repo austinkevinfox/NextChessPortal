@@ -91,7 +91,7 @@ const NewHistoricGame = () => {
                                             key={option.value!}
                                             value={option.value!}
                                         >
-                                            {option.value!}
+                                            {option.label!}
                                         </Select.Item>
                                     ))}
                                 </Select.Group>
