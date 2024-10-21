@@ -1,7 +1,7 @@
 import prisma from "@/prisma/client";
 import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
-import GameStatusBadge from "../_components/GameStatusBadge";
+import { GameStatusBadge } from "../_components";
 
 const GameDetailsPage = async ({ params }: { params: { id: string } }) => {
     const game = await prisma.game.findUnique({

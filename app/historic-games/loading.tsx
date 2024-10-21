@@ -1,7 +1,6 @@
 import { Table } from "@radix-ui/themes";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import NewGameButton from "./_components/NewGameButton";
+import { Skeleton } from "@/app/components";
+import { NewGameButton } from "./_components";
 
 const HistoricGamesLoadingPage = () => {
     const games = [1, 2, 3, 4, 5];

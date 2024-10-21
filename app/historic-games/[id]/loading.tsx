@@ -1,5 +1,4 @@
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+import { Skeleton } from "@/app/components";
 
 const GameDetailsLoadingPage = () => (
     <div className="max-w-lg">

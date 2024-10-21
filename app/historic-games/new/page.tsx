@@ -1,16 +1,15 @@
 "use client";
+import { ErrorMessage, Spinner } from "@/app/components";
+import { createGameSchema } from "@/app/validationSchemas";
+import { Result } from "@prisma/client";
 import { Button, Callout, Select, TextArea, TextField } from "@radix-ui/themes";
-import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { LuAlertTriangle } from "react-icons/lu";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createGameSchema } from "@/app/validationSchemas";
-import ErrorMessage from "@/app/components/ErrorMessage";
-import Spinner from "@/app/components/Spinner";
-import { Result } from "@prisma/client";
 
 type NewHistoricGameForm = z.infer<typeof createGameSchema>;
 

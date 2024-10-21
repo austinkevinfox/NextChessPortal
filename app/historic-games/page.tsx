@@ -1,12 +1,11 @@
+import prisma from "@/prisma/client";
 import { Table } from "@radix-ui/themes";
 import NextLink from "next/link";
-import Link from "../components/Link";
-import prisma from "@/prisma/client";
 import { FaChessBoard } from "react-icons/fa";
 import { PiTextAlignLeft } from "react-icons/pi";
 import { RxOpenInNewWindow } from "react-icons/rx";
-import GameStatusBadge from "./_components/GameStatusBadge";
-import NewGameButton from "./_components/NewGameButton";
+import { Link } from "@/app/components";
+import { GameStatusBadge, NewGameButton } from "./_components";
 
 const HistoricGames = async () => {
     const games = await prisma.game.findMany();
@@ -63,7 +62,9 @@ const HistoricGames = async () => {
 
                             <Table.Cell className="hidden md:table-cell">
                                 <div className="flex space-x-2">
-                                    <NextLink href={`/historic-games/${game.id}`}>
+                                    <NextLink
+                                        href={`/historic-games/${game.id}`}
+                                    >
                                         <PiTextAlignLeft />
                                     </NextLink>
 
@@ -72,7 +73,10 @@ const HistoricGames = async () => {
                                             <FaChessBoard />
                                         )}
                                     {game.url && (
-                                        <NextLink href={game.url} target="_blank">
+                                        <NextLink
+                                            href={game.url}
+                                            target="_blank"
+                                        >
                                             <RxOpenInNewWindow />
                                         </NextLink>
                                     )}

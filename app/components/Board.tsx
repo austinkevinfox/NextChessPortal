@@ -1,38 +1,30 @@
-import { ReactNode } from "react";
-import { Files } from "./PositionConstants";
+import React, { ReactNode } from "react";
 import Square from "./Square";
-import { BoardPositionHash } from "../Interfaces";
 
-interface BoardProps {
-    // colors: string[];
-    positions?: BoardPositionHash;
-    lastSource?: string;
-    lastTarget?: string;
-}
+const Board = () => {
+    const colors: { [key: string]: string } = {
+        white: "bg-slate-100",
+        black: "bg-slate-800",
+    };
 
-const Board = ({ positions, lastSource, lastTarget }: BoardProps) => {
-    const bgStrings = [
-        "even:bg-slate-100 odd:bg-slate-500",
-        "even:bg-slate-500 odd:bg-slate-100",
-    ];
+    const getSquareColor = (rank: number, fileIndex: number): string => {
+        let squareColor = "";
+        if (rank % 2 === 0) {
+            squareColor = fileIndex % 2 === 0 ? "white" : "black";
+        } else {
+            squareColor = fileIndex % 2 === 0 ? "black" : "white";
+        }
+        return colors[squareColor];
+    };
 
     return (
-        <div className="grid grid-cols-8 h-[calc(100vh-150px)] aspect-square">
+        <div className="h-full aspect-square flex flex-wrap">
             {[8, 7, 6, 5, 4, 3, 2, 1].map((rank): ReactNode => {
-                const bgClassUtil = bgStrings.reverse()[0];
                 return [0, 1, 2, 3, 4, 5, 6, 7].map((index): ReactNode => {
-                    const file = Files[index];
-                    const notation = `${file}${rank}`;
-
                     return (
                         <Square
-                            key={notation}
-                            bgUtilityClass={bgClassUtil}
-                            file={file}
-                            rank={rank}
-                            piece={positions?.[notation] || null}
-                            isLastSource={notation === lastSource}
-                            isLastTarget={notation === lastTarget}
+                            key={rank + index}
+                            bgColor={getSquareColor(rank, index)}
                         />
                     );
                 });

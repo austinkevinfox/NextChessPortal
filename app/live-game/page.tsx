@@ -1,11 +1,10 @@
-import React from "react";
-import Board2 from "../components/Board2";
+import { Board } from "@/app/components";
 
 const LiveGame = () => {
     return (
         <div className="flex h-[calc(100vh-150px)]">
             <div className="w-1/3 bg-slate-300">side</div>
-            <Board2 />
+            <Board />
             <div className="w-1/3 bg-slate-300">side</div>
         </div>
     );
