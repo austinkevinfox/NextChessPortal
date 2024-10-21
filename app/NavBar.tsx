@@ -10,6 +10,12 @@ const NavBar = () => {
         { id: 0, label: "Historic Games", href: "/historic-games" },
         { id: 1, label: "Live Game", href: "/live-game" },
     ];
+
+    const includesComponentRoot = (componentRootPath: string) => {
+        const pattern = RegExp(`^${componentRootPath}`);
+        return pattern.test(currentPath);
+    };
+
     return (
         <nav className="flex space-x-6 border-b mb-5 px-5 h-14 items-center">
             <Link href="/">
@@ -20,8 +26,12 @@ const NavBar = () => {
                     <li key={link.id}>
                         <Link
                             className={classnames({
-                                "text-zinc-500": link.href !== currentPath,
-                                "text-zinc-900": link.href === currentPath,
+                                "text-zinc-500": !includesComponentRoot(
+                                    link.href
+                                ),
+                                "text-zinc-900": includesComponentRoot(
+                                    link.href
+                                ),
                                 "hover:text-zinc-800 transition-colors": true,
                             })}
                             href={link.href}
