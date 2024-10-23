@@ -48,7 +48,8 @@ const NewHistoricGame = () => {
             setIsSubmitting(true);
             await axios.post("/api/games", data);
             router.push("/historic-games");
-        } catch (error) {
+            router.refresh();
+        } catch {
             setError("An unexpected error occurred");
             setIsSubmitting(false);
         }
