@@ -1,12 +1,11 @@
+import { Link } from "@/app/components";
+import {
+    GameStatusBadge,
+    GridButtons,
+    NewGameButton,
+} from "@/app/historic-games/_components";
 import prisma from "@/prisma/client";
 import { Table } from "@radix-ui/themes";
-import NextLink from "next/link";
-import { FaChessBoard } from "react-icons/fa";
-import { PiTextAlignLeft } from "react-icons/pi";
-import { RxOpenInNewWindow } from "react-icons/rx";
-import { Link } from "@/app/components";
-import { GameStatusBadge, NewGameButton } from "./_components";
-import DeleteButton from "./_components/DeleteButton";
 
 const HistoricGames = async () => {
     const games = await prisma.game.findMany();
@@ -62,31 +61,7 @@ const HistoricGames = async () => {
                             </Table.Cell>
 
                             <Table.Cell className="hidden md:table-cell">
-                                <div className="flex space-x-2">
-                                    <NextLink
-                                        href={`/historic-games/${game.id}`}
-                                    >
-                                        <PiTextAlignLeft />
-                                    </NextLink>
-
-                                    {game.moves?.length &&
-                                        game.moves.length > 0 && (
-                                            <NextLink
-                                                href={`/historic-games/${game.id}/play`}
-                                            >
-                                                <FaChessBoard />
-                                            </NextLink>
-                                        )}
-                                    {game.url && (
-                                        <NextLink
-                                            href={game.url}
-                                            target="_blank"
-                                        >
-                                            <RxOpenInNewWindow />
-                                        </NextLink>
-                                    )}
-                                    <DeleteButton gameId={game.id} />
-                                </div>
+                                <GridButtons game={game} />
                             </Table.Cell>
                         </Table.Row>
                     ))}
