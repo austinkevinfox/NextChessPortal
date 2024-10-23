@@ -7,7 +7,7 @@ import ViewButton from "./ViewButton";
 
 const GridButtons = ({ game }: { game: Game }) => {
     return (
-        <Flex gap="2">
+        <Flex>
             <ViewButton game={game} />
             <ReplayGameButton game={game} />
             <ExternalLinkButton gameUrl={game.url} />
