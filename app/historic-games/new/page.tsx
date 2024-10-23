@@ -1,15 +1,25 @@
 "use client";
 import { ErrorMessage, Spinner } from "@/app/components";
 import { createGameSchema } from "@/app/validationSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Result } from "@prisma/client";
-import { Button, Callout, Select, TextArea, TextField } from "@radix-ui/themes";
+import * as Label from "@radix-ui/react-label";
+import {
+    Box,
+    Button,
+    Callout,
+    Flex,
+    Select,
+    TextArea,
+    TextField,
+} from "@radix-ui/themes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { FaPlus } from "react-icons/fa6";
 import { LuAlertTriangle } from "react-icons/lu";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 type NewHistoricGameForm = z.infer<typeof createGameSchema>;
 
@@ -55,23 +65,40 @@ const NewHistoricGame = () => {
                 </Callout.Root>
             )}
             <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
-                <TextField.Root
-                    placeholder="Title"
-                    {...register("title")}
-                ></TextField.Root>
-                <ErrorMessage>{errors.title?.message}</ErrorMessage>
+                <Box>
+                    <Label.Root htmlFor="title">Title</Label.Root>
+                    <TextField.Root
+                        id="title"
+                        placeholder="Title"
+                        {...register("title")}
+                    ></TextField.Root>
+                    <ErrorMessage>{errors.title?.message}</ErrorMessage>
+                </Box>
 
-                <TextField.Root
-                    placeholder="White player name"
-                    {...register("white")}
-                ></TextField.Root>
-                <ErrorMessage>{errors.white?.message}</ErrorMessage>
-
-                <TextField.Root
-                    placeholder="Black player name"
-                    {...register("black")}
-                ></TextField.Root>
-                <ErrorMessage>{errors.black?.message}</ErrorMessage>
+                <Flex gap="3" justify="between">
+                    <Box width="50%">
+                        <Label.Root htmlFor="white">
+                            White player name
+                        </Label.Root>
+                        <TextField.Root
+                            id="white"
+                            placeholder="Gary Kasparov"
+                            {...register("white")}
+                        ></TextField.Root>
+                        <ErrorMessage>{errors.white?.message}</ErrorMessage>
+                    </Box>
+                    <Box width="50%">
+                        <Label.Root htmlFor="black">
+                            Black player name
+                        </Label.Root>
+                        <TextField.Root
+                            id="black"
+                            placeholder="Bobby Fischer"
+                            {...register("black")}
+                        ></TextField.Root>
+                        <ErrorMessage>{errors.black?.message}</ErrorMessage>
+                    </Box>
+                </Flex>
 
                 <Controller
                     name="result"
@@ -99,9 +126,17 @@ const NewHistoricGame = () => {
                     )}
                 />
 
-                <TextArea placeholder="Moves…" {...register("moves")} />
+                <Box>
+                    <Label.Root htmlFor="moves">Algebraic Notation</Label.Root>
+                    <TextArea
+                        id="moves"
+                        placeholder="1. e4 e5 2. Nf3…"
+                        {...register("moves")}
+                    />
+                </Box>
                 <Button disabled={isSubmitting}>
-                    Add new game {isSubmitting && <Spinner />}
+                    <FaPlus />
+                    Add historic game {isSubmitting && <Spinner />}
                 </Button>
             </form>
         </div>
