@@ -6,6 +6,7 @@ import { PiTextAlignLeft } from "react-icons/pi";
 import { RxOpenInNewWindow } from "react-icons/rx";
 import { Link } from "@/app/components";
 import { GameStatusBadge, NewGameButton } from "./_components";
+import DeleteButton from "./_components/DeleteButton";
 
 const HistoricGames = async () => {
     const games = await prisma.game.findMany();
@@ -84,6 +85,7 @@ const HistoricGames = async () => {
                                             <RxOpenInNewWindow />
                                         </NextLink>
                                     )}
+                                    <DeleteButton gameId={game.id} />
                                 </div>
                             </Table.Cell>
                         </Table.Row>
