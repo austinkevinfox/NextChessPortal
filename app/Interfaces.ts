@@ -1,7 +1,11 @@
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { ReactElement } from "react";
+
 export interface Piece {
     name: "king" | "queen" | "rook" | "bishop" | "knight" | "pawn";
     code: "K" | "Q" | "R" | "B" | "N" | "P";
     color: "white" | "black";
+    component: StaticImport;
 }
 
 export interface BoardPositionHash {

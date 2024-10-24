@@ -1,7 +1,14 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
+import { BoardPositionHash } from "../Interfaces";
 import Square from "./Square";
+import { getFileRankFromIndices } from "../services/PieceServices";
 
-const Board = () => {
+interface Props {
+    positions: BoardPositionHash;
+}
+
+
+const Board = ({ positions }: Props) => {
     const colors: { [key: string]: string } = {
         white: "bg-slate-100",
         black: "bg-slate-800",
@@ -25,6 +32,7 @@ const Board = () => {
                         <Square
                             key={rank + index}
                             bgColor={getSquareColor(rank, index)}
+                            piece={positions[getFileRankFromIndices(index, rank)]}
                         />
                     );
                 });

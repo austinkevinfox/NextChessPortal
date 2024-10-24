@@ -1,0 +1,12 @@
+export { default as WhitePawn } from "./w_pawn_svg_NoShadow.svg";
+export { default as WhiteKnight } from "./w_knight_svg_NoShadow.svg";
+export { default as WhiteBishop } from "./w_bishop_svg_NoShadow.svg";
+export { default as WhiteRook } from "./w_rook_svg_NoShadow.svg";
+export { default as WhiteQueen } from "./w_queen_svg_NoShadow.svg";
+export { default as WhiteKing } from "./w_king_svg_NoShadow.svg";
+export { default as BlackPawn } from "./b_pawn_svg_NoShadow.svg";
+export { default as BlackKnight } from "./b_knight_svg_NoShadow.svg";
+export { default as BlackBishop } from "./b_bishop_svg_NoShadow.svg";
+export { default as BlackRook } from "./b_rook_svg_NoShadow.svg";
+export { default as BlackQueen } from "./b_queen_svg_NoShadow.svg";
+export { default as BlackKing } from "./b_king_svg_NoShadow.svg";
