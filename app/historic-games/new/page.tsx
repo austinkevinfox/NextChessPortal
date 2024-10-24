@@ -78,6 +78,33 @@ const NewHistoricGame = () => {
 
                 <Flex gap="3" justify="between">
                     <Box width="50%">
+                        <Label.Root htmlFor="event">Event</Label.Root>
+                        <TextField.Root
+                            id="event"
+                            placeholder=""
+                            {...register("event")}
+                        ></TextField.Root>
+                    </Box>
+                    <Box width="50%">
+                        <Label.Root htmlFor="eventDate">Event date</Label.Root>
+                        <TextField.Root
+                            id="eventDate"
+                            placeholder="YYYY-MM-DD"
+                            {...register("eventDate")}
+                        ></TextField.Root>
+                    </Box>
+                </Flex>
+
+                <Box>
+                    <Label.Root htmlFor="location">Location</Label.Root>
+                    <TextField.Root
+                        id="location"
+                        {...register("location")}
+                    ></TextField.Root>
+                </Box>
+
+                <Flex gap="3" justify="between">
+                    <Box width="50%">
                         <Label.Root htmlFor="white">
                             White player name
                         </Label.Root>
@@ -101,31 +128,46 @@ const NewHistoricGame = () => {
                     </Box>
                 </Flex>
 
-                <Controller
-                    name="result"
-                    control={control}
-                    render={({ field }) => (
-                        <Select.Root
+                <Flex gap="3" justify="between">
+                    <Label.Root htmlFor="result">
+                        <Box>Result</Box>
+                        <Controller
+                            name="result"
+                            control={control}
                             defaultValue="IN_PROGRESS"
-                            onValueChange={field.onChange}
-                        >
-                            <Select.Trigger />
-                            <Select.Content>
-                                <Select.Group>
-                                    <Select.Label>Result</Select.Label>
-                                    {resultOptions.map((option) => (
-                                        <Select.Item
-                                            key={option.value!}
-                                            value={option.value!}
-                                        >
-                                            {option.label!}
-                                        </Select.Item>
-                                    ))}
-                                </Select.Group>
-                            </Select.Content>
-                        </Select.Root>
-                    )}
-                />
+                            render={({ field }) => (
+                                <Select.Root
+                                    defaultValue="IN_PROGRESS"
+                                    onValueChange={field.onChange}
+                                >
+                                    <Select.Trigger />
+                                    <Select.Content>
+                                        <Select.Group>
+                                            <Select.Label>Result</Select.Label>
+                                            {resultOptions.map((option) => (
+                                                <Select.Item
+                                                    key={option.value!}
+                                                    value={option.value!}
+                                                >
+                                                    {option.label!}
+                                                </Select.Item>
+                                            ))}
+                                        </Select.Group>
+                                    </Select.Content>
+                                </Select.Root>
+                            )}
+                        />
+                    </Label.Root>
+
+                    <Box width="50%">
+                        <Label.Root htmlFor="url">URL</Label.Root>
+                        <TextField.Root
+                            id="url"
+                            placeholder="http://"
+                            {...register("url")}
+                        ></TextField.Root>
+                    </Box>
+                </Flex>
 
                 <Box>
                     <Label.Root htmlFor="moves">Algebraic Notation</Label.Root>
