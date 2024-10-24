@@ -12,7 +12,7 @@ import {
     BlackRook,
     BlackQueen,
     BlackKing,
-} from "./images/svg-no-shadow";
+} from "@/app/public/svg-no-shadow";
 
 export enum Files {
     a,
