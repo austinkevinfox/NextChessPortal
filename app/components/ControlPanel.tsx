@@ -1,24 +1,31 @@
 "use client";
+import { Game } from "@prisma/client";
 import { Flex, IconButton } from "@radix-ui/themes";
 import { ReactNode, useState } from "react";
 import { FaPause, FaPlay, FaStepBackward, FaStepForward } from "react-icons/fa";
 
-const ControlPanel = () => {
+interface Props {
+    moves: string[];
+    onForwardStep: () => void;
+    onBackwardStep: () => void;
+    stepIndex: number;
+}
+
+const ControlPanel = ({
+    moves,
+    onForwardStep,
+    onBackwardStep,
+    stepIndex,
+}: Props) => {
     const [isPlaying, setIsPlaying] = useState(false);
 
     const handlePlayPause = () => {
         setIsPlaying((prev) => !prev);
     };
 
-    const handleStepForward = () => {
-        console.log("step forward");
-        setIsPlaying(false);
-    };
+    const handleStepForward = () => onForwardStep();
 
-    const handleStepBackward = () => {
-        console.log("step backward");
-        setIsPlaying(false);
-    };
+    const handleStepBackward = () => onBackwardStep();
 
     interface ButtonMap {
         [key: string]: { icon: ReactNode; callback: () => void };
@@ -31,6 +38,16 @@ const ControlPanel = () => {
         stepForward: { icon: <FaStepForward />, callback: handleStepForward },
     };
 
+    const isButtonDisabled = (buttonKey: string): boolean => {
+        if (buttonKey === "stepBack" && stepIndex === 0) {
+            return true;
+        }
+        if (buttonKey === "stepForward" && stepIndex === moves.length) {
+            return true;
+        }
+        return false;
+    };
+
     return (
         <Flex gap="3">
             {Object.keys(buttonMap).map((buttonKey) => {
@@ -39,9 +56,11 @@ const ControlPanel = () => {
 
                 return (
                     <IconButton
+                        key={`control-panel-btn-${buttonKey}`}
                         color="gray"
                         variant="classic"
                         highContrast
+                        disabled={isButtonDisabled(buttonKey)}
                         onClick={buttonMap[buttonKey].callback}
                     >
                         {buttonMap[buttonKey].icon}

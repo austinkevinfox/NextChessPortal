@@ -1,5 +1,4 @@
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import { ReactElement } from "react";
 
 export interface Piece {
     name: "king" | "queen" | "rook" | "bishop" | "knight" | "pawn";

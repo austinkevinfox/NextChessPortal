@@ -111,8 +111,6 @@ export const getSourceNotation = ({
     return sourceNotation;
 };
 
-
-
 const getQueenSource = (gameState: GameState): string =>
     getSolePieceSource({ gameState, pieceCode: "Q" });
 

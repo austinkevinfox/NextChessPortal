@@ -37,97 +37,97 @@ export enum PieceValues {
 }
 
 export const initialPositions = {
-    a8: <Piece>{
+    a8: <Piece | null>{
         color: "black",
         name: "rook",
         code: "R",
         component: BlackRook,
     },
-    b8: <Piece>{
+    b8: <Piece | null>{
         color: "black",
         name: "knight",
         code: "N",
         component: BlackKnight,
     },
-    c8: <Piece>{
+    c8: <Piece | null>{
         color: "black",
         name: "bishop",
         code: "B",
         component: BlackBishop,
     },
-    d8: <Piece>{
+    d8: <Piece | null>{
         color: "black",
         name: "queen",
         code: "Q",
         component: BlackQueen,
     },
-    e8: <Piece>{
+    e8: <Piece | null>{
         color: "black",
         name: "king",
         code: "K",
         component: BlackKing,
     },
-    f8: <Piece>{
+    f8: <Piece | null>{
         color: "black",
         name: "bishop",
         code: "B",
         component: BlackBishop,
     },
-    g8: <Piece>{
+    g8: <Piece | null>{
         color: "black",
         name: "knight",
         code: "N",
         component: BlackKnight,
     },
-    h8: <Piece>{
+    h8: <Piece | null>{
         color: "black",
         name: "rook",
         code: "R",
         component: BlackRook,
     },
-    a7: <Piece>{
+    a7: <Piece | null>{
         color: "black",
         name: "pawn",
         code: "P",
         component: BlackPawn,
     },
-    b7: <Piece>{
+    b7: <Piece | null>{
         color: "black",
         name: "pawn",
         code: "P",
         component: BlackPawn,
     },
-    c7: <Piece>{
+    c7: <Piece | null>{
         color: "black",
         name: "pawn",
         code: "P",
         component: BlackPawn,
     },
-    d7: <Piece>{
+    d7: <Piece | null>{
         color: "black",
         name: "pawn",
         code: "P",
         component: BlackPawn,
     },
-    e7: <Piece>{
+    e7: <Piece | null>{
         color: "black",
         name: "pawn",
         code: "P",
         component: BlackPawn,
     },
-    f7: <Piece>{
+    f7: <Piece | null>{
         color: "black",
         name: "pawn",
         code: "P",
         component: BlackPawn,
     },
-    g7: <Piece>{
+    g7: <Piece | null>{
         color: "black",
         name: "pawn",
         code: "P",
         component: BlackPawn,
     },
-    h7: <Piece>{
+    h7: <Piece | null>{
         color: "black",
         name: "pawn",
         code: "P",
@@ -162,100 +162,100 @@ export const initialPositions = {
     c3: null,
     d3: null,
     e3: null,
-    f3: null,
+    f3: <Piece | null>null,
     g3: null,
     h3: null,
-    a2: <Piece>{
+    a2: <Piece | null>{
         color: "white",
         name: "pawn",
         code: "P",
         component: WhitePawn,
     },
-    b2: <Piece>{
+    b2: <Piece | null>{
         color: "white",
         name: "pawn",
         code: "P",
         component: WhitePawn,
     },
-    c2: <Piece>{
+    c2: <Piece | null>{
         color: "white",
         name: "pawn",
         code: "P",
         component: WhitePawn,
     },
-    d2: <Piece>{
+    d2: <Piece | null>{
         color: "white",
         name: "pawn",
         code: "P",
         component: WhitePawn,
     },
-    e2: <Piece>{
+    e2: <Piece | null>{
         color: "white",
         name: "pawn",
         code: "P",
         component: WhitePawn,
     },
-    f2: <Piece>{
+    f2: <Piece | null>{
         color: "white",
         name: "pawn",
         code: "P",
         component: WhitePawn,
     },
-    g2: <Piece>{
+    g2: <Piece | null>{
         color: "white",
         name: "pawn",
         code: "P",
         component: WhitePawn,
     },
-    h2: <Piece>{
+    h2: <Piece | null>{
         color: "white",
         name: "pawn",
         code: "P",
         component: WhitePawn,
     },
-    a1: <Piece>{
+    a1: <Piece | null>{
         color: "white",
         name: "rook",
         code: "R",
         component: WhiteRook,
     },
-    b1: <Piece>{
+    b1: <Piece | null>{
         color: "white",
         name: "knight",
         code: "N",
         component: WhiteKnight,
     },
-    c1: <Piece>{
+    c1: <Piece | null>{
         color: "white",
         name: "bishop",
         code: "B",
         component: WhiteBishop,
     },
-    d1: <Piece>{
+    d1: <Piece | null>{
         color: "white",
         name: "queen",
         code: "Q",
         component: WhiteQueen,
     },
-    e1: <Piece>{
+    e1: <Piece | null>{
         color: "white",
         name: "king",
         code: "K",
         component: WhiteKing,
     },
-    f1: <Piece>{
+    f1: <Piece | null>{
         color: "white",
         name: "bishop",
         code: "B",
         component: WhiteBishop,
     },
-    g1: <Piece>{
+    g1: <Piece | null>{
         color: "white",
         name: "knight",
         code: "N",
         component: WhiteKnight,
     },
-    h1: <Piece>{
+    h1: <Piece | null>{
         color: "white",
         name: "rook",
         code: "R",
