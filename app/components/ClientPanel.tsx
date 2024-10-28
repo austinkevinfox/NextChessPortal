@@ -1,20 +1,21 @@
 "use client";
 import { Game } from "@prisma/client";
+import { useMemo, useState } from "react";
+import { getArrayOfMoves, getGameBoardPositions } from "../services/services";
 import ControlPanel from "./ControlPanel";
 import GameTable from "./GameTable";
-import { useMemo, useState } from "react";
-import { getGameBoardPositions, loadGame } from "../services/services";
+import MovesPanel from "./MovesPanel/MovesPanel";
 
 const ClientPanel = ({ game }: { game: Game }) => {
     const [stepIndex, setStepIndex] = useState(0);
-    const loadedGame = useMemo(() => loadGame(game.moves!), [game.moves]);
+    const moves = useMemo(() => getArrayOfMoves(game.moves!), [game.moves]);
     const gameBoardPositions = useMemo(
-        () => getGameBoardPositions(loadedGame),
-        [loadedGame]
+        () => getGameBoardPositions(moves),
+        [moves]
     );
 
     const incrementStepIndex = () => {
-        if (stepIndex < loadedGame.length) {
+        if (stepIndex < moves.length) {
             setStepIndex((prev) => prev + 1);
         }
     };
@@ -28,13 +29,22 @@ const ClientPanel = ({ game }: { game: Game }) => {
     return (
         <>
             <ControlPanel
-                moves={loadedGame}
+                moves={moves}
                 onForwardStep={incrementStepIndex}
                 onBackwardStep={decrementStepIndex}
                 stepIndex={stepIndex}
             />
 
-            <GameTable gameBoardPositions={gameBoardPositions[stepIndex]} />
+            <GameTable
+                gameBoardPositions={gameBoardPositions[stepIndex]}
+                movesPanel={
+                    <MovesPanel
+                        moves={moves}
+                        stepIndex={stepIndex}
+                        onStepClick={setStepIndex}
+                    />
+                }
+            />
         </>
     );
 };

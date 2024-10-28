@@ -11,6 +11,16 @@ export interface BoardPositionHash {
     [notation: string]: Piece | null;
 }
 
+export interface StepData {
+    boardPositions: BoardPositionHash;
+    capturedPieces: CapturedPieces;
+}
+
+export interface GameTableStore {
+    annotatedMoves: AnnotatedMove[];
+    stepData: StepData[];
+}
+
 export interface GameState {
     activePlayer: string;
     boardPositions: BoardPositionHash;
