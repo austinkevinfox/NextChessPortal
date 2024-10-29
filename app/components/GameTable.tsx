@@ -1,24 +1,31 @@
 import { Board } from "@/app/components";
-import { BoardPositionHash } from "../Interfaces";
 import { ReactElement } from "react";
-// import { div, Flex } from "@radix-ui/themes";
+import { BoardPositionHash, CapturedPieces } from "../Interfaces";
+import SidePanel from "./SidePanel";
 
 interface Props {
     gameBoardPositions: BoardPositionHash;
+    capturedPieces: CapturedPieces;
     movesPanel: ReactElement;
 }
 
-const GameTable = ({ gameBoardPositions, movesPanel }: Props) => {
+const GameTable = ({
+    gameBoardPositions,
+    capturedPieces,
+    movesPanel,
+}: Props) => {
     return (
         <>
             <div className="flex h-[calc(100vh-150px)]">
-                <div className="hidden md:block w-52 h-1/2 p-4 bg-slate-300">
-                    side
-                </div>
+                <SidePanel
+                    playerColor="black"
+                    capturedPieces={capturedPieces}
+                />
                 <Board positions={gameBoardPositions} />
-                <div className="hidden md:block w-52 h-1/2 p-4 bg-slate-300">
-                    side
-                </div>
+                <SidePanel
+                    playerColor="white"
+                    capturedPieces={capturedPieces}
+                />
                 <div className="hidden md:block ml-9">{movesPanel}</div>
             </div>
             <div className="sm:block md:hidden mt-4 ml-5">{movesPanel}</div>

@@ -1,15 +1,17 @@
+import { initialPositions } from "@/app/components/PositionConstants";
 import {
     AnnotatedMove,
     BoardPositionHash,
+    CapturedPieces,
     GameState,
-    GameTableStore,
     Piece,
+    StepData,
 } from "@/app/Interfaces";
 import {
     getAnnotatedMove,
     getSourceNotation,
 } from "@/app/services/MoveServices";
-import { initialPositions } from "@/app/components/PositionConstants";
+import cloneDeep from "lodash.clonedeep";
 
 export const getArrayOfMoves = (gameString: string | null): string[] => {
     if (!gameString) return [];
@@ -33,11 +35,36 @@ const isUpperCase = (str: string): boolean => {
     return str.toUpperCase() == str;
 };
 
+const getCapturedPieces = (
+    gameState: GameState,
+    annotatedMove: AnnotatedMove,
+    capturedPieces: CapturedPieces
+): CapturedPieces => {
+    const tmpCapturedPieces = cloneDeep(capturedPieces);
+    let nextMove = annotatedMove.base;
+    const isCapture = /x/.test(nextMove);
+    const tmpPositions = { ...gameState.boardPositions };
+
+    if (isCapture) {
+        const matches = getMatchesOnCapture(nextMove);
+        if (matches) {
+            const capturedPiece = tmpPositions[matches[2]]!;
+            tmpCapturedPieces[capturedPiece.color][capturedPiece.name].push(
+                capturedPiece
+            );
+        }
+    }
+
+    return tmpCapturedPieces;
+};
+
+const getMatchesOnCapture = (move: string): string[] | null =>
+    /^(\w{1,2})x(\w{2,})$/.exec(move);
+
 export const getNextBoardPositions = (
     gameState: GameState,
     annotatedMove: AnnotatedMove
 ): BoardPositionHash => {
-    // const annotatedMove = getAnnotatedMove(rawMove);
     let nextMove = annotatedMove.base;
     const isCapture = /x/.test(nextMove);
     const tmpPositions = { ...gameState.boardPositions };
@@ -47,7 +74,7 @@ export const getNextBoardPositions = (
     let sourceHint: string = "";
 
     if (isCapture) {
-        const matches = /^(\w{1,2})x(\w{2,})$/.exec(nextMove);
+        const matches = getMatchesOnCapture(nextMove);
         if (matches) {
             if (isUpperCase(matches[1])) {
                 nextMove = `${matches[1]}${matches[2]}`;
@@ -55,10 +82,6 @@ export const getNextBoardPositions = (
                 sourceHint = matches[1];
                 nextMove = matches[2];
             }
-            // const capturedPiece = tmpPositions[matches[2]]!;
-            // const tmpCapturedPieces = { ...capturedPieces };
-            // tmpCapturedPieces[capturedPiece.color].push(capturedPiece!);
-            // setCapturedPieces(tmpCapturedPieces);
         }
     }
 
@@ -105,21 +128,55 @@ export const getNextBoardPositions = (
     return tmpPositions;
 };
 
-export const getGameBoardPositions = (moves: string[]): BoardPositionHash[] => {
-    const gameBoardPositions: BoardPositionHash[] = [{ ...initialPositions }];
+export const getStepData = (moves: string[]): StepData[] => {
     const movesAnnotated = moves.map((rawMove) => getAnnotatedMove(rawMove));
+    const initialCapturedPieces = {
+        white: {
+            pawn: [],
+            knight: [],
+            bishop: [],
+            rook: [],
+            queen: [],
+            king: [],
+        },
+        black: {
+            pawn: [],
+            knight: [],
+            bishop: [],
+            rook: [],
+            queen: [],
+            king: [],
+        },
+    };
+    const stepDataArray: StepData[] = [
+        {
+            boardPositions: initialPositions,
+            capturedPieces: initialCapturedPieces,
+        },
+    ];
 
     movesAnnotated.forEach((annotatedMove, index) => {
-        let nextBoardPosition = getNextBoardPositions(
-            {
-                activePlayer:
-                    index === 0 || index % 2 === 0 ? "white" : "black",
-                boardPositions: gameBoardPositions[index],
-            },
+        const gameState = {
+            activePlayer: index === 0 || index % 2 === 0 ? "white" : "black",
+            boardPositions: stepDataArray[index].boardPositions,
+        };
+
+        const nextCapturedPieces = getCapturedPieces(
+            gameState,
+            annotatedMove,
+            stepDataArray[index].capturedPieces
+        );
+
+        const nextBoardPositions = getNextBoardPositions(
+            gameState,
             annotatedMove
         );
-        gameBoardPositions.push(nextBoardPosition);
+
+        stepDataArray.push({
+            boardPositions: nextBoardPositions,
+            capturedPieces: nextCapturedPieces,
+        });
     });
 
-    return gameBoardPositions;
+    return stepDataArray;
 };

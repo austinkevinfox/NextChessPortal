@@ -16,11 +16,6 @@ export interface StepData {
     capturedPieces: CapturedPieces;
 }
 
-export interface GameTableStore {
-    annotatedMoves: AnnotatedMove[];
-    stepData: StepData[];
-}
-
 export interface GameState {
     activePlayer: string;
     boardPositions: BoardPositionHash;
@@ -41,7 +36,16 @@ export interface AnnotatedMove {
     annotation: string;
 }
 
+interface PiecesByKind {
+    pawn: Piece[];
+    knight: Piece[];
+    bishop: Piece[];
+    rook: Piece[];
+    queen: Piece[];
+    king: Piece[];
+}
+
 export interface CapturedPieces {
-    white: Piece[];
-    black: Piece[];
+    white: PiecesByKind;
+    black: PiecesByKind;
 }

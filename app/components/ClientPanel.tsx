@@ -1,7 +1,7 @@
 "use client";
 import { Game } from "@prisma/client";
 import { useMemo, useState } from "react";
-import { getArrayOfMoves, getGameBoardPositions } from "../services/services";
+import { getArrayOfMoves, getStepData } from "../services/services";
 import ControlPanel from "./ControlPanel";
 import GameTable from "./GameTable";
 import MovesPanel from "./MovesPanel/MovesPanel";
@@ -9,10 +9,7 @@ import MovesPanel from "./MovesPanel/MovesPanel";
 const ClientPanel = ({ game }: { game: Game }) => {
     const [stepIndex, setStepIndex] = useState(0);
     const moves = useMemo(() => getArrayOfMoves(game.moves!), [game.moves]);
-    const gameBoardPositions = useMemo(
-        () => getGameBoardPositions(moves),
-        [moves]
-    );
+    const stepData = useMemo(() => getStepData(moves), [moves]);
 
     const incrementStepIndex = () => {
         if (stepIndex < moves.length) {
@@ -36,7 +33,8 @@ const ClientPanel = ({ game }: { game: Game }) => {
             />
 
             <GameTable
-                gameBoardPositions={gameBoardPositions[stepIndex]}
+                gameBoardPositions={stepData[stepIndex].boardPositions}
+                capturedPieces={stepData[stepIndex].capturedPieces}
                 movesPanel={
                     <MovesPanel
                         moves={moves}
