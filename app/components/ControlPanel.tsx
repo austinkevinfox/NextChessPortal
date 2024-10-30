@@ -1,6 +1,6 @@
 "use client";
 import { Flex, IconButton } from "@radix-ui/themes";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { FaPause, FaPlay, FaStepBackward, FaStepForward } from "react-icons/fa";
 import useStepStore from "../state-management/step/store";
 
@@ -8,9 +8,24 @@ const ControlPanel = ({ moves }: { moves: string[] }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const { stepIndex, incrementStep, decrementStep } = useStepStore();
 
-    const handlePlayPause = () => {
-        setIsPlaying((prev) => !prev);
-    };
+    useEffect(() => {
+        let intervalId = setInterval(() => null, 10);
+
+        if (isPlaying) {
+            intervalId = setInterval(() => {
+                incrementStep();
+            }, 1000);
+        } else {
+            clearInterval(intervalId);
+        }
+        return () => clearInterval(intervalId);
+    }, [isPlaying]);
+
+    useEffect(() => {
+        if (stepIndex >= moves.length) {
+            setIsPlaying(false);
+        }
+    }, [stepIndex]);
 
     interface ButtonMap {
         [key: string]: { icon: ReactNode; callback: () => void };
@@ -18,8 +33,8 @@ const ControlPanel = ({ moves }: { moves: string[] }) => {
 
     const buttonMap: ButtonMap = {
         stepBack: { icon: <FaStepBackward />, callback: decrementStep },
-        play: { icon: <FaPlay />, callback: handlePlayPause },
-        pause: { icon: <FaPause />, callback: handlePlayPause },
+        play: { icon: <FaPlay />, callback: () => setIsPlaying(true) },
+        pause: { icon: <FaPause />, callback: () => setIsPlaying(false) },
         stepForward: { icon: <FaStepForward />, callback: incrementStep },
     };
 

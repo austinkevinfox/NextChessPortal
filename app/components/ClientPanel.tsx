@@ -4,9 +4,9 @@ import { useMemo } from "react";
 import { getArrayOfMoves, getStepData } from "../services/services";
 import useStepStore from "../state-management/step/store";
 import ControlPanel from "./ControlPanel";
+import GameOverToast from "./GameOverToast";
 import GameTable from "./GameTable";
 import MovesPanel from "./MovesPanel/MovesPanel";
-import GameOverToast from "./GameOverToast";
 
 const ClientPanel = ({ game }: { game: Game }) => {
     const { stepIndex } = useStepStore();
