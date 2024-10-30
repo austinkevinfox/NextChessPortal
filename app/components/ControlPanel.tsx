@@ -1,41 +1,26 @@
 "use client";
-import { Game } from "@prisma/client";
 import { Flex, IconButton } from "@radix-ui/themes";
 import { ReactNode, useState } from "react";
 import { FaPause, FaPlay, FaStepBackward, FaStepForward } from "react-icons/fa";
+import useStepStore from "../state-management/step/store";
 
-interface Props {
-    moves: string[];
-    onForwardStep: () => void;
-    onBackwardStep: () => void;
-    stepIndex: number;
-}
-
-const ControlPanel = ({
-    moves,
-    onForwardStep,
-    onBackwardStep,
-    stepIndex,
-}: Props) => {
+const ControlPanel = ({ moves }: { moves: string[] }) => {
     const [isPlaying, setIsPlaying] = useState(false);
+    const { stepIndex, incrementStep, decrementStep } = useStepStore();
 
     const handlePlayPause = () => {
         setIsPlaying((prev) => !prev);
     };
-
-    const handleStepForward = () => onForwardStep();
-
-    const handleStepBackward = () => onBackwardStep();
 
     interface ButtonMap {
         [key: string]: { icon: ReactNode; callback: () => void };
     }
 
     const buttonMap: ButtonMap = {
-        stepBack: { icon: <FaStepBackward />, callback: handleStepBackward },
+        stepBack: { icon: <FaStepBackward />, callback: decrementStep },
         play: { icon: <FaPlay />, callback: handlePlayPause },
         pause: { icon: <FaPause />, callback: handlePlayPause },
-        stepForward: { icon: <FaStepForward />, callback: handleStepForward },
+        stepForward: { icon: <FaStepForward />, callback: incrementStep },
     };
 
     const isButtonDisabled = (buttonKey: string): boolean => {

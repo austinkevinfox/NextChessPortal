@@ -5,32 +5,16 @@ import { getArrayOfMoves, getStepData } from "../services/services";
 import ControlPanel from "./ControlPanel";
 import GameTable from "./GameTable";
 import MovesPanel from "./MovesPanel/MovesPanel";
+import useStepStore from "../state-management/step/store";
 
 const ClientPanel = ({ game }: { game: Game }) => {
-    const [stepIndex, setStepIndex] = useState(0);
+    const { stepIndex } = useStepStore();
     const moves = useMemo(() => getArrayOfMoves(game.moves!), [game.moves]);
     const stepData = useMemo(() => getStepData(moves), [moves]);
 
-    const incrementStepIndex = () => {
-        if (stepIndex < moves.length) {
-            setStepIndex((prev) => prev + 1);
-        }
-    };
-
-    const decrementStepIndex = () => {
-        if (stepIndex > 0) {
-            setStepIndex((prev) => prev - 1);
-        }
-    };
-
     return (
         <>
-            <ControlPanel
-                moves={moves}
-                onForwardStep={incrementStepIndex}
-                onBackwardStep={decrementStepIndex}
-                stepIndex={stepIndex}
-            />
+            <ControlPanel moves={moves} />
 
             <GameTable
                 gameBoardPositions={stepData[stepIndex].boardPositions}
@@ -38,8 +22,7 @@ const ClientPanel = ({ game }: { game: Game }) => {
                 movesPanel={
                     <MovesPanel
                         moves={moves}
-                        stepIndex={stepIndex}
-                        onStepClick={setStepIndex}
+                        
                     />
                 }
             />

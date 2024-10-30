@@ -1,12 +1,6 @@
-import { Box, Button } from "@radix-ui/themes";
-import React from "react";
+import useStepStore from "@/app/state-management/step/store";
+import { Box } from "@radix-ui/themes";
 import MovePair from "./MovePair";
-
-interface Props {
-    moves: string[];
-    stepIndex: number;
-    onStepClick: (stepIndex: number) => void;
-}
 
 interface MovePair {
     index: number;
@@ -14,11 +8,12 @@ interface MovePair {
     black: string;
 }
 
-const MovesPanel = ({ moves, stepIndex, onStepClick }: Props) => {
+const MovesPanel = ({ moves }: { moves: string[] }) => {
+    const { stepIndex, setStep } = useStepStore();
     const movePairs: MovePair[] = [];
 
     const handleMoveClick = (step: number, color: string) =>
-        onStepClick(color === "black" ? step + 1 : step);
+        setStep(color === "black" ? step + 1 : step);
 
     let lastIndex = 0;
     let pair = {
