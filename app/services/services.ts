@@ -28,6 +28,13 @@ export const getArrayOfMoves = (gameString: string | null): string[] => {
         arrayOfMoves = [...arrayOfMoves, ...tmpArr];
     });
 
+    /* If game result annotation is included in the list of moves, remove it.
+     * TODO: validate correct data at creation time.
+     */
+    if (/^\d-\d$/.test(arrayOfMoves.slice(-1)[0])) {
+        return arrayOfMoves.slice(0, -1);
+    }
+
     return arrayOfMoves;
 };
 
@@ -47,8 +54,10 @@ const getCapturedPieces = (
 
     if (isCapture) {
         const matches = getMatchesOnCapture(nextMove);
+        console.log("matches", matches);
         if (matches) {
             const capturedPiece = tmpPositions[matches[2]]!;
+            console.log("capturedPiece", capturedPiece);
             tmpCapturedPieces[capturedPiece.color][capturedPiece.name].push(
                 capturedPiece
             );
@@ -156,26 +165,29 @@ export const getStepData = (moves: string[]): StepData[] => {
     ];
 
     movesAnnotated.forEach((annotatedMove, index) => {
-        const gameState = {
-            activePlayer: index === 0 || index % 2 === 0 ? "white" : "black",
-            boardPositions: stepDataArray[index].boardPositions,
-        };
+        if (!/^\d-\d$/.test(annotatedMove.base)) {
+            const gameState = {
+                activePlayer:
+                    index === 0 || index % 2 === 0 ? "white" : "black",
+                boardPositions: stepDataArray[index].boardPositions,
+            };
 
-        const nextCapturedPieces = getCapturedPieces(
-            gameState,
-            annotatedMove,
-            stepDataArray[index].capturedPieces
-        );
+            const nextCapturedPieces = getCapturedPieces(
+                gameState,
+                annotatedMove,
+                stepDataArray[index].capturedPieces
+            );
 
-        const nextBoardPositions = getNextBoardPositions(
-            gameState,
-            annotatedMove
-        );
+            const nextBoardPositions = getNextBoardPositions(
+                gameState,
+                annotatedMove
+            );
 
-        stepDataArray.push({
-            boardPositions: nextBoardPositions,
-            capturedPieces: nextCapturedPieces,
-        });
+            stepDataArray.push({
+                boardPositions: nextBoardPositions,
+                capturedPieces: nextCapturedPieces,
+            });
+        }
     });
 
     return stepDataArray;
