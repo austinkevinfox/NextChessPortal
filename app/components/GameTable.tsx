@@ -3,6 +3,7 @@ import { ReactElement } from "react";
 import { BoardPositionHash, CapturedPieces } from "../Interfaces";
 import SidePanel from "./SidePanel";
 
+
 interface Props {
     gameBoardPositions: BoardPositionHash;
     capturedPieces: CapturedPieces;
@@ -27,6 +28,7 @@ const GameTable = ({
                     capturedPieces={capturedPieces}
                 />
                 <div className="hidden md:block ml-9">{movesPanel}</div>
+                
             </div>
             <div className="sm:block md:hidden mt-4 ml-5">{movesPanel}</div>
         </>

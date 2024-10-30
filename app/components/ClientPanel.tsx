@@ -1,11 +1,12 @@
 "use client";
 import { Game } from "@prisma/client";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { getArrayOfMoves, getStepData } from "../services/services";
+import useStepStore from "../state-management/step/store";
 import ControlPanel from "./ControlPanel";
 import GameTable from "./GameTable";
 import MovesPanel from "./MovesPanel/MovesPanel";
-import useStepStore from "../state-management/step/store";
+import GameOverToast from "./GameOverToast";
 
 const ClientPanel = ({ game }: { game: Game }) => {
     const { stepIndex } = useStepStore();
@@ -15,16 +16,12 @@ const ClientPanel = ({ game }: { game: Game }) => {
     return (
         <>
             <ControlPanel moves={moves} />
+            <GameOverToast isOpen={stepIndex === moves.length} />
 
             <GameTable
                 gameBoardPositions={stepData[stepIndex].boardPositions}
                 capturedPieces={stepData[stepIndex].capturedPieces}
-                movesPanel={
-                    <MovesPanel
-                        moves={moves}
-                        
-                    />
-                }
+                movesPanel={<MovesPanel moves={moves} />}
             />
         </>
     );
