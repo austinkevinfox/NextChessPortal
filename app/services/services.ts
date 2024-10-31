@@ -54,10 +54,8 @@ const getCapturedPieces = (
 
     if (isCapture) {
         const matches = getMatchesOnCapture(nextMove);
-        console.log("matches", matches);
         if (matches) {
             const capturedPiece = tmpPositions[matches[2]]!;
-            console.log("capturedPiece", capturedPiece);
             tmpCapturedPieces[capturedPiece.color][capturedPiece.name].push(
                 capturedPiece
             );

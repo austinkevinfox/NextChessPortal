@@ -27,7 +27,7 @@ const GameTable = ({
                     playerColor="white"
                     capturedPieces={capturedPieces}
                 />
-                <div className="hidden md:block ml-9">{movesPanel}</div>
+                <div className="hidden md:block ml-4">{movesPanel}</div>
                 
             </div>
             <div className="sm:block md:hidden mt-4 ml-5">{movesPanel}</div>

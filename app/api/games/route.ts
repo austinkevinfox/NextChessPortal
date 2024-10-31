@@ -10,9 +10,9 @@ export const POST = async (request: NextRequest) => {
         return NextResponse.json(validation.error.errors, { status: 400 });
     }
 
-    const tmpEventDate = body.eventDate ? new Date(body.eventDate).toISOString() : undefined;
-
-    console.log('tmpEventDate', tmpEventDate);
+    const tmpEventDate = body.eventDate
+        ? new Date(body.eventDate).toISOString()
+        : undefined;
 
     const newGame = await prisma.game.create({
         data: {

@@ -1,5 +1,7 @@
+import { Flex, Box } from "@radix-ui/themes";
 import { CapturedPieces } from "../Interfaces";
 import CapturedPiecesDisplay from "./CapturedPiecesDisplay";
+import Score from "./Score";
 
 interface Props {
     playerColor: "white" | "black";
@@ -11,7 +13,12 @@ const SidePanel = ({ playerColor, capturedPieces }: Props) => {
 
     return (
         <div className="hidden md:block w-52 h-1/2 p-4 bg-slate-300">
-            <div>Player {playerColor}</div>
+            <Flex justify="between">
+                <Box>{playerColor}</Box>
+                <Score
+                    playerColor={playerColor} capturedPieces={capturedPieces}
+                />
+            </Flex>
 
             <CapturedPiecesDisplay
                 captureColor={captureColor}

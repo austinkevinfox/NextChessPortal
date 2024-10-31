@@ -1,6 +1,6 @@
 import useStepStore from "@/app/state-management/step/store";
-import { Box } from "@radix-ui/themes";
 import MovePair from "./MovePair";
+import { useEffect } from "react";
 
 interface MovePair {
     index: number;
@@ -11,6 +11,13 @@ interface MovePair {
 const MovesPanel = ({ moves }: { moves: string[] }) => {
     const { stepIndex, setStep } = useStepStore();
     const movePairs: MovePair[] = [];
+
+    useEffect(() => {
+        const movePairInView = document.getElementById(
+            `movePair${Math.floor(stepIndex / 2) - 1}`
+        );
+        movePairInView?.scrollIntoView();
+    }, [stepIndex]);
 
     const handleMoveClick = (step: number, color: string) =>
         setStep(color === "black" ? step + 1 : step);
@@ -38,10 +45,10 @@ const MovesPanel = ({ moves }: { moves: string[] }) => {
     }
 
     return (
-        <Box>
-            <ol className="list-outside list-decimal text-sm">
+        <div className="h-full  w-full overflow-x-visible overflow-y-auto px-2">
+            <ol className="list-inside list-decimal text-sm">
                 {movePairs.map((movePair, index) => (
-                    <li key={`movePair${index}`}>
+                    <li key={`movePair${index}`} id={`movePair${index}`}>
                         <MovePair
                             step={movePair.index}
                             white={movePair.white}
@@ -52,7 +59,7 @@ const MovesPanel = ({ moves }: { moves: string[] }) => {
                     </li>
                 ))}
             </ol>
-        </Box>
+        </div>
     );
 };
 
