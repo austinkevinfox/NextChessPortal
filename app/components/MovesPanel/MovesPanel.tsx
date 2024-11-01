@@ -56,7 +56,7 @@ const MovesPanel = ({ moves }: { moves: string[] }) => {
     return (
         <div
             id="moves-panel"
-            className="h-full  w-full overflow-x-visible overflow-y-auto px-2"
+            className="h-full  w-full overflow-x-visible overflow-y-auto px-2 scroll-smooth"
         >
             <ol className="list-inside list-decimal text-sm">
                 {movePairs.map((movePair, index) => (
