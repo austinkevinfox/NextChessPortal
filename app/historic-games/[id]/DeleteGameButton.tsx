@@ -1,7 +1,18 @@
+"use client";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import { FaTrashCan } from "react-icons/fa6";
 
 const DeleteGameButton = ({ gameId }: { gameId: number }) => {
+    const router = useRouter();
+
+    const handleClick = async () => {
+        await axios.delete(`/api/games/${gameId}`);
+
+        router.push("/historic-games");
+        router.refresh();
+    };
     return (
         <AlertDialog.Root>
             <AlertDialog.Trigger>
@@ -24,7 +35,11 @@ const DeleteGameButton = ({ gameId }: { gameId: number }) => {
                         </Button>
                     </AlertDialog.Cancel>
                     <AlertDialog.Action>
-                        <Button variant="solid" color="red">
+                        <Button
+                            variant="solid"
+                            color="red"
+                            onClick={handleClick}
+                        >
                             Delete Game
                         </Button>
                     </AlertDialog.Action>
