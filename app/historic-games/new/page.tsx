@@ -65,7 +65,7 @@ const NewHistoricGame = () => {
                     <Callout.Text>{error}</Callout.Text>
                 </Callout.Root>
             )}
-            <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
+            <form className="space-y-3 mb-4" onSubmit={handleSubmit(onSubmit)}>
                 <Box>
                     <Label.Root htmlFor="title">Title</Label.Root>
                     <TextField.Root
@@ -177,11 +177,11 @@ const NewHistoricGame = () => {
                         {...register("moves")}
                     />
                 </Box>
-                <Button disabled={isSubmitting}>
-                    <FaPlus />
-                    Add historic game {isSubmitting && <Spinner />}
-                </Button>
             </form>
+            <Button disabled={isSubmitting}>
+                <FaPlus />
+                Add historic game {isSubmitting && <Spinner />}
+            </Button>
         </div>
     );
 };
