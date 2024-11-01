@@ -1,6 +1,6 @@
 "use client";
 import { ErrorMessage, Spinner } from "@/app/components";
-import { createGameSchema } from "@/app/validationSchemas";
+import { gameSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Game, Result } from "@prisma/client";
 import * as Label from "@radix-ui/react-label";
@@ -20,7 +20,7 @@ import { Controller, useForm } from "react-hook-form";
 import { LuAlertTriangle } from "react-icons/lu";
 import { z } from "zod";
 
-type GameFormData = z.infer<typeof createGameSchema>;
+type GameFormData = z.infer<typeof gameSchema>;
 
 const resultOptions: { label: string; value?: Result }[] = [
     { label: "White", value: "WHITE" },
@@ -39,13 +39,17 @@ const GameForm = ({ game }: { game?: Game }) => {
         handleSubmit,
         formState: { errors },
     } = useForm<GameFormData>({
-        resolver: zodResolver(createGameSchema),
+        resolver: zodResolver(gameSchema),
     });
 
     const onSubmit = async (data: GameFormData) => {
         try {
             setIsSubmitting(true);
-            await axios.post("/api/games", data);
+            if (game) {
+                await axios.patch("/api/games/" + game.id, data);
+            } else {
+                await axios.post("/api/games", data);
+            }
             router.push("/historic-games");
             router.refresh();
         } catch {
@@ -64,7 +68,7 @@ const GameForm = ({ game }: { game?: Game }) => {
                     <Callout.Text>{error}</Callout.Text>
                 </Callout.Root>
             )}
-            <form className="space-y-3 mb-4" onSubmit={handleSubmit(onSubmit)}>
+            <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
                 <Box>
                     <Label.Root htmlFor="title">Title</Label.Root>
                     <TextField.Root
@@ -94,7 +98,9 @@ const GameForm = ({ game }: { game?: Game }) => {
                             id="eventDate"
                             defaultValue={
                                 game?.eventDate
-                                    ? game?.eventDate.toDateString()
+                                    ? game?.eventDate
+                                          .toISOString()
+                                          .substring(0, 10)
                                     : undefined
                             }
                             placeholder="YYYY-MM-DD"
@@ -197,11 +203,11 @@ const GameForm = ({ game }: { game?: Game }) => {
                         {...register("moves")}
                     />
                 </Box>
+                <Button disabled={isSubmitting}>
+                    {`${game ? "Update" : "Add"} historic game`}
+                    {isSubmitting && <Spinner />}
+                </Button>
             </form>
-            <Button disabled={isSubmitting}>
-                {`${game ? "Update" : "Add"} historic game`}
-                {isSubmitting && <Spinner />}
-            </Button>
         </div>
     );
 };
