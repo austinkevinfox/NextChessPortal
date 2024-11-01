@@ -1,8 +1,9 @@
 import prisma from "@/prisma/client";
-import { Box, Grid } from "@radix-ui/themes";
+import { Box, Flex, Grid } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import EditGameButton from "./EditGameButton";
 import GameDetails from "./GameDetails";
+import DeleteGameButton from "./DeleteGameButton";
 
 const GameDetailsPage = async ({ params }: { params: { id: string } }) => {
     const game = await prisma.game.findUnique({
@@ -12,12 +13,15 @@ const GameDetailsPage = async ({ params }: { params: { id: string } }) => {
     if (!game) notFound();
 
     return (
-        <Grid columns={{ initial: "1", md: "2" }} gap="5">
-            <Box>
+        <Grid columns={{ initial: "1", md: "5" }} gap="5">
+            <Box className="col-span-4">
                 <GameDetails game={game} />
             </Box>
             <Box>
-                <EditGameButton gameId={game.id} />
+                <Flex direction="column" gap="4">
+                    <EditGameButton gameId={game.id} />
+                    <DeleteGameButton gameId={game.id} />
+                </Flex>
             </Box>
         </Grid>
     );
