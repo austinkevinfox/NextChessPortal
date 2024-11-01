@@ -2,11 +2,13 @@
 import { Flex, IconButton } from "@radix-ui/themes";
 import { ReactNode, useEffect, useState } from "react";
 import { FaPause, FaPlay, FaStepBackward, FaStepForward } from "react-icons/fa";
+import { BiReset } from "react-icons/bi";
 import useStepStore from "../state-management/step/store";
 
 const ControlPanel = ({ moves }: { moves: string[] }) => {
     const [isPlaying, setIsPlaying] = useState(false);
-    const { stepIndex, incrementStep, decrementStep } = useStepStore();
+    const [isGameOver, setIsGameOver] = useState(false);
+    const { stepIndex, incrementStep, decrementStep, setStep } = useStepStore();
 
     useEffect(() => {
         let intervalId = setInterval(() => null, 10);
@@ -24,6 +26,9 @@ const ControlPanel = ({ moves }: { moves: string[] }) => {
     useEffect(() => {
         if (stepIndex >= moves.length) {
             setIsPlaying(false);
+            setIsGameOver(true);
+        } else {
+            setIsGameOver(false);
         }
     }, [stepIndex]);
 
@@ -34,6 +39,7 @@ const ControlPanel = ({ moves }: { moves: string[] }) => {
     const buttonMap: ButtonMap = {
         stepBack: { icon: <FaStepBackward />, callback: decrementStep },
         play: { icon: <FaPlay />, callback: () => setIsPlaying(true) },
+        reset: { icon: <BiReset />, callback: () => setStep(0) },
         pause: { icon: <FaPause />, callback: () => setIsPlaying(false) },
         stepForward: { icon: <FaStepForward />, callback: incrementStep },
     };
@@ -49,10 +55,12 @@ const ControlPanel = ({ moves }: { moves: string[] }) => {
     };
 
     return (
-        <Flex gap="3">
+        <Flex gap="3" my="1">
             {Object.keys(buttonMap).map((buttonKey) => {
-                if (buttonKey === "play" && isPlaying) return null;
+                if (buttonKey === "play" && (isPlaying || isGameOver))
+                    return null;
                 if (buttonKey === "pause" && !isPlaying) return null;
+                if (buttonKey === "reset" && !isGameOver) return null;
 
                 return (
                     <IconButton

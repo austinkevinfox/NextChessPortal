@@ -13,11 +13,20 @@ const MovesPanel = ({ moves }: { moves: string[] }) => {
     const movePairs: MovePair[] = [];
 
     useEffect(() => {
-        const movePairInView = document.getElementById(
-            `movePair${Math.floor(stepIndex / 2) - 1}`
-        );
-        movePairInView?.scrollIntoView();
+        const movePairIndex = stepIndex < 6 ? 0 : Math.floor(stepIndex / 2) - 1;
+        scrollToTargetAdjusted(`movePair${movePairIndex}`);
     }, [stepIndex]);
+
+    const scrollToTargetAdjusted = (targetElement: string) => {
+        const parent = document.getElementById("moves-panel");
+        const element = document.getElementById(targetElement);
+        const scrollTopPadding = 200;
+
+        if (parent && element) {
+            const topPos = element.offsetTop;
+            parent.scrollTop = topPos - scrollTopPadding;
+        }
+    };
 
     const handleMoveClick = (step: number, color: string) =>
         setStep(color === "black" ? step + 1 : step);
@@ -45,7 +54,10 @@ const MovesPanel = ({ moves }: { moves: string[] }) => {
     }
 
     return (
-        <div className="h-full  w-full overflow-x-visible overflow-y-auto px-2">
+        <div
+            id="moves-panel"
+            className="h-full  w-full overflow-x-visible overflow-y-auto px-2"
+        >
             <ol className="list-inside list-decimal text-sm">
                 {movePairs.map((movePair, index) => (
                     <li key={`movePair${index}`} id={`movePair${index}`}>
