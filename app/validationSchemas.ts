@@ -1,6 +1,6 @@
-import { nullable, z } from "zod";
+import { z } from "zod";
 
-export const createGameSchema = z.object({
+export const gameSchema = z.object({
     title: z.string().min(1, "Required field").max(255),
     event: z.string().optional(),
     eventDate: z.string().date().optional(), // Refactor with improved zod configuration

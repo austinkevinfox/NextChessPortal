@@ -1,4 +1,4 @@
-import { createGameSchema } from "@/app/validationSchemas";
+import { gameSchema } from "@/app/validationSchemas";
 import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -24,13 +24,13 @@ export const PATCH = async (
     { params }: { params: { id: string } }
 ) => {
     const body = await request.json();
-    const validation = createGameSchema.safeParse(body);
+    const validation = gameSchema.safeParse(body);
 
     if (!validation.success) {
-        return NextResponse.json(validation.error.errors, { status: 400 });
+        return NextResponse.json(validation.error.format(), { status: 400 });
     }
 
-    const game = prisma.game.findUnique({
+    const game = await prisma.game.findUnique({
         where: { id: parseInt(params.id) },
     });
 
@@ -43,7 +43,7 @@ export const PATCH = async (
         : undefined;
 
     const updatedGame = await prisma.game.update({
-        where: { id: parseInt(params.id) },
+        where: { id: game.id },
         data: {
             title: body.title,
             event: body.event,
