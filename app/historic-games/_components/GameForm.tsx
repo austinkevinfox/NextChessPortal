@@ -160,7 +160,11 @@ const GameForm = ({ game }: { game?: Game }) => {
                             }
                             render={({ field }) => (
                                 <Select.Root
-                                    defaultValue="IN_PROGRESS"
+                                    defaultValue={
+                                        game?.result
+                                            ? game.result
+                                            : "IN_PROGRESS"
+                                    }
                                     onValueChange={field.onChange}
                                 >
                                     <Select.Trigger />
@@ -199,6 +203,9 @@ const GameForm = ({ game }: { game?: Game }) => {
                     <Label.Root htmlFor="moves">Algebraic Notation</Label.Root>
                     <TextArea
                         id="moves"
+                        defaultValue={
+                            game?.moves ? (game.moves as string) : undefined
+                        }
                         placeholder="1. e4 e5 2. Nf3…"
                         {...register("moves")}
                     />

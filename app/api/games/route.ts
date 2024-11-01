@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
-import { createGameSchema } from "@/app/validationSchemas";
+import { gameSchema } from "@/app/validationSchemas";
 
 export const POST = async (request: NextRequest) => {
     const body = await request.json();
-    const validation = createGameSchema.safeParse(body);
+    const validation = gameSchema.safeParse(body);
 
     if (!validation.success) {
         return NextResponse.json(validation.error.errors, { status: 400 });
