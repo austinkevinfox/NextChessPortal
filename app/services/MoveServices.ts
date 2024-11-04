@@ -6,7 +6,9 @@ import { getRookSource } from "./RookServices";
 
 export const getAnnotatedMove = (rawMove: string): AnnotatedMove => {
     const annotatedMove: AnnotatedMove = { base: "", annotation: "" };
-    const matches = /^(\w)?(\w)?(x)?([a-z])([1-8])([+=?!]{0,2})$/.exec(rawMove);
+    const matches = /^(\w)?(\w)?(x)?([a-z])([1-8])([+#=?!]{0,2})$/.exec(
+        rawMove
+    );
     if (matches) {
         matches.forEach((item, idx) => {
             if (item && idx > 0 && idx < 6) {
@@ -104,6 +106,7 @@ export const getSourceNotation = ({
     if (code === "Q") {
         // Queen move
         sourceNotation = getQueenSource(gameState);
+        debugger;
     }
 
     if (code === "K") {

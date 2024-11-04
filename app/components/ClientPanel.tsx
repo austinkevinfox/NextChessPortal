@@ -16,7 +16,10 @@ const ClientPanel = ({ game }: { game: Game }) => {
     return (
         <>
             <ControlPanel moves={moves} />
-            <GameOverToast isOpen={stepIndex === moves.length} />
+            <GameOverToast
+                isOpen={stepIndex === moves.length}
+                result={game.result}
+            />
 
             <GameTable
                 gameBoardPositions={stepData[stepIndex].boardPositions}

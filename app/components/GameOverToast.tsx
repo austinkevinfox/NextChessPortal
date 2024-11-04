@@ -1,7 +1,12 @@
 import * as Toast from "@radix-ui/react-toast";
 import { useEffect, useState } from "react";
 
-const GameOverToast = ({ isOpen }: { isOpen: boolean }) => {
+interface Props {
+    isOpen: boolean;
+    result?: string;
+}
+
+const GameOverToast = ({ isOpen, result }: Props) => {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -17,6 +22,11 @@ const GameOverToast = ({ isOpen }: { isOpen: boolean }) => {
                 onOpenChange={setOpen}
             >
                 <Toast.Title>Game Over</Toast.Title>
+                <Toast.Description>
+                    {result && /^(white|black)$/i.test(result)
+                        ? `Winner: ${result}`
+                        : result}
+                </Toast.Description>
             </Toast.Root>
 
             <Toast.Viewport className="fixed top-[200px] left-[200px]  z-[2147483647] m-0 flex w-1/2 max-w-[100vw] list-none flex-col gap-2.5 p-[var(--viewport-padding)] outline-none [--viewport-padding:_25px]" />
