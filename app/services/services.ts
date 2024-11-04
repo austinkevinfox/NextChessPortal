@@ -126,6 +126,7 @@ export const getNextBoardPositions = (
             isCapture,
             sourceHint,
         });
+
         const movingPiece: Piece = gameState.boardPositions[sourceNotation]!;
 
         tmpPositions[sourceNotation!] = null;

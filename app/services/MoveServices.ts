@@ -38,7 +38,7 @@ export const getSourceNotation = ({
     const code = nextMove.substring(0, 1);
     const targetNotation = nextMove.slice(-2);
 
-    if (targetNotation.length === 2) {
+    if (nextMove.length === 2) {
         // Pawn move
         const [file, rank] = targetNotation.split("");
         const sourceFile =
@@ -66,9 +66,9 @@ export const getSourceNotation = ({
     if (code === "N") {
         // Knight move
         const [fileStr, rankStr] = targetNotation.split("");
-        const sourceHint: string =
-            nextMove.length === 4 ? nextMove.substring(2, 1) : "";
-
+        if (nextMove.length === 4) {
+            sourceHint = nextMove.substring(1, 2);
+        }
         sourceNotation = getKnightSource({
             file: fileStr,
             rank: rankStr,
@@ -90,6 +90,9 @@ export const getSourceNotation = ({
     if (code === "R") {
         // Rook move
         const [fileStr, rankStr] = targetNotation.split("");
+        if (nextMove.length === 4) {
+            sourceHint = nextMove.substring(1, 2);
+        }
         sourceNotation = getRookSource({
             file: fileStr,
             rank: rankStr,
