@@ -5,10 +5,13 @@ import { getSolePieceSource } from "./PieceServices";
 import { getRookSource } from "./RookServices";
 
 export const getAnnotatedMove = (rawMove: string): AnnotatedMove => {
-    const annotatedMove: AnnotatedMove = { base: "", annotation: "" };
-    const matches = /^(\w)?(\w)?(x)?([a-z])([1-8])([+#=?!]{0,2})$/.exec(
-        rawMove
-    );
+    const annotatedMove: AnnotatedMove = {
+        base: "",
+        promotion: undefined,
+        annotation: "",
+    };
+    const matches =
+        /^(\w)?(\w)?(x)?([a-z])([1-8])(=[QRBN])?([+#=?!]{0,2})$/.exec(rawMove);
     if (matches) {
         matches.forEach((item, idx) => {
             if (item && idx > 0 && idx < 6) {
@@ -16,6 +19,10 @@ export const getAnnotatedMove = (rawMove: string): AnnotatedMove => {
             }
 
             if (item && idx === 6) {
+                annotatedMove.promotion = item.substring(1, 2) as "Q" | "R" | "B" | "N";
+            }
+
+            if (item && idx === 7) {
                 annotatedMove.annotation = item;
             }
         });

@@ -8,10 +8,32 @@ import {
     StepData,
 } from "@/app/Interfaces";
 import {
+    BlackBishop,
+    BlackKnight,
+    BlackQueen,
+    BlackRook,
+    WhiteBishop,
+    WhiteKnight,
+    WhiteQueen,
+    WhiteRook,
+} from "@/app/public/svg-no-shadow";
+import {
     getAnnotatedMove,
     getSourceNotation,
 } from "@/app/services/MoveServices";
 import cloneDeep from "lodash.clonedeep";
+
+const PromotionPieceMap = {
+    whiteQ: { name: "queen", component: WhiteQueen },
+    blackQ: { name: "queen", component: BlackQueen },
+    whiteR: { name: "rook", component: WhiteRook },
+    blackR: { name: "rook", component: BlackRook },
+    whiteB: { name: "bishop", component: WhiteBishop },
+    blackB: { name: "bishop", component: BlackBishop },
+    whiteN: { name: "knight", component: WhiteKnight },
+    blackN: { name: "knight", component: BlackKnight },
+};
+declare type PromotionPieceType = keyof typeof PromotionPieceMap;
 
 export const getArrayOfMoves = (gameString: string | null): string[] => {
     if (!gameString) return [];
@@ -56,6 +78,9 @@ const getCapturedPieces = (
         const matches = getMatchesOnCapture(nextMove);
         if (matches) {
             const capturedPiece = tmpPositions[matches[2]]!;
+            if (!capturedPiece) {
+                debugger;
+            }
             tmpCapturedPieces[capturedPiece.color][capturedPiece.name].push(
                 capturedPiece
             );
@@ -67,6 +92,20 @@ const getCapturedPieces = (
 
 const getMatchesOnCapture = (move: string): string[] | null =>
     /^(\w{1,2})x(\w{2,})$/.exec(move);
+
+const getPromotionPiece = (
+    color: "white" | "black",
+    code: "Q" | "R" | "B" | "N" | ""
+): Piece => {
+    const key = `${color}${code}`;
+    const piece = PromotionPieceMap[key as PromotionPieceType];
+    return {
+        color,
+        code: code as "Q" | "R" | "B" | "N",
+        name: piece.name as "queen" | "rook" | "bishop" | "knight",
+        component: piece.component,
+    };
+};
 
 export const getNextBoardPositions = (
     gameState: GameState,
@@ -126,10 +165,16 @@ export const getNextBoardPositions = (
             sourceHint,
         });
 
-        const movingPiece: Piece = gameState.boardPositions[sourceNotation]!;
+        const subjectPiece: Piece =
+            annotatedMove.promotion && annotatedMove.promotion.length > 0
+                ? getPromotionPiece(
+                      gameState.activePlayer as "white" | "black",
+                      annotatedMove.promotion
+                  )
+                : gameState.boardPositions[sourceNotation]!;
 
         tmpPositions[sourceNotation!] = null;
-        tmpPositions[targetNotation] = movingPiece!;
+        tmpPositions[targetNotation] = subjectPiece!;
     }
 
     return tmpPositions;

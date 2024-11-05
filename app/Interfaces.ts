@@ -33,6 +33,7 @@ export interface MoveRecord {
 
 export interface AnnotatedMove {
     base: string;
+    promotion: undefined | "Q" | "R" | "B" | "N";
     annotation: string;
 }
 
