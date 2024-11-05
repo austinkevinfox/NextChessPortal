@@ -10,8 +10,12 @@ import MovesPanel from "./MovesPanel/MovesPanel";
 
 const ClientPanel = ({ game }: { game: Game }) => {
     const { stepIndex } = useStepStore();
-    const moves = useMemo(() => getArrayOfMoves(game.moves!), [game.moves]);
-    const stepData = useMemo(() => getStepData(moves), [moves]);
+
+    const { moves, stepData } = useMemo(() => {
+        const tmpMoves = getArrayOfMoves(game.moves!);
+        const tmpStepData = getStepData(tmpMoves);
+        return { moves: tmpMoves, stepData: tmpStepData };
+    }, [game.moves]);
 
     return (
         <>

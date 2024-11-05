@@ -106,7 +106,6 @@ export const getSourceNotation = ({
     if (code === "Q") {
         // Queen move
         sourceNotation = getQueenSource(gameState);
-        debugger;
     }
 
     if (code === "K") {

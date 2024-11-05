@@ -91,8 +91,7 @@ export const getNextBoardPositions = (
             }
         }
     }
-
-    if (/^[O0]-[O0]$/.test(nextMove)) {
+    if (/^0-0$/.test(nextMove)) {
         // Castle King-side
         if (gameState.activePlayer === "white") {
             const kingPiece: Piece = tmpPositions["e1"]!;
@@ -109,7 +108,7 @@ export const getNextBoardPositions = (
             tmpPositions["e8"] = null;
             tmpPositions["h8"] = null;
         }
-    } else if (/^[O0]-[O0]-[O0]$/.test(nextMove)) {
+    } else if (/^0-0-0$/.test(nextMove)) {
         // Castle Queen-side
         const kingPiece: Piece = tmpPositions["e1"]!;
         const rookPiece: Piece = tmpPositions["a1"]!;
@@ -164,29 +163,26 @@ export const getStepData = (moves: string[]): StepData[] => {
     ];
 
     movesAnnotated.forEach((annotatedMove, index) => {
-        if (!/^\d-\d$/.test(annotatedMove.base)) {
-            const gameState = {
-                activePlayer:
-                    index === 0 || index % 2 === 0 ? "white" : "black",
-                boardPositions: stepDataArray[index].boardPositions,
-            };
+        const gameState = {
+            activePlayer: index === 0 || index % 2 === 0 ? "white" : "black",
+            boardPositions: stepDataArray[index].boardPositions,
+        };
 
-            const nextCapturedPieces = getCapturedPieces(
-                gameState,
-                annotatedMove,
-                stepDataArray[index].capturedPieces
-            );
+        const nextCapturedPieces = getCapturedPieces(
+            gameState,
+            annotatedMove,
+            stepDataArray[index].capturedPieces
+        );
 
-            const nextBoardPositions = getNextBoardPositions(
-                gameState,
-                annotatedMove
-            );
+        const nextBoardPositions = getNextBoardPositions(
+            gameState,
+            annotatedMove
+        );
 
-            stepDataArray.push({
-                boardPositions: nextBoardPositions,
-                capturedPieces: nextCapturedPieces,
-            });
-        }
+        stepDataArray.push({
+            boardPositions: nextBoardPositions,
+            capturedPieces: nextCapturedPieces,
+        });
     });
 
     return stepDataArray;
