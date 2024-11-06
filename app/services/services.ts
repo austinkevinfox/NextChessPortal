@@ -114,6 +114,7 @@ export const getNextBoardPositions = (
     let nextMove = annotatedMove.base;
     const isCapture = /x/.test(nextMove);
     const tmpPositions = { ...gameState.boardPositions };
+    const castleRank = gameState.activePlayer === "white" ? 1 : 8;
 
     let sourceNotation = "";
     let targetNotation: string = "";
@@ -130,31 +131,23 @@ export const getNextBoardPositions = (
             }
         }
     }
+
     if (/^0-0$/.test(nextMove)) {
         // Castle King-side
-        if (gameState.activePlayer === "white") {
-            const kingPiece: Piece = tmpPositions["e1"]!;
-            const rookPiece: Piece = tmpPositions["h1"]!;
-            tmpPositions["g1"] = kingPiece;
-            tmpPositions["f1"] = rookPiece;
-            tmpPositions["e1"] = null;
-            tmpPositions["h1"] = null;
-        } else {
-            const kingPiece: Piece = tmpPositions["e8"]!;
-            const rookPiece: Piece = tmpPositions["h8"]!;
-            tmpPositions["g8"] = kingPiece;
-            tmpPositions["f8"] = rookPiece;
-            tmpPositions["e8"] = null;
-            tmpPositions["h8"] = null;
-        }
+        const kingPiece: Piece = tmpPositions[`e${castleRank}`]!;
+        const rookPiece: Piece = tmpPositions[`h${castleRank}`]!;
+        tmpPositions[`g${castleRank}`] = kingPiece;
+        tmpPositions[`f${castleRank}`] = rookPiece;
+        tmpPositions[`e${castleRank}`] = null;
+        tmpPositions[`h${castleRank}`] = null;
     } else if (/^0-0-0$/.test(nextMove)) {
         // Castle Queen-side
-        const kingPiece: Piece = tmpPositions["e1"]!;
-        const rookPiece: Piece = tmpPositions["a1"]!;
-        tmpPositions["c1"] = kingPiece;
-        tmpPositions["d1"] = rookPiece;
-        tmpPositions["e1"] = null;
-        tmpPositions["a1"] = null;
+        const kingPiece: Piece = tmpPositions[`e${castleRank}`]!;
+        const rookPiece: Piece = tmpPositions[`a${castleRank}`]!;
+        tmpPositions[`c${castleRank}`] = kingPiece;
+        tmpPositions[`d${castleRank}`] = rookPiece;
+        tmpPositions[`e${castleRank}`] = null;
+        tmpPositions[`a${castleRank}`] = null;
     } else {
         targetNotation = nextMove.slice(-2);
 
