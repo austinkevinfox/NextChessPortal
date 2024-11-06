@@ -2,6 +2,7 @@ import { AnnotatedMove, GameState, Piece } from "../Interfaces";
 import { getBishopSource } from "./BishopServices";
 import { getKnightSource } from "./KnightServices";
 import { getSolePieceSource } from "./PieceServices";
+import { getQueenSource } from "./QueenServices";
 import { getRookSource } from "./RookServices";
 
 export const getAnnotatedMove = (rawMove: string): AnnotatedMove => {
@@ -112,7 +113,16 @@ export const getSourceNotation = ({
 
     if (code === "Q") {
         // Queen move
-        sourceNotation = getQueenSource(gameState);
+        const [fileStr, rankStr] = targetNotation.split("");
+        if (nextMove.length === 4) {
+            sourceHint = nextMove.substring(1, 2);
+        }
+        sourceNotation = getQueenSource({
+            file: fileStr,
+            rank: rankStr,
+            sourceHint,
+            gameState,
+        });
     }
 
     if (code === "K") {
@@ -122,9 +132,6 @@ export const getSourceNotation = ({
 
     return sourceNotation;
 };
-
-const getQueenSource = (gameState: GameState): string =>
-    getSolePieceSource({ gameState, pieceCode: "Q" });
 
 const getKingSource = (gameState: GameState): string =>
     getSolePieceSource({ gameState, pieceCode: "K" });

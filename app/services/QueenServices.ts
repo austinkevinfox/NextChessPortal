@@ -2,7 +2,7 @@ import { Files, FileType } from "../components/PositionConstants";
 import { GameState, Piece } from "../Interfaces";
 import { getSourcesByPiece } from "./PieceServices";
 
-export const getRookSource = ({
+export const getQueenSource = ({
     file,
     rank,
     sourceHint,
@@ -13,7 +13,7 @@ export const getRookSource = ({
     sourceHint: string;
     gameState: GameState;
 }): string => {
-    const sources = getSourcesByPiece({ gameState, pieceCode: "R" });
+    const sources = getSourcesByPiece({ gameState, pieceCode: "Q" });
 
     if (sources.length === 1) {
         return sources[0];
@@ -38,7 +38,7 @@ export const getRookSource = ({
     }
 
     if (sources.length > 1 && sourceHint.length === 0) {
-        return getRookSourceByTraversal({
+        return getQueenSourceByTraversal({
             file,
             rank,
             gameState,
@@ -48,7 +48,7 @@ export const getRookSource = ({
     return "";
 };
 
-const getRookSourceByTraversal = ({
+const getQueenSourceByTraversal = ({
     file,
     rank,
     gameState,
@@ -57,24 +57,41 @@ const getRookSourceByTraversal = ({
     rank: string;
     gameState: GameState;
 }): string => {
-    let rookSource: string | null = null;
+    let queenSource: string | null = null;
     const fileIndex = Files[file as FileType];
     const rankNumber = parseInt(rank);
 
     for (const direction of ["north", "east", "south", "west"]) {
-        rookSource = getRookSourceByDirection({
+        queenSource = getQueenSourceByDirection({
             direction,
             fileIndex,
             rankNumber,
             gameState,
         });
-        if (rookSource) break;
+        if (queenSource) break;
     }
 
-    return rookSource!;
+    if (!queenSource) {
+        for (const direction of [
+            "northeast",
+            "southeast",
+            "southwest",
+            "northwest",
+        ]) {
+            queenSource = getQueenSourceByDirection({
+                direction,
+                fileIndex,
+                rankNumber,
+                gameState,
+            });
+            if (queenSource) break;
+        }
+    }
+
+    return queenSource!;
 };
 
-const getRookSourceByDirection = ({
+const getQueenSourceByDirection = ({
     direction,
     fileIndex,
     rankNumber,
@@ -106,6 +123,26 @@ const getRookSourceByDirection = ({
         case "west":
             fileIncrement = -1;
             break;
+
+        case "northeast":
+            fileIncrement = 1;
+            rankIncrement = 1;
+            break;
+
+        case "southeast":
+            fileIncrement = 1;
+            rankIncrement = -1;
+            break;
+
+        case "southwest":
+            fileIncrement = -1;
+            rankIncrement = -1;
+            break;
+
+        case "northwest":
+            fileIncrement = -1;
+            rankIncrement = 1;
+            break;
     }
 
     let nextFileIndex = fileIndex + fileIncrement;
@@ -123,10 +160,10 @@ const getRookSourceByDirection = ({
         const notation = `${Files[nextFileIndex]}${nextRank}`;
         piece = gameState.boardPositions[notation];
 
-        if (piece && piece.code !== "R") {
+        if (piece && piece.code !== "Q") {
             blockFound = true;
         } else if (
-            piece?.code === "R" &&
+            piece?.code === "Q" &&
             piece?.color === gameState.activePlayer
         ) {
             source = notation;

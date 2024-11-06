@@ -76,18 +76,25 @@ const getBishopSourceByDirection = ({
 
     let nextFileIndex = fileIndex + fileIncrement;
     let nextRank = rankNumber + rankIncrement;
+    let blockFound = false;
 
     while (
         nextFileIndex >= 0 &&
         nextFileIndex < 8 &&
         nextRank > 0 &&
         nextRank <= 8 &&
-        source === ""
+        source === "" &&
+        !blockFound
     ) {
         const notation = `${Files[nextFileIndex]}${nextRank}`;
         piece = gameState.boardPositions[notation];
 
-        if (piece?.code === "B" && piece?.color === gameState.activePlayer) {
+        if (piece && piece.code !== "B") {
+            blockFound = true;
+        } else if (
+            piece?.code === "B" &&
+            piece?.color === gameState.activePlayer
+        ) {
             source = notation;
         } else {
             nextFileIndex += fileIncrement;
