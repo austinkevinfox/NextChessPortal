@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { BoardPositionHash } from "../Interfaces";
-import Square from "./Square";
+import Square from "./Square/Square";
 import { getFileRankFromIndices } from "../services/PieceServices";
 
 interface Props {
@@ -9,19 +9,12 @@ interface Props {
 }
 
 const Board = ({ positions, focusPositions }: Props) => {
-    const colors: { [key: string]: string } = {
-        white: "bg-slate-100",
-        black: "bg-slate-800",
-    };
-
-    const getSquareColor = (rank: number, fileIndex: number): string => {
-        let squareColor = "";
+    const getColor = (rank: number, fileIndex: number): "white" | "black" => {
         if (rank % 2 === 0) {
-            squareColor = fileIndex % 2 === 0 ? "white" : "black";
+            return fileIndex % 2 === 0 ? "white" : "black";
         } else {
-            squareColor = fileIndex % 2 === 0 ? "black" : "white";
+            return fileIndex % 2 === 0 ? "black" : "white";
         }
-        return colors[squareColor];
     };
 
     return (
@@ -31,8 +24,10 @@ const Board = ({ positions, focusPositions }: Props) => {
                     const positionKey = getFileRankFromIndices(index, rank);
                     return (
                         <Square
-                            key={rank + index}
-                            bgColor={getSquareColor(rank, index)}
+                            key={positionKey}
+                            color={getColor(rank, index)}
+                            fileIndex={rank === 1 ? index : -1}
+                            rank={index === 0 ? rank : 0}
                             piece={positions[positionKey]}
                             isFocus={focusPositions.includes(positionKey)}
                         />
