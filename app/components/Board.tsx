@@ -5,10 +5,10 @@ import { getFileRankFromIndices } from "../services/PieceServices";
 
 interface Props {
     positions: BoardPositionHash;
+    focusPositions: string[];
 }
 
-
-const Board = ({ positions }: Props) => {
+const Board = ({ positions, focusPositions }: Props) => {
     const colors: { [key: string]: string } = {
         white: "bg-slate-100",
         black: "bg-slate-800",
@@ -28,11 +28,13 @@ const Board = ({ positions }: Props) => {
         <div className="h-full aspect-square flex flex-wrap">
             {[8, 7, 6, 5, 4, 3, 2, 1].map((rank): ReactNode => {
                 return [0, 1, 2, 3, 4, 5, 6, 7].map((index): ReactNode => {
+                    const positionKey = getFileRankFromIndices(index, rank);
                     return (
                         <Square
                             key={rank + index}
                             bgColor={getSquareColor(rank, index)}
-                            piece={positions[getFileRankFromIndices(index, rank)]}
+                            piece={positions[positionKey]}
+                            isFocus={focusPositions.includes(positionKey)}
                         />
                     );
                 });

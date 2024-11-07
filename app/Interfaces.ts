@@ -13,6 +13,7 @@ export interface BoardPositionHash {
 
 export interface StepData {
     boardPositions: BoardPositionHash;
+    focusPositions: string[];
     capturedPieces: CapturedPieces;
 }
 

@@ -78,9 +78,6 @@ const getCapturedPieces = (
         const matches = getMatchesOnCapture(nextMove);
         if (matches) {
             const capturedPiece = tmpPositions[matches[2]]!;
-            if (!capturedPiece) {
-                debugger;
-            }
             tmpCapturedPieces[capturedPiece.color][capturedPiece.name].push(
                 capturedPiece
             );
@@ -109,28 +106,12 @@ const getPromotionPiece = (
 
 export const getNextBoardPositions = (
     gameState: GameState,
-    annotatedMove: AnnotatedMove
+    annotatedMove: AnnotatedMove,
+    focusPositions: string[]
 ): BoardPositionHash => {
     let nextMove = annotatedMove.base;
-    const isCapture = /x/.test(nextMove);
     const tmpPositions = { ...gameState.boardPositions };
     const castleRank = gameState.activePlayer === "white" ? 1 : 8;
-
-    let sourceNotation = "";
-    let targetNotation: string = "";
-    let sourceHint: string = "";
-
-    if (isCapture) {
-        const matches = getMatchesOnCapture(nextMove);
-        if (matches) {
-            if (isUpperCase(matches[1])) {
-                nextMove = `${matches[1]}${matches[2]}`;
-            } else {
-                sourceHint = matches[1];
-                nextMove = matches[2];
-            }
-        }
-    }
 
     if (/^0-0$/.test(nextMove)) {
         // Castle King-side
@@ -149,14 +130,8 @@ export const getNextBoardPositions = (
         tmpPositions[`e${castleRank}`] = null;
         tmpPositions[`a${castleRank}`] = null;
     } else {
-        targetNotation = nextMove.slice(-2);
-
-        sourceNotation = getSourceNotation({
-            gameState,
-            nextMove,
-            isCapture,
-            sourceHint,
-        });
+        const sourceNotation = focusPositions[0];
+        const targetNotation = focusPositions[1];
 
         const subjectPiece: Piece =
             annotatedMove.promotion && annotatedMove.promotion.length > 0
@@ -171,6 +146,49 @@ export const getNextBoardPositions = (
     }
 
     return tmpPositions;
+};
+
+const getFocusNotations = (
+    gameState: GameState,
+    annotatedMove: AnnotatedMove
+): string[] => {
+    let nextMove = annotatedMove.base;
+    const isCapture = /x/.test(nextMove);
+    const castleRank = gameState.activePlayer === "white" ? 1 : 8;
+    let sourceNotation = "";
+    let targetNotation: string = "";
+    let sourceHint: string = "";
+
+    if (/^0-0$/.test(nextMove)) {
+        // Castle King-side
+        sourceNotation = `e${castleRank}`;
+        targetNotation = `g${castleRank}`;
+    } else if (/^0-0-0$/.test(nextMove)) {
+        // Castle Queen-side
+        sourceNotation = `e${castleRank}`;
+        targetNotation = `c${castleRank}`;
+    } else {
+        if (isCapture) {
+            const matches = getMatchesOnCapture(nextMove);
+            if (matches) {
+                if (isUpperCase(matches[1])) {
+                    nextMove = `${matches[1]}${matches[2]}`;
+                } else {
+                    sourceHint = matches[1];
+                    nextMove = matches[2];
+                }
+            }
+        }
+
+        sourceNotation = getSourceNotation({
+            gameState,
+            nextMove,
+            isCapture,
+            sourceHint,
+        });
+        targetNotation = nextMove.slice(-2);
+    }
+    return [sourceNotation, targetNotation];
 };
 
 export const getStepData = (moves: string[]): StepData[] => {
@@ -196,6 +214,7 @@ export const getStepData = (moves: string[]): StepData[] => {
     const stepDataArray: StepData[] = [
         {
             boardPositions: initialPositions,
+            focusPositions: [],
             capturedPieces: initialCapturedPieces,
         },
     ];
@@ -206,6 +225,8 @@ export const getStepData = (moves: string[]): StepData[] => {
             boardPositions: stepDataArray[index].boardPositions,
         };
 
+        const nextFocusPositions = getFocusNotations(gameState, annotatedMove);
+
         const nextCapturedPieces = getCapturedPieces(
             gameState,
             annotatedMove,
@@ -214,11 +235,13 @@ export const getStepData = (moves: string[]): StepData[] => {
 
         const nextBoardPositions = getNextBoardPositions(
             gameState,
-            annotatedMove
+            annotatedMove,
+            nextFocusPositions
         );
 
         stepDataArray.push({
             boardPositions: nextBoardPositions,
+            focusPositions: nextFocusPositions,
             capturedPieces: nextCapturedPieces,
         });
     });

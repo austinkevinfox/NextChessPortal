@@ -27,6 +27,7 @@ const ClientPanel = ({ game }: { game: Game }) => {
 
             <GameTable
                 gameBoardPositions={stepData[stepIndex].boardPositions}
+                focusPositions={stepData[stepIndex].focusPositions}
                 capturedPieces={stepData[stepIndex].capturedPieces}
                 movesPanel={<MovesPanel moves={moves} />}
             />
