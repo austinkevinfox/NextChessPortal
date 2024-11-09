@@ -5,23 +5,19 @@ interface Props {
     capturedPieces?: CapturedPieces;
 }
 
+declare type CaptureColorType = keyof CapturedPieces;
+
 const Score = ({ playerColor, capturedPieces }: Props) => {
-    const whiteScore = capturedPieces?.black
-        ? capturedPieces.black.pawn.length +
-          capturedPieces.black.knight.length * 3 +
-          capturedPieces.black.bishop.length * 3 +
-          capturedPieces.black.rook.length * 5 +
-          capturedPieces.black.queen.length * 9
-        : 0;
-
-    const blackScore = capturedPieces?.white
-        ? capturedPieces.white.pawn.length +
-          capturedPieces.white.knight.length * 3 +
-          capturedPieces.white.bishop.length * 3 +
-          capturedPieces.white.rook.length * 5 +
-          capturedPieces.white.queen.length * 9
-        : 0;
-
+    const getCumulativeScore = (captureColor: CaptureColorType) =>
+        capturedPieces?.[captureColor]
+            ? capturedPieces[captureColor].pawn.length +
+              capturedPieces[captureColor].knight.length * 3 +
+              capturedPieces[captureColor].bishop.length * 3 +
+              capturedPieces[captureColor].rook.length * 5 +
+              capturedPieces[captureColor].queen.length * 9
+            : 0;
+    const whiteScore = getCumulativeScore("black");
+    const blackScore = getCumulativeScore("white");
     const whiteRelativeScore = whiteScore - blackScore || "=";
     const blackRelativeScore = blackScore - whiteScore || "=";
 
