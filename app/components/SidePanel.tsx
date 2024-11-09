@@ -5,7 +5,7 @@ import Score from "./Score";
 
 interface Props {
     playerColor: "white" | "black";
-    capturedPieces: CapturedPieces;
+    capturedPieces?: CapturedPieces;
 }
 
 const SidePanel = ({ playerColor, capturedPieces }: Props) => {
@@ -16,39 +16,50 @@ const SidePanel = ({ playerColor, capturedPieces }: Props) => {
             <Flex justify="between">
                 <Box>{playerColor}</Box>
                 <Score
-                    playerColor={playerColor} capturedPieces={capturedPieces}
+                    playerColor={playerColor}
+                    capturedPieces={capturedPieces}
                 />
             </Flex>
 
-            <CapturedPiecesDisplay
-                captureColor={captureColor}
-                name="pawn"
-                pieces={capturedPieces[captureColor].pawn}
-            />
+            {capturedPieces?.[captureColor]?.pawn && (
+                <CapturedPiecesDisplay
+                    captureColor={captureColor}
+                    name="pawn"
+                    pieces={capturedPieces[captureColor].pawn}
+                />
+            )}
 
-            <CapturedPiecesDisplay
-                captureColor={captureColor}
-                name="knight"
-                pieces={capturedPieces[captureColor].knight}
-            />
+            {capturedPieces?.[captureColor]?.knight && (
+                <CapturedPiecesDisplay
+                    captureColor={captureColor}
+                    name="knight"
+                    pieces={capturedPieces[captureColor].knight}
+                />
+            )}
 
-            <CapturedPiecesDisplay
-                captureColor={captureColor}
-                name="bishop"
-                pieces={capturedPieces[captureColor].bishop}
-            />
+            {capturedPieces?.[captureColor]?.bishop && (
+                <CapturedPiecesDisplay
+                    captureColor={captureColor}
+                    name="bishop"
+                    pieces={capturedPieces[captureColor].bishop}
+                />
+            )}
 
-            <CapturedPiecesDisplay
-                captureColor={captureColor}
-                name="rook"
-                pieces={capturedPieces[captureColor].rook}
-            />
+            {capturedPieces?.[captureColor]?.rook && (
+                <CapturedPiecesDisplay
+                    captureColor={captureColor}
+                    name="rook"
+                    pieces={capturedPieces[captureColor].rook}
+                />
+            )}
 
-            <CapturedPiecesDisplay
-                captureColor={captureColor}
-                name="queen"
-                pieces={capturedPieces[captureColor].queen}
-            />
+            {capturedPieces?.[captureColor]?.queen && (
+                <CapturedPiecesDisplay
+                    captureColor={captureColor}
+                    name="queen"
+                    pieces={capturedPieces[captureColor].queen}
+                />
+            )}
         </div>
     );
 };

@@ -5,10 +5,10 @@ import SidePanel from "./SidePanel";
 
 
 interface Props {
-    gameBoardPositions: BoardPositionHash;
-    focusPositions: string[];
-    capturedPieces: CapturedPieces;
-    movesPanel: ReactElement;
+    gameBoardPositions?: BoardPositionHash;
+    focusPositions?: string[];
+    capturedPieces?: CapturedPieces;
+    movesPanel?: ReactElement;
 }
 
 const GameTable = ({

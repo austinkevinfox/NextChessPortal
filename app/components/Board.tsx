@@ -2,13 +2,17 @@ import { ReactNode } from "react";
 import { BoardPositionHash } from "../Interfaces";
 import Square from "./Square/Square";
 import { getFileRankFromIndices } from "../services/PieceServices";
+import { initialPositions } from "./PositionConstants";
 
 interface Props {
-    positions: BoardPositionHash;
-    focusPositions: string[];
+    positions: BoardPositionHash | undefined;
+    focusPositions: string[] | undefined;
 }
 
-const Board = ({ positions, focusPositions }: Props) => {
+const Board = ({
+    positions = initialPositions,
+    focusPositions = [],
+}: Props) => {
     const getColor = (rank: number, fileIndex: number): "white" | "black" => {
         if (rank % 2 === 0) {
             return fileIndex % 2 === 0 ? "white" : "black";
