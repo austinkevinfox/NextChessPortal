@@ -1,6 +1,6 @@
 "use client";
 import { Game } from "@prisma/client";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { getArrayOfMoves, getStepData } from "../services/services";
 import useStepStore from "../state-management/step/store";
 import ControlPanel from "./ControlPanel";
@@ -9,7 +9,11 @@ import GameTable from "./GameTable";
 import MovesPanel from "./MovesPanel/MovesPanel";
 
 const ClientPanel = ({ game }: { game: Game }) => {
-    const { stepIndex } = useStepStore();
+    const { stepIndex, setStep } = useStepStore();
+
+    useEffect(() => {
+        setStep(0);
+    }, []);
 
     const { moves, stepData } = useMemo(() => {
         const tmpMoves = getArrayOfMoves(game.moves!);
