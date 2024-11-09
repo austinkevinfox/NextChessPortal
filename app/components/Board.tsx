@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import { BoardPositionHash } from "../Interfaces";
-import Square from "./Square/Square";
 import { getFileRankFromIndices } from "../services/PieceServices";
 import { initialPositions } from "./PositionConstants";
+import Square from "./Square/Square";
 
 interface Props {
     positions: BoardPositionHash | undefined;
@@ -30,8 +30,8 @@ const Board = ({
                         <Square
                             key={positionKey}
                             color={getColor(rank, index)}
-                            fileIndex={rank === 1 ? index : -1}
-                            rank={index === 0 ? rank : 0}
+                            fileIndex={index}
+                            rank={rank}
                             piece={positions[positionKey]}
                             isFocus={focusPositions.includes(positionKey)}
                         />

@@ -1,9 +1,9 @@
 import { Box } from "@radix-ui/themes";
-import { Files } from "../PositionConstants";
 
 interface Props {
     color: "white" | "black";
-    fileIndex: number;
+    type: "file" | "rank";
+    file: string;
     rank: number;
 }
 
@@ -12,18 +12,18 @@ const txtColors: { [key: string]: string } = {
     black: "text-slate-100",
 };
 
-const AlgebraicChar = ({ color, rank, fileIndex }: Props) => {
+const AlgebraicChar = ({ color, type, file, rank }: Props) => {
     return (
         <Box
             position="absolute"
-            top={rank > 0 ? "1" : undefined}
-            left={rank > 0 ? "1" : undefined}
-            bottom={fileIndex >= 0 ? "1" : undefined}
-            right={fileIndex >= 0 ? "1" : undefined}
+            top={type === "rank" ? "1" : undefined}
+            left={type === "rank" ? "1" : undefined}
+            bottom={type === "file" ? "1" : undefined}
+            right={type === "file" ? "1" : undefined}
             className={`text-xs ${txtColors[color]}`}
         >
-            {fileIndex >= 0 && Files[fileIndex]}
-            {rank > 0 && rank}
+            {type === "file" && rank === 1 && file}
+            {type === "rank" && file === "a" && rank}
         </Box>
     );
 };

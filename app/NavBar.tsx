@@ -3,12 +3,24 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaChessKing } from "react-icons/fa";
 import classnames from "classnames";
+import useStepStore from "./state-management/step/store";
 
 const NavBar = () => {
     const currentPath = usePathname();
+    const { setLive } = useStepStore();
     const links = [
-        { id: 0, label: "Historic Games", href: "/historic-games" },
-        { id: 1, label: "Live Game", href: "/live-game" },
+        {
+            id: 0,
+            label: "Historic Games",
+            href: "/historic-games",
+            callback: () => setLive(false),
+        },
+        {
+            id: 1,
+            label: "Live Game",
+            href: "/live-game",
+            callback: () => setLive(true),
+        },
     ];
 
     const includesComponentRoot = (componentRootPath: string) => {
@@ -35,6 +47,7 @@ const NavBar = () => {
                                 "hover:text-zinc-800 transition-colors": true,
                             })}
                             href={link.href}
+                            onClick={link.callback}
                         >
                             {link.label}
                         </Link>
