@@ -1,7 +1,7 @@
 "use client";
 import { Piece } from "@/app/Interfaces";
 import useStepStore from "@/app/state-management/step/store";
-import { Flex } from "@radix-ui/themes";
+import { Box, Flex } from "@radix-ui/themes";
 import Image from "next/image";
 import { Files } from "../PositionConstants";
 import AlgebraicChar from "./AlgebraicChar";
@@ -44,41 +44,50 @@ const Square = ({ color, rank, fileIndex, piece, isFocus }: Props) => {
     };
 
     return (
-        <Flex
-            position="relative"
-            justify="center"
-            className={`w-[12.5%] aspect-square  ${bgColors[color]} ${
-                isFocused && "border-4 border-amber-400"
-            }`}
-            onClick={handleClick}
-        >
-            {rank === 1 && (
-                <AlgebraicChar
-                    color={color}
-                    type="file"
-                    file={Files[fileIndex]}
-                    rank={rank}
-                />
-            )}
-            {fileIndex === 0 && (
-                <AlgebraicChar
-                    color={color}
-                    type="rank"
-                    file={Files[fileIndex]}
-                    rank={rank}
-                />
-            )}
+        <>
+            <Flex
+                position="relative"
+                justify="center"
+                className={`w-[12.5%] aspect-square  ${bgColors[color]}`}
+                onClick={handleClick}
+            >
+                {rank === 1 && (
+                    <AlgebraicChar
+                        color={color}
+                        type="file"
+                        file={Files[fileIndex]}
+                        rank={rank}
+                    />
+                )}
+                {fileIndex === 0 && (
+                    <AlgebraicChar
+                        color={color}
+                        type="rank"
+                        file={Files[fileIndex]}
+                        rank={rank}
+                    />
+                )}
 
-            {piece ? (
-                <Image
-                    src={piece.component!}
-                    alt="test"
-                    className={`w-1/2 ${isLive && "cursor-pointer"}`}
-                />
-            ) : (
-                ""
-            )}
-        </Flex>
+                {piece ? (
+                    <Image
+                        src={piece.component!}
+                        alt="test"
+                        className={`w-1/2 ${isLive && "cursor-pointer"}`}
+                    />
+                ) : (
+                    ""
+                )}
+
+                {isFocused && (
+                    <Box
+                        position="absolute"
+                        top="0"
+                        left="0"
+                        className="w-full h-full bg-amber-500 opacity-30"
+                    ></Box>
+                )}
+            </Flex>
+        </>
     );
 };
 
