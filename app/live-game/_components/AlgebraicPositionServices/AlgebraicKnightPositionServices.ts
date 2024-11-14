@@ -1,18 +1,18 @@
-import { BoardPosition } from "../Interfaces";
+import { BoardPositionHash } from "@/app/Interfaces";
 import { Files } from "./AlgebraicNotationConstants";
-import { omitKingExposingThreats } from "./AlgebraicPositionServices";
+// import { omitKingExposingThreats } from "./AlgebraicPositionServices";
 
 declare type FileType = keyof typeof Files;
 
 export const getAlgebraicKnightMoves = (
     file: string,
-    rank: string,
-    boardPositions: BoardPosition[],
+    rankNumber: number,
+    boardPositions: BoardPositionHash,
     activePlayer: string
 ): string[] => {
     let knightMoves: string[] = [];
     const fileIndex = Files[file as FileType];
-    const rankNumber = parseInt(rank);
+    const rank = rankNumber.toString();
 
     [-2, -1, 1, 2].forEach((i) => {
         let fileString: string | undefined = Files[fileIndex + i];
@@ -40,45 +40,45 @@ export const getAlgebraicKnightMoves = (
         }
     });
 
-    knightMoves = omitKingExposingThreats(
-        file,
-        rank,
-        knightMoves,
-        boardPositions,
-        activePlayer
-    );
+    // knightMoves = omitKingExposingThreats(
+    //     file,
+    //     rank,
+    //     knightMoves,
+    //     boardPositions,
+    //     activePlayer
+    // );
 
     return knightMoves;
 };
 
-export const getKnightThreats = (
-    kingSquareNotation: string,
-    positions: BoardPosition[],
-    activePlayer: string
-): string[] => {
-    let knightThreats: string[] = [];
-    const tmpPositions = [...positions];
-    const [file, rank] = kingSquareNotation.split("");
-    const algebraicKnightNotations = getAlgebraicKnightMoves(
-        file,
-        rank,
-        positions,
-        activePlayer
-    );
-    algebraicKnightNotations.forEach((notation) => {
-        const knightPosition = tmpPositions.find(
-            (position) =>
-                position.algebraicNotation === notation &&
-                position.piece?.name === "knight" &&
-                position.piece?.color !== activePlayer
-        );
-        if (knightPosition) {
-            knightThreats.push(knightPosition.algebraicNotation);
-        }
-    });
+// export const getKnightThreats = (
+//     kingSquareNotation: string,
+//     positions: BoardPosition[],
+//     activePlayer: string
+// ): string[] => {
+//     let knightThreats: string[] = [];
+//     const tmpPositions = [...positions];
+//     const [file, rank] = kingSquareNotation.split("");
+//     const algebraicKnightNotations = getAlgebraicKnightMoves(
+//         file,
+//         rank,
+//         positions,
+//         activePlayer
+//     );
+//     algebraicKnightNotations.forEach((notation) => {
+//         const knightPosition = tmpPositions.find(
+//             (position) =>
+//                 position.algebraicNotation === notation &&
+//                 position.piece?.name === "knight" &&
+//                 position.piece?.color !== activePlayer
+//         );
+//         if (knightPosition) {
+//             knightThreats.push(knightPosition.algebraicNotation);
+//         }
+//     });
 
-    return knightThreats;
-};
+//     return knightThreats;
+// };
 
 const getAlgebraicKnightPositionsByStep = (
     file: string,
