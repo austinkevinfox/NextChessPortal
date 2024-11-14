@@ -9,11 +9,15 @@ import GameTable from "./GameTable";
 import MovesPanel from "./MovesPanel/MovesPanel";
 
 const ClientPanel = ({ game }: { game: Game }) => {
-    const { stepIndex, setStep } = useStepStore();
+    const { stepIndex, setStep, setBoardPositions } = useStepStore();
 
     useEffect(() => {
         setStep(0);
     }, []);
+
+    useEffect(() => {
+        setBoardPositions(stepData[stepIndex].boardPositions);
+    }, [stepIndex]);
 
     const { moves, stepData } = useMemo(() => {
         const tmpMoves = getArrayOfMoves(game.moves!);
@@ -30,7 +34,6 @@ const ClientPanel = ({ game }: { game: Game }) => {
             />
 
             <GameTable
-                gameBoardPositions={stepData[stepIndex].boardPositions}
                 focusPositions={stepData[stepIndex].focusPositions}
                 capturedPieces={stepData[stepIndex].capturedPieces}
                 movesPanel={<MovesPanel moves={moves} />}
