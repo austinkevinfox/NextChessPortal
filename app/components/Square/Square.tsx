@@ -1,10 +1,10 @@
-"use client";
 import { Piece } from "@/app/Interfaces";
 import useStepStore from "@/app/state-management/step/store";
 import { Box, Flex } from "@radix-ui/themes";
 import Image from "next/image";
 import { Files } from "../PositionConstants";
 import AlgebraicChar from "./AlgebraicChar";
+import { getMovesByPiece } from "@/app/live-game/services";
 
 interface Props {
     color: "white" | "black";
@@ -12,34 +12,103 @@ interface Props {
     rank: number;
     piece: Piece | null;
     isFocus: boolean;
+    onTargetClick: (algebraic: string) => void;
 }
 
 const bgColors: { [key: string]: string } = {
     white: "bg-slate-100",
+    whitePotentialTarget: "bg-slate-100 hover:bg-amber-400",
     black: "bg-slate-800",
+    blackPotentialTarget: "bg-slate-800 hover:bg-amber-500",
 };
 
-const Square = ({ color, rank, fileIndex, piece, isFocus }: Props) => {
+const Square = ({
+    color,
+    rank,
+    fileIndex,
+    piece,
+    isFocus,
+    onTargetClick,
+}: Props) => {
     const {
         isLive,
+        source,
         sourceSquare,
         targetSquare,
+        targetSquarePotentials,
+        setSource,
         setSourceSquare,
+        setTargetSquarePotentials,
         setTargetSquare,
     } = useStepStore();
-    const algebraicCoordinate = `${Files[fileIndex]}${rank}`;
+    const file = Files[fileIndex];
+    const algebraicCoordinate = `${file}${rank}`;
     const isFocused =
         isFocus ||
         sourceSquare === algebraicCoordinate ||
         targetSquare === algebraicCoordinate;
 
+    const getBgColor = () => {
+        const colorKey = `${color}${
+            targetSquarePotentials.includes(algebraicCoordinate)
+                ? "PotentialTarget"
+                : ""
+        }`;
+
+        return bgColors[colorKey];
+    };
+
+    const getCursor = () =>
+        targetSquarePotentials.includes(algebraicCoordinate)
+            ? "cursor-pointer"
+            : "cursor-arrow";
+
+    const initMove = ({
+        file,
+        rank,
+        piece,
+    }: {
+        file: string;
+        rank: number;
+        piece: Piece | null;
+    }) => {
+        setSource({ square: algebraicCoordinate, piece });
+        setSourceSquare(`${file}${rank}`);
+        const potentialSquares = getMovesByPiece();
+        setTargetSquarePotentials(potentialSquares);
+    };
+
     const handleClick = () => {
         if (isLive) {
-            if (piece) {
-                setSourceSquare(algebraicCoordinate);
-            } else {
+            const algebraicCoordinate = `${file}${rank}`;
+
+            if (piece && targetSquarePotentials.length === 0) {
+                initMove({
+                    file,
+                    rank,
+                    piece,
+                });
+            }
+
+            // Move to vacant position
+            if (
+                !piece &&
+                sourceSquare.length > 0 &&
+                targetSquarePotentials.includes(algebraicCoordinate)
+            ) {
+                console.log("source in state", source);
+                onTargetClick(algebraicCoordinate);
                 setTargetSquare(algebraicCoordinate);
             }
+
+            // // Move and capture
+            // if (
+            //     piece &&
+            //     sourceSquare.length > 0 &&
+            //     targetSquarePotentials.includes(algebraicCoordinate)
+            // ) {
+            //     moveAndCapture(`${file}${rank}`);
+            // }
         }
     };
 
@@ -48,7 +117,7 @@ const Square = ({ color, rank, fileIndex, piece, isFocus }: Props) => {
             <Flex
                 position="relative"
                 justify="center"
-                className={`w-[12.5%] aspect-square  ${bgColors[color]}`}
+                className={`w-[12.5%] aspect-square  ${getBgColor()}  ${getCursor()}`}
                 onClick={handleClick}
             >
                 {rank === 1 && (

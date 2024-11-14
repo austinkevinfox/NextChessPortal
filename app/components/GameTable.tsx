@@ -5,14 +5,12 @@ import SidePanel from "./SidePanel";
 
 
 interface Props {
-    gameBoardPositions?: BoardPositionHash;
     focusPositions?: string[];
     capturedPieces?: CapturedPieces;
     movesPanel?: ReactElement;
 }
 
 const GameTable = ({
-    gameBoardPositions,
     focusPositions,
     capturedPieces,
     movesPanel,
@@ -25,7 +23,6 @@ const GameTable = ({
                     capturedPieces={capturedPieces}
                 />
                 <Board
-                    positions={gameBoardPositions}
                     focusPositions={focusPositions}
                 />
                 <SidePanel

@@ -7,19 +7,32 @@ import useStepStore from "./state-management/step/store";
 
 const NavBar = () => {
     const currentPath = usePathname();
-    const { setLive } = useStepStore();
+    const {
+        setLive,
+        setSourceSquare,
+        setTargetSquare,
+        setTargetSquarePotentials,
+    } = useStepStore();
+
+    const resetStore = (isGameLive: boolean) => {
+        setLive(isGameLive);
+        setSourceSquare("");
+        setTargetSquare("");
+        setTargetSquarePotentials([]);
+    };
+
     const links = [
         {
             id: 0,
             label: "Historic Games",
             href: "/historic-games",
-            callback: () => setLive(false),
+            callback: () => resetStore(false),
         },
         {
             id: 1,
             label: "Live Game",
             href: "/live-game",
-            callback: () => setLive(true),
+            callback: () => resetStore(true),
         },
     ];
 
