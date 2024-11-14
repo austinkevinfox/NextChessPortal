@@ -32,6 +32,8 @@ const Square = ({
 }: Props) => {
     const {
         isLive,
+        activePlayer,
+        boardPositions,
         source,
         sourceSquare,
         targetSquare,
@@ -70,11 +72,18 @@ const Square = ({
     }: {
         file: string;
         rank: number;
-        piece: Piece | null;
+        piece: Piece;
     }) => {
         setSource({ square: algebraicCoordinate, piece });
         setSourceSquare(`${file}${rank}`);
-        const potentialSquares = getMovesByPiece();
+
+        const potentialSquares = getMovesByPiece({
+            positions: boardPositions,
+            activePlayer,
+            pieceToMove: piece.name,
+            file,
+            rank,
+        });
         setTargetSquarePotentials(potentialSquares);
     };
 

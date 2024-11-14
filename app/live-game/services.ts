@@ -1,26 +1,35 @@
 import { BoardPositionHash } from "../Interfaces";
+import { getAlgebraicPawnMoves } from "./_components/AlgebraicPositionServices/AlgebraicPawnPositionServices";
 
 interface GetMovesByPieceArgs {
     positions: BoardPositionHash;
+    activePlayer: "white" | "black";
     pieceToMove: string;
     file: string;
-    rank: string;
+    rank: number;
 }
 
-export const getMovesByPiece = (): string[] => {
-    let possibleMoves: string[] = ["e3", "e4"];
-    //  const tmpPositions = [...positions];
-    //      let targetAlgebraicNotations: string[] = [];
+export const getMovesByPiece = ({
+    positions,
+    activePlayer,
+    pieceToMove,
+    file,
+    rank,
+}: GetMovesByPieceArgs): string[] => {
+    let possibleMoves: string[] = [];
+    const tmpPositions = { ...positions };
 
-    //      if (pieceToMove === "pawn") {
-    //          targetAlgebraicNotations = getAlgebraicPawnMoves(
-    //              file,
-    //              rank,
-    //              tmpPositions,
-    //              enPassanNotation,
-    //              activePlayer
-    //          );
-    //      }
+    if (pieceToMove === "pawn") {
+        const enPassanNotation = null;
+
+        possibleMoves = getAlgebraicPawnMoves(
+            file,
+            rank,
+            tmpPositions,
+            enPassanNotation,
+            activePlayer
+        );
+    }
 
     //      if (pieceToMove === "knight") {
     //          targetAlgebraicNotations = getAlgebraicKnightMoves(

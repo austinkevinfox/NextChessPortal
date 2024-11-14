@@ -1,8 +1,7 @@
 import { Board } from "@/app/components";
 import { ReactElement } from "react";
-import { BoardPositionHash, CapturedPieces } from "../Interfaces";
+import { CapturedPieces } from "../Interfaces";
 import SidePanel from "./SidePanel";
-
 
 interface Props {
     focusPositions?: string[];
@@ -10,11 +9,7 @@ interface Props {
     movesPanel?: ReactElement;
 }
 
-const GameTable = ({
-    focusPositions,
-    capturedPieces,
-    movesPanel,
-}: Props) => {
+const GameTable = ({ focusPositions, capturedPieces, movesPanel }: Props) => {
     return (
         <>
             <div className="flex h-[calc(100vh-150px)]">
@@ -22,9 +17,7 @@ const GameTable = ({
                     playerColor="black"
                     capturedPieces={capturedPieces}
                 />
-                <Board
-                    focusPositions={focusPositions}
-                />
+                <Board focusPositions={focusPositions} />
                 <SidePanel
                     playerColor="white"
                     capturedPieces={capturedPieces}
