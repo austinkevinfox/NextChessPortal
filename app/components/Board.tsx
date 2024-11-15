@@ -1,8 +1,8 @@
 "use client";
 import { ReactNode, useEffect } from "react";
-import { Piece } from "../Interfaces";
 import { getFileRankFromIndices } from "../services/PieceServices";
 import useStepStore from "../state-management/step/store";
+import BoardLoadingSpinner from "./Board/BoardLoadingSpinner";
 import { initialPositions } from "./PositionConstants";
 import Square from "./Square/Square";
 
@@ -12,18 +12,12 @@ interface Props {
 
 const Board = ({ focusPositions = [] }: Props) => {
     const {
-        isLive,
         activePlayer,
         source,
-        sourceSquare,
-        targetSquare,
-        targetSquarePotentials,
         boardPositions,
         setActivePlayer,
         setSource,
-        setSourceSquare,
         setTargetSquarePotentials,
-        setTargetSquare,
         setBoardPositions,
     } = useStepStore();
 
@@ -50,23 +44,26 @@ const Board = ({ focusPositions = [] }: Props) => {
     };
 
     return (
-        <div className="h-full aspect-square flex flex-wrap">
-            {[8, 7, 6, 5, 4, 3, 2, 1].map((rank): ReactNode => {
-                return [0, 1, 2, 3, 4, 5, 6, 7].map((index): ReactNode => {
-                    const positionKey = getFileRankFromIndices(index, rank);
-                    return (
-                        <Square
-                            key={positionKey}
-                            color={getColor(rank, index)}
-                            fileIndex={index}
-                            rank={rank}
-                            piece={boardPositions[positionKey]}
-                            isFocus={focusPositions.includes(positionKey)}
-                            onTargetClick={handleTargetClick}
-                        />
-                    );
-                });
-            })}
+        <div className="relative">
+            {!boardPositions["a1"] && <BoardLoadingSpinner />}
+            <div className="h-full aspect-square flex flex-wrap">
+                {[8, 7, 6, 5, 4, 3, 2, 1].map((rank): ReactNode => {
+                    return [0, 1, 2, 3, 4, 5, 6, 7].map((index): ReactNode => {
+                        const positionKey = getFileRankFromIndices(index, rank);
+                        return (
+                            <Square
+                                key={positionKey}
+                                color={getColor(rank, index)}
+                                fileIndex={index}
+                                rank={rank}
+                                piece={boardPositions[positionKey]}
+                                isFocus={focusPositions.includes(positionKey)}
+                                onTargetClick={handleTargetClick}
+                            />
+                        );
+                    });
+                })}
+            </div>
         </div>
     );
 };

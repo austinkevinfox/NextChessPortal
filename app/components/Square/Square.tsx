@@ -34,7 +34,6 @@ const Square = ({
         isLive,
         activePlayer,
         boardPositions,
-        source,
         sourceSquare,
         targetSquare,
         targetSquarePotentials,
@@ -108,15 +107,6 @@ const Square = ({
                 onTargetClick(algebraicCoordinate);
                 setTargetSquare(algebraicCoordinate);
             }
-
-            // // Move and capture
-            // if (
-            //     piece &&
-            //     sourceSquare.length > 0 &&
-            //     targetSquarePotentials.includes(algebraicCoordinate)
-            // ) {
-            //     moveAndCapture(`${file}${rank}`);
-            // }
         }
     };
 

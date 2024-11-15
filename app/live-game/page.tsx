@@ -1,6 +1,6 @@
 "use client";
-import useStepStore from "../state-management/step/store";
-import GameTable from "../components/GameTable";
+import useStepStore from "@/app/state-management/step/store";
+import GameTable from "@/app/components/GameTable";
 import { useEffect } from "react";
 
 const LiveGame = () => {

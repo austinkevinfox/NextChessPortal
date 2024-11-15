@@ -1,6 +1,6 @@
 import { Board } from "@/app/components";
 import { ReactElement } from "react";
-import { CapturedPieces } from "../Interfaces";
+import { CapturedPieces } from "@/app/Interfaces";
 import SidePanel from "./SidePanel";
 
 interface Props {
