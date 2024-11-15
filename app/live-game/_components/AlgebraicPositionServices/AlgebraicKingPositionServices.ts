@@ -10,7 +10,7 @@ import {
     getSouthWestDiagonal1Space,
 } from "./AlgebraicPositionServices";
 import { getKnightThreats } from "./AlgebraicKnightPositionServices";
-// import { getBishopThreats } from "./AlgebraicBishopPositionServices";
+import { getBishopThreats } from "./AlgebraicBishopPositionServices";
 // import { getRookThreats } from "./AlgebraicRookPositionServices";
 // import { getQueenThreats } from "./AlgebraicQueenPositionServices";
 import { BoardPositionHash, Piece } from "@/app/Interfaces";
@@ -86,22 +86,25 @@ export const getAlgebraicKingMoves = (
     });
     const kingFileIndex = Files[file as FileType];
     const kingRank = parseInt(rank);
-    let squaresUnderAttack: string[] = [...threats.knightThreats];
+    let squaresUnderAttack: string[] = [
+        ...threats.knightThreats,
+        ...threats.bishopThreats,
+    ];
 
     // Get squares adjacent to king and threatened by bishop
-    threats.bishopThreats.forEach((bishopNotation) => {
-        const [bishopFileStr, bishopRankStr] = bishopNotation.split("");
-        const bishopFileIndex = Files[bishopFileStr as FileType];
-        const bishopRank = parseInt(bishopRankStr);
-        const fileDirection: string =
-            kingFileIndex < bishopFileIndex ? "west" : "east";
-        const rankDirection: string = kingRank < bishopRank ? "north" : "south";
-        const nextFileIncrement = fileDirection === "east" ? -1 : 1;
-        const nextFile: string = Files[kingFileIndex + nextFileIncrement];
-        const nextRankIncrement = rankDirection === "south" ? -1 : 1;
-        const nextRank = kingRank + nextRankIncrement;
-        squaresUnderAttack.push(nextFile! + nextRank!);
-    });
+    // threats.bishopThreats.forEach((bishopNotation) => {
+    //     const [bishopFileStr, bishopRankStr] = bishopNotation.split("");
+    //     const bishopFileIndex = Files[bishopFileStr as FileType];
+    //     const bishopRank = parseInt(bishopRankStr);
+    //     const fileDirection: string =
+    //         kingFileIndex < bishopFileIndex ? "west" : "east";
+    //     const rankDirection: string = kingRank < bishopRank ? "north" : "south";
+    //     const nextFileIncrement = fileDirection === "east" ? -1 : 1;
+    //     const nextFile: string = Files[kingFileIndex + nextFileIncrement];
+    //     const nextRankIncrement = rankDirection === "south" ? -1 : 1;
+    //     const nextRank = kingRank + nextRankIncrement;
+    //     squaresUnderAttack.push(nextFile! + nextRank!);
+    // });
 
     // Get squares adjacent to king and threatened by rook
     threats.rookThreats.forEach((rookNotation) => {
@@ -208,11 +211,7 @@ export const getThreatsToKing = ({
         boardPositions,
         activePlayer
     );
-    // threats.bishopThreats = getBishopThreats(
-    //     kingSquareNotation,
-    //     boardPositions,
-    //     activePlayer
-    // );
+    threats.bishopThreats = getBishopThreats(boardPositions, activePlayer);
     // threats.rookThreats = getRookThreats(
     //     kingSquareNotation,
     //     boardPositions,

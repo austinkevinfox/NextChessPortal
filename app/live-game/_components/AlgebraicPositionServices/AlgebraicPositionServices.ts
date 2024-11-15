@@ -140,7 +140,7 @@ const getDiagonal = (
     let diagonal: string[] = [];
     let isLimitReached = false;
 
-    while (!isLimitReached) {
+    while (nextPosition !== undefined && !isLimitReached) {
         isLimitReached = isLimit1Space;
         if (nextPosition === null) {
             diagonal.push(nextNotation);
@@ -175,7 +175,7 @@ const getFileLine = (
     let fileLine: string[] = [];
     let isLimitReached = false;
 
-    while (!isLimitReached) {
+    while (nextPosition !== undefined && !isLimitReached) {
         isLimitReached = isLimit1Space;
         if (nextPosition === null) {
             fileLine.push(nextNotation);
@@ -211,7 +211,7 @@ const getRankLine = (
     let rankLine: string[] = [];
     let isLimitReached = false;
 
-    while (!isLimitReached) {
+    while (nextPosition !== undefined && !isLimitReached) {
         isLimitReached = isLimit1Space;
         if (nextPosition === null) {
             rankLine.push(nextNotation);

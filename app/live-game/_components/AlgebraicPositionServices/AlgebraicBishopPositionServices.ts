@@ -2,6 +2,7 @@ import { BoardPositionHash } from "@/app/Interfaces";
 import {
     getNorthEastDiagonal,
     getNorthWestDiagonal,
+    getOpposingPiecePositions,
     getSouthEastDiagonal,
     getSouthWestDiagonal,
     // omitKingExposingThreats,
@@ -53,31 +54,27 @@ export const getAlgebraicBishopMoves = (
     return bishopMoves;
 };
 
-// export const getBishopThreats = (
-//     kingSquareNotation: string,
-//     positions: BoardPosition[],
-//     activePlayer: string
-// ): string[] => {
-//     let bishopThreats: string[] = [];
-//     const tmpPositions = [...positions];
-//     const [file, rank] = kingSquareNotation.split("");
-//     const algebraicBishopNotations = getAlgebraicBishopMoves(
-//         file,
-//         rank,
-//         positions,
-//         activePlayer
-//     );
-//     algebraicBishopNotations.forEach((notation) => {
-//         const bishopPosition = tmpPositions.find(
-//             (position) =>
-//                 position.algebraicNotation === notation &&
-//                 position.piece?.name === "bishop" &&
-//                 position.piece?.color !== activePlayer
-//         );
-//         if (bishopPosition) {
-//             bishopThreats.push(bishopPosition.algebraicNotation);
-//         }
-//     });
+export const getBishopThreats = (
+    positions: BoardPositionHash,
+    activePlayer: "white" | "black"
+): string[] => {
+    let bishopThreats: string[] = [];
+    const opposingBishopPositions = getOpposingPiecePositions({
+        boardPositions: positions,
+        activePlayer,
+        pieceName: "bishop",
+    });
 
-//     return bishopThreats;
-// };
+    opposingBishopPositions.forEach((bishopPosition) => {
+        const [file, rank] = bishopPosition.split("");
+        const bishopMoves = getAlgebraicBishopMoves(
+            file,
+            parseInt(rank),
+            positions,
+            activePlayer === "white" ? "black" : "white"
+        );
+        bishopThreats = [...bishopThreats, ...bishopMoves];
+    });
+
+    return bishopThreats;
+};
