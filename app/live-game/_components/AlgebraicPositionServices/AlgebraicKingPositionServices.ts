@@ -11,7 +11,7 @@ import {
 } from "./AlgebraicPositionServices";
 import { getKnightThreats } from "./AlgebraicKnightPositionServices";
 import { getBishopThreats } from "./AlgebraicBishopPositionServices";
-// import { getRookThreats } from "./AlgebraicRookPositionServices";
+import { getRookThreats } from "./AlgebraicRookPositionServices";
 // import { getQueenThreats } from "./AlgebraicQueenPositionServices";
 import { BoardPositionHash, Piece } from "@/app/Interfaces";
 declare type FileType = keyof typeof Files;
@@ -86,48 +86,35 @@ export const getAlgebraicKingMoves = (
     });
     const kingFileIndex = Files[file as FileType];
     const kingRank = parseInt(rank);
+
     let squaresUnderAttack: string[] = [
         ...threats.knightThreats,
         ...threats.bishopThreats,
+        ...threats.rookThreats,
     ];
 
-    // Get squares adjacent to king and threatened by bishop
-    // threats.bishopThreats.forEach((bishopNotation) => {
-    //     const [bishopFileStr, bishopRankStr] = bishopNotation.split("");
-    //     const bishopFileIndex = Files[bishopFileStr as FileType];
-    //     const bishopRank = parseInt(bishopRankStr);
-    //     const fileDirection: string =
-    //         kingFileIndex < bishopFileIndex ? "west" : "east";
-    //     const rankDirection: string = kingRank < bishopRank ? "north" : "south";
-    //     const nextFileIncrement = fileDirection === "east" ? -1 : 1;
-    //     const nextFile: string = Files[kingFileIndex + nextFileIncrement];
-    //     const nextRankIncrement = rankDirection === "south" ? -1 : 1;
-    //     const nextRank = kingRank + nextRankIncrement;
-    //     squaresUnderAttack.push(nextFile! + nextRank!);
-    // });
-
     // Get squares adjacent to king and threatened by rook
-    threats.rookThreats.forEach((rookNotation) => {
-        const [rookFileStr, rookRankStr] = rookNotation.split("");
-        const rookFileIndex = Files[rookFileStr as FileType];
-        const rookRank = parseInt(rookRankStr);
+    // threats.rookThreats.forEach((rookNotation) => {
+    //     const [rookFileStr, rookRankStr] = rookNotation.split("");
+    //     const rookFileIndex = Files[rookFileStr as FileType];
+    //     const rookRank = parseInt(rookRankStr);
 
-        if (kingFileIndex === rookFileIndex) {
-            const rankDirection: string =
-                kingRank < rookRank ? "north" : "south";
-            const nextRankIncrement = rankDirection === "south" ? -1 : 1;
-            const nextRank = kingRank + nextRankIncrement;
-            squaresUnderAttack.push(rookFileStr + nextRank);
-        }
+    //     if (kingFileIndex === rookFileIndex) {
+    //         const rankDirection: string =
+    //             kingRank < rookRank ? "north" : "south";
+    //         const nextRankIncrement = rankDirection === "south" ? -1 : 1;
+    //         const nextRank = kingRank + nextRankIncrement;
+    //         squaresUnderAttack.push(rookFileStr + nextRank);
+    //     }
 
-        if (kingRank === rookRank) {
-            const fileDirection: string =
-                kingFileIndex < rookFileIndex ? "west" : "east";
-            const nextFileIncrement = fileDirection === "east" ? -1 : 1;
-            const nextFile: string = Files[kingFileIndex + nextFileIncrement];
-            squaresUnderAttack.push(nextFile + rookRank);
-        }
-    });
+    //     if (kingRank === rookRank) {
+    //         const fileDirection: string =
+    //             kingFileIndex < rookFileIndex ? "west" : "east";
+    //         const nextFileIncrement = fileDirection === "east" ? -1 : 1;
+    //         const nextFile: string = Files[kingFileIndex + nextFileIncrement];
+    //         squaresUnderAttack.push(nextFile + rookRank);
+    //     }
+    // });
 
     // Get squares adjacent to king and threatened by queen
     threats.queenThreats.forEach((queenNotation) => {
@@ -212,11 +199,7 @@ export const getThreatsToKing = ({
         activePlayer
     );
     threats.bishopThreats = getBishopThreats(boardPositions, activePlayer);
-    // threats.rookThreats = getRookThreats(
-    //     kingSquareNotation,
-    //     boardPositions,
-    //     activePlayer
-    // );
+    threats.rookThreats = getRookThreats(boardPositions, activePlayer);
     // threats.queenThreats = getQueenThreats(
     //     kingSquareNotation,
     //     boardPositions,

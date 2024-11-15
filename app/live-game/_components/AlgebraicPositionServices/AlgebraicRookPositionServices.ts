@@ -4,6 +4,7 @@ import {
     getEastRank,
     getSouthFile,
     getWestRank,
+    getOpposingPiecePositions,
     // omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
 
@@ -32,31 +33,26 @@ export const getAlgebraicRookMoves = (
     return rookMoves;
 };
 
-// export const getRookThreats = (
-//     kingSquareNotation: string,
-//     positions: BoardPosition[],
-//     activePlayer: string
-// ): string[] => {
-//     let rookThreats: string[] = [];
-//     const tmpPositions = [...positions];
-//     const [file, rank] = kingSquareNotation.split("");
-//     const algebraicRookNotations = getAlgebraicRookMoves(
-//         file,
-//         rank,
-//         positions,
-//         activePlayer
-//     );
-//     algebraicRookNotations.forEach((notation) => {
-//         const rookPosition = tmpPositions.find(
-//             (position) =>
-//                 position.algebraicNotation === notation &&
-//                 position.piece?.name === "rook" &&
-//                 position.piece?.color !== activePlayer
-//         );
-//         if (rookPosition) {
-//             rookThreats.push(rookPosition.algebraicNotation);
-//         }
-//     });
+export const getRookThreats = (
+    positions: BoardPositionHash,
+    activePlayer: "white" | "black"
+): string[] => {
+    let rookThreats: string[] = [];
+    const opposingRookPositions = getOpposingPiecePositions({
+        boardPositions: positions,
+        activePlayer,
+        pieceName: "rook",
+    });
+    opposingRookPositions.forEach((rookPosition) => {
+        const [file, rank] = rookPosition.split("");
+        const rookMoves = getAlgebraicRookMoves(
+            file,
+            parseInt(rank),
+            positions,
+            activePlayer === "white" ? "black" : "white"
+        );
+        rookThreats = [...rookThreats, ...rookMoves];
+    });
 
-//     return rookThreats;
-// };
+    return rookThreats;
+};
