@@ -12,7 +12,7 @@ import {
 import { getKnightThreats } from "./AlgebraicKnightPositionServices";
 import { getBishopThreats } from "./AlgebraicBishopPositionServices";
 import { getRookThreats } from "./AlgebraicRookPositionServices";
-// import { getQueenThreats } from "./AlgebraicQueenPositionServices";
+import { getQueenThreats } from "./AlgebraicQueenPositionServices";
 import { BoardPositionHash, Piece } from "@/app/Interfaces";
 declare type FileType = keyof typeof Files;
 
@@ -84,69 +84,13 @@ export const getAlgebraicKingMoves = (
         boardPositions,
         activePlayer,
     });
-    const kingFileIndex = Files[file as FileType];
-    const kingRank = parseInt(rank);
 
     let squaresUnderAttack: string[] = [
         ...threats.knightThreats,
         ...threats.bishopThreats,
         ...threats.rookThreats,
+        ...threats.queenThreats,
     ];
-
-    // Get squares adjacent to king and threatened by rook
-    // threats.rookThreats.forEach((rookNotation) => {
-    //     const [rookFileStr, rookRankStr] = rookNotation.split("");
-    //     const rookFileIndex = Files[rookFileStr as FileType];
-    //     const rookRank = parseInt(rookRankStr);
-
-    //     if (kingFileIndex === rookFileIndex) {
-    //         const rankDirection: string =
-    //             kingRank < rookRank ? "north" : "south";
-    //         const nextRankIncrement = rankDirection === "south" ? -1 : 1;
-    //         const nextRank = kingRank + nextRankIncrement;
-    //         squaresUnderAttack.push(rookFileStr + nextRank);
-    //     }
-
-    //     if (kingRank === rookRank) {
-    //         const fileDirection: string =
-    //             kingFileIndex < rookFileIndex ? "west" : "east";
-    //         const nextFileIncrement = fileDirection === "east" ? -1 : 1;
-    //         const nextFile: string = Files[kingFileIndex + nextFileIncrement];
-    //         squaresUnderAttack.push(nextFile + rookRank);
-    //     }
-    // });
-
-    // Get squares adjacent to king and threatened by queen
-    threats.queenThreats.forEach((queenNotation) => {
-        const [queenFileStr, queenRankStr] = queenNotation.split("");
-        const queenFileIndex = Files[queenFileStr as FileType];
-        const queenRank = parseInt(queenRankStr);
-
-        if (kingFileIndex === queenFileIndex) {
-            const rankDirection: string =
-                kingRank < queenRank ? "north" : "south";
-            const nextRankIncrement = rankDirection === "south" ? -1 : 1;
-            const nextRank = kingRank + nextRankIncrement;
-            squaresUnderAttack.push(queenFileStr + nextRank);
-        } else if (kingRank === queenRank) {
-            const fileDirection: string =
-                kingFileIndex < queenFileIndex ? "west" : "east";
-            const nextFileIncrement = fileDirection === "east" ? -1 : 1;
-            const nextFile: string = Files[kingFileIndex + nextFileIncrement];
-            squaresUnderAttack.push(nextFile + kingRank);
-        } else {
-            // Examine diagonals
-            const fileDirection: string =
-                kingFileIndex < queenFileIndex ? "west" : "east";
-            const rankDirection: string =
-                kingRank < queenRank ? "north" : "south";
-            const nextFileIncrement = fileDirection === "east" ? -1 : 1;
-            const nextFile: string = Files[kingFileIndex + nextFileIncrement];
-            const nextRankIncrement = rankDirection === "south" ? -1 : 1;
-            const nextRank = kingRank + nextRankIncrement;
-            squaresUnderAttack.push(nextFile! + nextRank!);
-        }
-    });
 
     let kingMoves = [
         ...northFile,
@@ -200,11 +144,7 @@ export const getThreatsToKing = ({
     );
     threats.bishopThreats = getBishopThreats(boardPositions, activePlayer);
     threats.rookThreats = getRookThreats(boardPositions, activePlayer);
-    // threats.queenThreats = getQueenThreats(
-    //     kingSquareNotation,
-    //     boardPositions,
-    //     activePlayer
-    // );
+    threats.queenThreats = getQueenThreats(boardPositions, activePlayer);
 
     return threats;
 };

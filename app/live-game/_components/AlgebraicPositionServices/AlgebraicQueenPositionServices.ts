@@ -8,6 +8,7 @@ import {
     getNorthWestDiagonal,
     getSouthEastDiagonal,
     getSouthWestDiagonal,
+    getOpposingPiecePositions,
     // omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
 
@@ -65,31 +66,26 @@ export const getAlgebraicQueenMoves = (
     return queenMoves;
 };
 
-// export const getQueenThreats = (
-//     kingSquareNotation: string,
-//     positions: BoardPosition[],
-//     activePlayer: string
-// ): string[] => {
-//     let queenThreats: string[] = [];
-//     const tmpPositions = [...positions];
-//     const [file, rank] = kingSquareNotation.split("");
-//     const algebraicQueenNotations = getAlgebraicQueenMoves(
-//         file,
-//         rank,
-//         positions,
-//         activePlayer
-//     );
-//     algebraicQueenNotations.forEach((notation) => {
-//         const queenPosition = tmpPositions.find(
-//             (position) =>
-//                 position.algebraicNotation === notation &&
-//                 position.piece?.name === "queen" &&
-//                 position.piece?.color !== activePlayer
-//         );
-//         if (queenPosition) {
-//             queenThreats.push(queenPosition.algebraicNotation);
-//         }
-//     });
+export const getQueenThreats = (
+    positions: BoardPositionHash,
+    activePlayer: "white" | "black"
+): string[] => {
+    let queenThreats: string[] = [];
+    const opposingQueenPositions = getOpposingPiecePositions({
+        boardPositions: positions,
+        activePlayer,
+        pieceName: "queen",
+    });
+    opposingQueenPositions.forEach((queenPosition) => {
+        const [file, rank] = queenPosition.split("");
+        const queenMoves = getAlgebraicQueenMoves(
+            file,
+            parseInt(rank),
+            positions,
+            activePlayer === "white" ? "black" : "white"
+        );
+        queenThreats = [...queenThreats, ...queenMoves];
+    });
 
-//     return queenThreats;
-// };
+    return queenThreats;
+};
