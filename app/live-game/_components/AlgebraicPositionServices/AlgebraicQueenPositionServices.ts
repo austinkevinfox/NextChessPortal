@@ -1,15 +1,14 @@
 import { BoardPositionHash } from "@/app/Interfaces";
 import {
-    getNorthFile,
     getEastRank,
-    getSouthFile,
-    getWestRank,
     getNorthEastDiagonal,
+    getNorthFile,
     getNorthWestDiagonal,
     getSouthEastDiagonal,
+    getSouthFile,
     getSouthWestDiagonal,
-    getOpposingPiecePositions,
-    // omitKingExposingThreats,
+    getThreatsByPiece,
+    getWestRank,
 } from "./AlgebraicPositionServices";
 
 export const getAlgebraicQueenMoves = (
@@ -67,25 +66,12 @@ export const getAlgebraicQueenMoves = (
 };
 
 export const getQueenThreats = (
-    positions: BoardPositionHash,
+    boardPositions: BoardPositionHash,
     activePlayer: "white" | "black"
-): string[] => {
-    let queenThreats: string[] = [];
-    const opposingQueenPositions = getOpposingPiecePositions({
-        boardPositions: positions,
+): string[] =>
+    getThreatsByPiece({
+        boardPositions,
         activePlayer,
         pieceName: "queen",
+        callback: getAlgebraicQueenMoves,
     });
-    opposingQueenPositions.forEach((queenPosition) => {
-        const [file, rank] = queenPosition.split("");
-        const queenMoves = getAlgebraicQueenMoves(
-            file,
-            parseInt(rank),
-            positions,
-            activePlayer === "white" ? "black" : "white"
-        );
-        queenThreats = [...queenThreats, ...queenMoves];
-    });
-
-    return queenThreats;
-};

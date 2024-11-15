@@ -2,10 +2,9 @@ import { BoardPositionHash } from "@/app/Interfaces";
 import {
     getNorthEastDiagonal,
     getNorthWestDiagonal,
-    getOpposingPiecePositions,
     getSouthEastDiagonal,
     getSouthWestDiagonal,
-    // omitKingExposingThreats,
+    getThreatsByPiece,
 } from "./AlgebraicPositionServices";
 
 export const getAlgebraicBishopMoves = (
@@ -55,26 +54,12 @@ export const getAlgebraicBishopMoves = (
 };
 
 export const getBishopThreats = (
-    positions: BoardPositionHash,
+    boardPositions: BoardPositionHash,
     activePlayer: "white" | "black"
-): string[] => {
-    let bishopThreats: string[] = [];
-    const opposingBishopPositions = getOpposingPiecePositions({
-        boardPositions: positions,
+): string[] =>
+    getThreatsByPiece({
+        boardPositions,
         activePlayer,
         pieceName: "bishop",
+        callback: getAlgebraicBishopMoves,
     });
-
-    opposingBishopPositions.forEach((bishopPosition) => {
-        const [file, rank] = bishopPosition.split("");
-        const bishopMoves = getAlgebraicBishopMoves(
-            file,
-            parseInt(rank),
-            positions,
-            activePlayer === "white" ? "black" : "white"
-        );
-        bishopThreats = [...bishopThreats, ...bishopMoves];
-    });
-
-    return bishopThreats;
-};

@@ -1,11 +1,10 @@
 import { BoardPositionHash } from "@/app/Interfaces";
 import {
-    getNorthFile,
     getEastRank,
+    getNorthFile,
     getSouthFile,
+    getThreatsByPiece,
     getWestRank,
-    getOpposingPiecePositions,
-    // omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
 
 export const getAlgebraicRookMoves = (
@@ -34,25 +33,12 @@ export const getAlgebraicRookMoves = (
 };
 
 export const getRookThreats = (
-    positions: BoardPositionHash,
+    boardPositions: BoardPositionHash,
     activePlayer: "white" | "black"
-): string[] => {
-    let rookThreats: string[] = [];
-    const opposingRookPositions = getOpposingPiecePositions({
-        boardPositions: positions,
+): string[] =>
+    getThreatsByPiece({
+        boardPositions,
         activePlayer,
         pieceName: "rook",
+        callback: getAlgebraicRookMoves,
     });
-    opposingRookPositions.forEach((rookPosition) => {
-        const [file, rank] = rookPosition.split("");
-        const rookMoves = getAlgebraicRookMoves(
-            file,
-            parseInt(rank),
-            positions,
-            activePlayer === "white" ? "black" : "white"
-        );
-        rookThreats = [...rookThreats, ...rookMoves];
-    });
-
-    return rookThreats;
-};

@@ -1,19 +1,19 @@
+import { BoardPositionHash } from "@/app/Interfaces";
+import { getBishopThreats } from "./AlgebraicBishopPositionServices";
+import { getKnightThreats } from "./AlgebraicKnightPositionServices";
 import { Files } from "./AlgebraicNotationConstants";
 import {
-    getNorthFile1Space,
     getEastRank1Space,
-    getSouthFile1Space,
-    getWestRank1Space,
     getNorthEastDiagonal1Space,
+    getNorthFile1Space,
     getNorthWestDiagonal1Space,
     getSouthEastDiagonal1Space,
+    getSouthFile1Space,
     getSouthWestDiagonal1Space,
+    getWestRank1Space,
 } from "./AlgebraicPositionServices";
-import { getKnightThreats } from "./AlgebraicKnightPositionServices";
-import { getBishopThreats } from "./AlgebraicBishopPositionServices";
-import { getRookThreats } from "./AlgebraicRookPositionServices";
 import { getQueenThreats } from "./AlgebraicQueenPositionServices";
-import { BoardPositionHash, Piece } from "@/app/Interfaces";
+import { getRookThreats } from "./AlgebraicRookPositionServices";
 declare type FileType = keyof typeof Files;
 
 export const getAlgebraicKingMoves = (
@@ -133,15 +133,8 @@ export const getThreatsToKing = ({
         rookThreats: [],
         queenThreats: [],
     };
-    const kingSquareNotation = getKingSquare({
-        boardPositions,
-        activePlayer,
-    });
-    threats.knightThreats = getKnightThreats(
-        kingSquareNotation,
-        boardPositions,
-        activePlayer
-    );
+
+    threats.knightThreats = getKnightThreats(boardPositions, activePlayer);
     threats.bishopThreats = getBishopThreats(boardPositions, activePlayer);
     threats.rookThreats = getRookThreats(boardPositions, activePlayer);
     threats.queenThreats = getQueenThreats(boardPositions, activePlayer);

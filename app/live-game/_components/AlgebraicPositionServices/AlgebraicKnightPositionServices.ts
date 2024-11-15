@@ -1,7 +1,6 @@
 import { BoardPositionHash } from "@/app/Interfaces";
 import { Files } from "./AlgebraicNotationConstants";
-import { getOpposingPiecePositions } from "./AlgebraicPositionServices";
-// import { omitKingExposingThreats } from "./AlgebraicPositionServices";
+import { getThreatsByPiece } from "./AlgebraicPositionServices";
 
 declare type FileType = keyof typeof Files;
 
@@ -53,31 +52,15 @@ export const getAlgebraicKnightMoves = (
 };
 
 export const getKnightThreats = (
-    kingSquareNotation: string,
-    positions: BoardPositionHash,
+    boardPositions: BoardPositionHash,
     activePlayer: "white" | "black"
-): string[] => {
-    let knightThreats: string[] = [];
-    const [file, rank] = kingSquareNotation.split("");
-    const opposingKnightPositions = getOpposingPiecePositions({
-        boardPositions: positions,
+): string[] =>
+    getThreatsByPiece({
+        boardPositions,
         activePlayer,
         pieceName: "knight",
+        callback: getAlgebraicKnightMoves,
     });
-
-    opposingKnightPositions.forEach((knightPosition) => {
-        const [file, rank] = knightPosition.split("");
-        const knightMoves = getAlgebraicKnightMoves(
-            file,
-            parseInt(rank),
-            positions,
-            activePlayer === "white" ? "black" : "white"
-        );
-        knightThreats = [...knightThreats, ...knightMoves];
-    });
-
-    return knightThreats;
-};
 
 const getAlgebraicKnightPositionsByStep = (
     file: string,

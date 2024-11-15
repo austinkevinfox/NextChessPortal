@@ -107,7 +107,44 @@ export const getSouthEastDiagonal1Space = (
     activePlayer: string
 ) => getDiagonal(origin, boardPositions, activePlayer, 1, -1, true);
 
-export const getOpposingPiecePositions = ({
+export const getThreatsByPiece = ({
+    boardPositions,
+    activePlayer,
+    pieceName,
+    callback,
+}: {
+    boardPositions: BoardPositionHash;
+    activePlayer: "white" | "black";
+    pieceName: string;
+    callback: (
+        file: string,
+        rankNumber: number,
+        boardPositions: BoardPositionHash,
+        activePlayer: "white" | "black"
+    ) => string[];
+}): string[] => {
+    let threats: string[] = [];
+    const opposingPositions = getOpposingPiecePositions({
+        boardPositions,
+        activePlayer,
+        pieceName,
+    });
+
+    opposingPositions.forEach((position) => {
+        const [file, rank] = position.split("");
+        const moves = callback(
+            file,
+            parseInt(rank),
+            boardPositions,
+            activePlayer === "white" ? "black" : "white"
+        );
+        threats = [...threats, ...moves];
+    });
+
+    return threats;
+};
+
+const getOpposingPiecePositions = ({
     boardPositions,
     activePlayer,
     pieceName,
