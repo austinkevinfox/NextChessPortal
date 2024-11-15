@@ -2,6 +2,7 @@ import { BoardPositionHash } from "../Interfaces";
 import { getAlgebraicBishopMoves } from "./_components/AlgebraicPositionServices/AlgebraicBishopPositionServices";
 import { getAlgebraicKnightMoves } from "./_components/AlgebraicPositionServices/AlgebraicKnightPositionServices";
 import { getAlgebraicPawnMoves } from "./_components/AlgebraicPositionServices/AlgebraicPawnPositionServices";
+import { getAlgebraicQueenMoves } from "./_components/AlgebraicPositionServices/AlgebraicQueenPositionServices";
 import { getAlgebraicRookMoves } from "./_components/AlgebraicPositionServices/AlgebraicRookPositionServices";
 
 interface GetMovesByPieceArgs {
@@ -70,14 +71,14 @@ export const getMovesByPiece = ({
              );
          }
 
-    //      if (pieceToMove === "queen") {
-    //          targetAlgebraicNotations = getAlgebraicQueenMoves(
-    //              file,
-    //              rank,
-    //              tmpPositions,
-    //              activePlayer
-    //          );
-    //      }
+         if (pieceToMove === "queen") {
+             possibleMoves = getAlgebraicQueenMoves(
+                 file,
+                 rank,
+                 tmpPositions,
+                 activePlayer
+             );
+         }
 
     //      if (pieceToMove === "king") {
     //          const isKingSideCastleAvailable =

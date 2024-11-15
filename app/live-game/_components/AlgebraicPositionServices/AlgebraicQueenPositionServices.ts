@@ -1,4 +1,4 @@
-import { BoardPosition } from "../Interfaces";
+import { BoardPositionHash } from "@/app/Interfaces";
 import {
     getNorthFile,
     getEastRank,
@@ -8,15 +8,16 @@ import {
     getNorthWestDiagonal,
     getSouthEastDiagonal,
     getSouthWestDiagonal,
-    omitKingExposingThreats,
+    // omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
 
 export const getAlgebraicQueenMoves = (
     file: string,
-    rank: string,
-    boardPositions: BoardPosition[],
+    rankNumber: number,
+    boardPositions: BoardPositionHash,
     activePlayer: string
 ): string[] => {
+    const rank = rankNumber.toString();
     const northFile = getNorthFile(file + rank, boardPositions, activePlayer);
     const eastRank = getEastRank(file + rank, boardPositions, activePlayer);
     const southFile = getSouthFile(file + rank, boardPositions, activePlayer);
@@ -53,42 +54,42 @@ export const getAlgebraicQueenMoves = (
         ...southEastDiagonal,
     ];
 
-    queenMoves = omitKingExposingThreats(
-        file,
-        rank,
-        queenMoves,
-        boardPositions,
-        activePlayer
-    );
+    // queenMoves = omitKingExposingThreats(
+    //     file,
+    //     rank,
+    //     queenMoves,
+    //     boardPositions,
+    //     activePlayer
+    // );
 
     return queenMoves;
 };
 
-export const getQueenThreats = (
-    kingSquareNotation: string,
-    positions: BoardPosition[],
-    activePlayer: string
-): string[] => {
-    let queenThreats: string[] = [];
-    const tmpPositions = [...positions];
-    const [file, rank] = kingSquareNotation.split("");
-    const algebraicQueenNotations = getAlgebraicQueenMoves(
-        file,
-        rank,
-        positions,
-        activePlayer
-    );
-    algebraicQueenNotations.forEach((notation) => {
-        const queenPosition = tmpPositions.find(
-            (position) =>
-                position.algebraicNotation === notation &&
-                position.piece?.name === "queen" &&
-                position.piece?.color !== activePlayer
-        );
-        if (queenPosition) {
-            queenThreats.push(queenPosition.algebraicNotation);
-        }
-    });
+// export const getQueenThreats = (
+//     kingSquareNotation: string,
+//     positions: BoardPosition[],
+//     activePlayer: string
+// ): string[] => {
+//     let queenThreats: string[] = [];
+//     const tmpPositions = [...positions];
+//     const [file, rank] = kingSquareNotation.split("");
+//     const algebraicQueenNotations = getAlgebraicQueenMoves(
+//         file,
+//         rank,
+//         positions,
+//         activePlayer
+//     );
+//     algebraicQueenNotations.forEach((notation) => {
+//         const queenPosition = tmpPositions.find(
+//             (position) =>
+//                 position.algebraicNotation === notation &&
+//                 position.piece?.name === "queen" &&
+//                 position.piece?.color !== activePlayer
+//         );
+//         if (queenPosition) {
+//             queenThreats.push(queenPosition.algebraicNotation);
+//         }
+//     });
 
-    return queenThreats;
-};
+//     return queenThreats;
+// };
