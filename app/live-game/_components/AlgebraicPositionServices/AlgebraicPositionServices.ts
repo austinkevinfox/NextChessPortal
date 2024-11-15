@@ -169,7 +169,7 @@ const getFileLine = (
             nextNotation = originFileString + nextRank;
             nextPosition = boardPositions[nextNotation];
         } else if (
-            nextPosition.color !== activePlayer &&
+            nextPosition?.color !== activePlayer &&
             pieceMoving!.name !== "pawn"
         ) {
             fileLine.push(nextNotation);
@@ -204,7 +204,7 @@ const getRankLine = (
             nextFileIndex += fileIncrement;
             nextNotation = Files[nextFileIndex] + originRankString;
             nextPosition = boardPositions[nextNotation];
-        } else if (nextPosition.color !== activePlayer) {
+        } else if (nextPosition?.color !== activePlayer) {
             rankLine.push(nextNotation);
             isLimitReached = true;
         } else {

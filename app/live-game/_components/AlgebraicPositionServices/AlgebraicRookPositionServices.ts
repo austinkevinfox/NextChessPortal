@@ -1,18 +1,19 @@
-import { BoardPosition } from "../Interfaces";
+import { BoardPositionHash } from "@/app/Interfaces";
 import {
     getNorthFile,
     getEastRank,
     getSouthFile,
     getWestRank,
-    omitKingExposingThreats,
+    // omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
 
 export const getAlgebraicRookMoves = (
     file: string,
-    rank: string,
-    boardPositions: BoardPosition[],
+    rankNumber: number,
+    boardPositions: BoardPositionHash,
     activePlayer: string
 ): string[] => {
+    const rank = rankNumber.toString();
     const northFile = getNorthFile(file + rank, boardPositions, activePlayer);
     const eastRank = getEastRank(file + rank, boardPositions, activePlayer);
     const southFile = getSouthFile(file + rank, boardPositions, activePlayer);
@@ -20,42 +21,42 @@ export const getAlgebraicRookMoves = (
 
     let rookMoves = [...northFile, ...eastRank, ...southFile, ...westRank];
 
-    rookMoves = omitKingExposingThreats(
-        file,
-        rank,
-        rookMoves,
-        boardPositions,
-        activePlayer
-    );
+    // rookMoves = omitKingExposingThreats(
+    //     file,
+    //     rank,
+    //     rookMoves,
+    //     boardPositions,
+    //     activePlayer
+    // );
 
     return rookMoves;
 };
 
-export const getRookThreats = (
-    kingSquareNotation: string,
-    positions: BoardPosition[],
-    activePlayer: string
-): string[] => {
-    let rookThreats: string[] = [];
-    const tmpPositions = [...positions];
-    const [file, rank] = kingSquareNotation.split("");
-    const algebraicRookNotations = getAlgebraicRookMoves(
-        file,
-        rank,
-        positions,
-        activePlayer
-    );
-    algebraicRookNotations.forEach((notation) => {
-        const rookPosition = tmpPositions.find(
-            (position) =>
-                position.algebraicNotation === notation &&
-                position.piece?.name === "rook" &&
-                position.piece?.color !== activePlayer
-        );
-        if (rookPosition) {
-            rookThreats.push(rookPosition.algebraicNotation);
-        }
-    });
+// export const getRookThreats = (
+//     kingSquareNotation: string,
+//     positions: BoardPosition[],
+//     activePlayer: string
+// ): string[] => {
+//     let rookThreats: string[] = [];
+//     const tmpPositions = [...positions];
+//     const [file, rank] = kingSquareNotation.split("");
+//     const algebraicRookNotations = getAlgebraicRookMoves(
+//         file,
+//         rank,
+//         positions,
+//         activePlayer
+//     );
+//     algebraicRookNotations.forEach((notation) => {
+//         const rookPosition = tmpPositions.find(
+//             (position) =>
+//                 position.algebraicNotation === notation &&
+//                 position.piece?.name === "rook" &&
+//                 position.piece?.color !== activePlayer
+//         );
+//         if (rookPosition) {
+//             rookThreats.push(rookPosition.algebraicNotation);
+//         }
+//     });
 
-    return rookThreats;
-};
+//     return rookThreats;
+// };
