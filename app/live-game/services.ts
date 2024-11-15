@@ -92,12 +92,5 @@ export const getMovesByPiece = ({
         );
     }
 
-    //      possibleMoves = targetAlgebraicNotations.map(
-    //          (notation) =>
-    //              tmpPositions.findIndex(
-    //                  (position) => position.algebraicNotation === notation
-    //              ) + 1
-    //      );
-
     return possibleMoves;
 };

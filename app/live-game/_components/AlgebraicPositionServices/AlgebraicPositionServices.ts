@@ -1,5 +1,4 @@
 import { Files } from "./AlgebraicNotationConstants";
-// import { BoardPosition } from "../Interfaces";
 import { getKingSquare } from "./AlgebraicKingPositionServices";
 import { BoardPositionHash } from "@/app/Interfaces";
 
@@ -107,6 +106,21 @@ export const getSouthEastDiagonal1Space = (
     boardPositions: BoardPositionHash,
     activePlayer: string
 ) => getDiagonal(origin, boardPositions, activePlayer, 1, -1, true);
+
+export const getOpposingPiecePositions = ({
+    boardPositions,
+    activePlayer,
+    pieceName,
+}: {
+    boardPositions: BoardPositionHash;
+    activePlayer: "white" | "black";
+    pieceName: string;
+}): string[] =>
+    Object.keys(boardPositions).filter(
+        (notation) =>
+            boardPositions[notation]?.name === pieceName &&
+            boardPositions[notation]?.color !== activePlayer
+    );
 
 const getDiagonal = (
     origin: string,

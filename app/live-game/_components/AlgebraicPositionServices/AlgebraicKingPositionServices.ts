@@ -9,7 +9,7 @@ import {
     getSouthEastDiagonal1Space,
     getSouthWestDiagonal1Space,
 } from "./AlgebraicPositionServices";
-// import { getKnightThreats } from "./AlgebraicKnightPositionServices";
+import { getKnightThreats } from "./AlgebraicKnightPositionServices";
 // import { getBishopThreats } from "./AlgebraicBishopPositionServices";
 // import { getRookThreats } from "./AlgebraicRookPositionServices";
 // import { getQueenThreats } from "./AlgebraicQueenPositionServices";
@@ -20,7 +20,7 @@ export const getAlgebraicKingMoves = (
     file: string,
     rankNumber: number,
     boardPositions: BoardPositionHash,
-    activePlayer: string,
+    activePlayer: "white" | "black",
     isKingSideCastleAvailable: boolean,
     isQueenSideCastleAvailable: boolean
 ): string[] => {
@@ -86,7 +86,7 @@ export const getAlgebraicKingMoves = (
     });
     const kingFileIndex = Files[file as FileType];
     const kingRank = parseInt(rank);
-    let squaresUnderAttack: string[] = [];
+    let squaresUnderAttack: string[] = [...threats.knightThreats];
 
     // Get squares adjacent to king and threatened by bishop
     threats.bishopThreats.forEach((bishopNotation) => {
@@ -190,7 +190,7 @@ export const getThreatsToKing = ({
     activePlayer,
 }: {
     boardPositions: BoardPositionHash;
-    activePlayer: string;
+    activePlayer: "white" | "black";
 }): Threats => {
     let threats: Threats = {
         pawnThreats: [],
@@ -203,11 +203,11 @@ export const getThreatsToKing = ({
         boardPositions,
         activePlayer,
     });
-    // threats.knightThreats = getKnightThreats(
-    //     kingSquareNotation,
-    //     boardPositions,
-    //     activePlayer
-    // );
+    threats.knightThreats = getKnightThreats(
+        kingSquareNotation,
+        boardPositions,
+        activePlayer
+    );
     // threats.bishopThreats = getBishopThreats(
     //     kingSquareNotation,
     //     boardPositions,
@@ -233,16 +233,18 @@ export const getKingSquare = ({
 }: {
     boardPositions: BoardPositionHash;
     activePlayer: string;
-}): string | undefined =>
-    Object.keys(boardPositions).find(
+}): string => {
+    const kingSquare = Object.keys(boardPositions).find(
         (notation) =>
             boardPositions[notation]?.name === "king" &&
             boardPositions[notation]?.color === activePlayer
     );
+    return kingSquare!;
+};
 
 interface isMateProps {
     boardPositions: BoardPositionHash;
-    activePlayer: string;
+    activePlayer: "white" | "black";
 }
 
 export const isMate = ({

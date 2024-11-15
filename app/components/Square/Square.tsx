@@ -105,7 +105,6 @@ const Square = ({
                 sourceSquare.length > 0 &&
                 targetSquarePotentials.includes(algebraicCoordinate)
             ) {
-                console.log("source in state", source);
                 onTargetClick(algebraicCoordinate);
                 setTargetSquare(algebraicCoordinate);
             }

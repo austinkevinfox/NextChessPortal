@@ -1,5 +1,6 @@
 import { BoardPositionHash } from "@/app/Interfaces";
 import { Files } from "./AlgebraicNotationConstants";
+import { getOpposingPiecePositions } from "./AlgebraicPositionServices";
 // import { omitKingExposingThreats } from "./AlgebraicPositionServices";
 
 declare type FileType = keyof typeof Files;
@@ -51,34 +52,32 @@ export const getAlgebraicKnightMoves = (
     return knightMoves;
 };
 
-// export const getKnightThreats = (
-//     kingSquareNotation: string,
-//     positions: BoardPosition[],
-//     activePlayer: string
-// ): string[] => {
-//     let knightThreats: string[] = [];
-//     const tmpPositions = [...positions];
-//     const [file, rank] = kingSquareNotation.split("");
-//     const algebraicKnightNotations = getAlgebraicKnightMoves(
-//         file,
-//         rank,
-//         positions,
-//         activePlayer
-//     );
-//     algebraicKnightNotations.forEach((notation) => {
-//         const knightPosition = tmpPositions.find(
-//             (position) =>
-//                 position.algebraicNotation === notation &&
-//                 position.piece?.name === "knight" &&
-//                 position.piece?.color !== activePlayer
-//         );
-//         if (knightPosition) {
-//             knightThreats.push(knightPosition.algebraicNotation);
-//         }
-//     });
+export const getKnightThreats = (
+    kingSquareNotation: string,
+    positions: BoardPositionHash,
+    activePlayer: "white" | "black"
+): string[] => {
+    let knightThreats: string[] = [];
+    const [file, rank] = kingSquareNotation.split("");
+    const opposingKnightPositions = getOpposingPiecePositions({
+        boardPositions: positions,
+        activePlayer,
+        pieceName: "knight",
+    });
 
-//     return knightThreats;
-// };
+    opposingKnightPositions.forEach((knightPosition) => {
+        const [file, rank] = knightPosition.split("");
+        const knightMoves = getAlgebraicKnightMoves(
+            file,
+            parseInt(rank),
+            positions,
+            activePlayer === "white" ? "black" : "white"
+        );
+        knightThreats = [...knightThreats, ...knightMoves];
+    });
+
+    return knightThreats;
+};
 
 const getAlgebraicKnightPositionsByStep = (
     file: string,
