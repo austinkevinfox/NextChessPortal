@@ -134,7 +134,7 @@ const getDiagonal = (
             nextRank += rankIncrement;
             nextNotation = Files[nextFileIndex] + nextRank;
             nextPosition = boardPositions[nextNotation];
-        } else if (nextPosition.color !== activePlayer) {
+        } else if (nextPosition?.color !== activePlayer) {
             diagonal.push(nextNotation);
             isLimitReached = true;
         } else {

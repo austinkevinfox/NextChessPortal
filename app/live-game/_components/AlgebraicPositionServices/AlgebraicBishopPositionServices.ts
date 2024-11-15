@@ -1,18 +1,19 @@
-import { BoardPosition } from "../Interfaces";
+import { BoardPositionHash } from "@/app/Interfaces";
 import {
     getNorthEastDiagonal,
     getNorthWestDiagonal,
     getSouthEastDiagonal,
     getSouthWestDiagonal,
-    omitKingExposingThreats,
+    // omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
 
 export const getAlgebraicBishopMoves = (
     file: string,
-    rank: string,
-    boardPositions: BoardPosition[],
+    rankNumber: number,
+    boardPositions: BoardPositionHash,
     activePlayer: string
 ): string[] => {
+    const rank = rankNumber.toString();
     const northWestDiagonal = getNorthWestDiagonal(
         file + rank,
         boardPositions,
@@ -41,42 +42,42 @@ export const getAlgebraicBishopMoves = (
         ...southEastDiagonal,
     ];
 
-    bishopMoves = omitKingExposingThreats(
-        file,
-        rank,
-        bishopMoves,
-        boardPositions,
-        activePlayer
-    );
+    // bishopMoves = omitKingExposingThreats(
+    //     file,
+    //     rank,
+    //     bishopMoves,
+    //     boardPositions,
+    //     activePlayer
+    // );
 
     return bishopMoves;
 };
 
-export const getBishopThreats = (
-    kingSquareNotation: string,
-    positions: BoardPosition[],
-    activePlayer: string
-): string[] => {
-    let bishopThreats: string[] = [];
-    const tmpPositions = [...positions];
-    const [file, rank] = kingSquareNotation.split("");
-    const algebraicBishopNotations = getAlgebraicBishopMoves(
-        file,
-        rank,
-        positions,
-        activePlayer
-    );
-    algebraicBishopNotations.forEach((notation) => {
-        const bishopPosition = tmpPositions.find(
-            (position) =>
-                position.algebraicNotation === notation &&
-                position.piece?.name === "bishop" &&
-                position.piece?.color !== activePlayer
-        );
-        if (bishopPosition) {
-            bishopThreats.push(bishopPosition.algebraicNotation);
-        }
-    });
+// export const getBishopThreats = (
+//     kingSquareNotation: string,
+//     positions: BoardPosition[],
+//     activePlayer: string
+// ): string[] => {
+//     let bishopThreats: string[] = [];
+//     const tmpPositions = [...positions];
+//     const [file, rank] = kingSquareNotation.split("");
+//     const algebraicBishopNotations = getAlgebraicBishopMoves(
+//         file,
+//         rank,
+//         positions,
+//         activePlayer
+//     );
+//     algebraicBishopNotations.forEach((notation) => {
+//         const bishopPosition = tmpPositions.find(
+//             (position) =>
+//                 position.algebraicNotation === notation &&
+//                 position.piece?.name === "bishop" &&
+//                 position.piece?.color !== activePlayer
+//         );
+//         if (bishopPosition) {
+//             bishopThreats.push(bishopPosition.algebraicNotation);
+//         }
+//     });
 
-    return bishopThreats;
-};
+//     return bishopThreats;
+// };

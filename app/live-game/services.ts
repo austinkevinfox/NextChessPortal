@@ -1,4 +1,5 @@
 import { BoardPositionHash } from "../Interfaces";
+import { getAlgebraicBishopMoves } from "./_components/AlgebraicPositionServices/AlgebraicBishopPositionServices";
 import { getAlgebraicKnightMoves } from "./_components/AlgebraicPositionServices/AlgebraicKnightPositionServices";
 import { getAlgebraicPawnMoves } from "./_components/AlgebraicPositionServices/AlgebraicPawnPositionServices";
 
@@ -50,14 +51,14 @@ export const getMovesByPiece = ({
         //  });
     }
 
-    //      if (pieceToMove === "bishop") {
-    //          targetAlgebraicNotations = getAlgebraicBishopMoves(
-    //              file,
-    //              rank,
-    //              tmpPositions,
-    //              activePlayer
-    //          );
-    //      }
+    if (pieceToMove === "bishop") {
+        possibleMoves = getAlgebraicBishopMoves(
+            file,
+            rank,
+            tmpPositions,
+            activePlayer
+        );
+    }
 
     //      if (pieceToMove === "rook") {
     //          targetAlgebraicNotations = getAlgebraicRookMoves(
