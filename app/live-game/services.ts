@@ -1,5 +1,6 @@
 import { BoardPositionHash } from "../Interfaces";
 import { getAlgebraicBishopMoves } from "./_components/AlgebraicPositionServices/AlgebraicBishopPositionServices";
+import { getAlgebraicKingMoves } from "./_components/AlgebraicPositionServices/AlgebraicKingPositionServices";
 import { getAlgebraicKnightMoves } from "./_components/AlgebraicPositionServices/AlgebraicKnightPositionServices";
 import { getAlgebraicPawnMoves } from "./_components/AlgebraicPositionServices/AlgebraicPawnPositionServices";
 import { getAlgebraicQueenMoves } from "./_components/AlgebraicPositionServices/AlgebraicQueenPositionServices";
@@ -62,42 +63,34 @@ export const getMovesByPiece = ({
         );
     }
 
-         if (pieceToMove === "rook") {
-             possibleMoves = getAlgebraicRookMoves(
-                 file,
-                 rank,
-                 tmpPositions,
-                 activePlayer
-             );
-         }
+    if (pieceToMove === "rook") {
+        possibleMoves = getAlgebraicRookMoves(
+            file,
+            rank,
+            tmpPositions,
+            activePlayer
+        );
+    }
 
-         if (pieceToMove === "queen") {
-             possibleMoves = getAlgebraicQueenMoves(
-                 file,
-                 rank,
-                 tmpPositions,
-                 activePlayer
-             );
-         }
+    if (pieceToMove === "queen") {
+        possibleMoves = getAlgebraicQueenMoves(
+            file,
+            rank,
+            tmpPositions,
+            activePlayer
+        );
+    }
 
-    //      if (pieceToMove === "king") {
-    //          const isKingSideCastleAvailable =
-    //              activePlayer === "white"
-    //                  ? isWhiteKingSideCastleAvailable
-    //                  : isBlackKingSideCastleAvailable;
-    //          const isQueenSideCastleAvailable =
-    //              activePlayer === "white"
-    //                  ? isWhiteQueenSideCastleAvailable
-    //                  : isBlackQueenSideCastleAvailable;
-    //          targetAlgebraicNotations = getAlgebraicKingMoves(
-    //              file,
-    //              rank,
-    //              tmpPositions,
-    //              activePlayer,
-    //              isKingSideCastleAvailable,
-    //              isQueenSideCastleAvailable
-    //          );
-    //      }
+    if (pieceToMove === "king") {
+        possibleMoves = getAlgebraicKingMoves(
+            file,
+            rank,
+            tmpPositions,
+            activePlayer,
+            false,
+            false
+        );
+    }
 
     //      possibleMoves = targetAlgebraicNotations.map(
     //          (notation) =>
