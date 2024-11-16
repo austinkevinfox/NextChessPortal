@@ -1,10 +1,9 @@
 import { Flex } from "@radix-ui/themes";
-import { Piece } from "../Interfaces";
 import Image from "next/image";
-
+import { Piece } from "../Interfaces";
 
 interface Props {
-    captureColor: 'white' | 'black';
+    captureColor: "white" | "black";
     name: string;
     pieces: Piece[];
 }
@@ -24,4 +23,4 @@ const CapturedPiecesDisplay = ({ captureColor, name, pieces }: Props) => {
     );
 };
 
-export default CapturedPiecesDisplay
+export default CapturedPiecesDisplay;

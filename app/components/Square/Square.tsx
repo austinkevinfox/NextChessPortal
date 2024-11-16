@@ -1,10 +1,10 @@
 import { Piece } from "@/app/Interfaces";
+import { getMovesByPiece } from "@/app/live-game/services";
 import useStepStore from "@/app/state-management/step/store";
 import { Box, Flex } from "@radix-ui/themes";
 import Image from "next/image";
 import { Files } from "../PositionConstants";
 import AlgebraicChar from "./AlgebraicChar";
-import { getMovesByPiece } from "@/app/live-game/services";
 
 interface Props {
     color: "white" | "black";
@@ -100,7 +100,6 @@ const Square = ({
 
             // Move to vacant position
             if (
-                !piece &&
                 sourceSquare.length > 0 &&
                 targetSquarePotentials.includes(algebraicCoordinate)
             ) {

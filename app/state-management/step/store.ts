@@ -1,5 +1,5 @@
-// import { Piece } from "@/app/Interfaces";
-import { BoardPositionHash, Piece } from "@/app/Interfaces";
+import { initialCapturedPieces } from "@/app/components/PositionConstants";
+import { BoardPositionHash, CapturedPieces, Piece } from "@/app/Interfaces";
 import { create } from "zustand";
 
 interface Position {
@@ -16,6 +16,7 @@ interface StepStore {
     targetSquarePotentials: string[];
     targetSquare: string;
     boardPositions: BoardPositionHash;
+    capturedPieces: CapturedPieces;
     incrementStep: () => void;
     decrementStep: () => void;
     setStep: (index: number) => void;
@@ -26,6 +27,9 @@ interface StepStore {
     setTargetSquare: (algebraic: string) => void;
     setTargetSquarePotentials: (algebraics: string[]) => void;
     setBoardPositions: (positions: BoardPositionHash) => void;
+    setCapturedPiece: (piece: Piece) => void;
+    setCapturedPieces: (newCapturedPieces: CapturedPieces) => void;
+    clearCapturedPieces: () => void;
 }
 
 const useStepStore = create<StepStore>((set) => ({
@@ -37,6 +41,7 @@ const useStepStore = create<StepStore>((set) => ({
     targetSquarePotentials: [],
     targetSquare: "",
     boardPositions: {},
+    capturedPieces: initialCapturedPieces,
     incrementStep: () => set((store) => ({ stepIndex: store.stepIndex + 1 })),
     decrementStep: () => set((store) => ({ stepIndex: store.stepIndex - 1 })),
     setStep: (newIndex) => set(() => ({ stepIndex: newIndex })),
@@ -49,8 +54,25 @@ const useStepStore = create<StepStore>((set) => ({
         set(() => ({
             targetSquarePotentials: newValues,
         })),
-    setBoardPositions: (newPositions: BoardPositionHash) =>
+    setBoardPositions: (newPositions) =>
         set(() => ({ boardPositions: newPositions })),
+    setCapturedPiece: (piece) =>
+        set((state) => ({
+            capturedPieces: {
+                ...state.capturedPieces,
+                [piece.color]: {
+                    ...state.capturedPieces[piece.color],
+                    [piece.name]: [
+                        ...state.capturedPieces[piece.color][piece.name],
+                        piece,
+                    ],
+                },
+            },
+        })),
+    setCapturedPieces: (newCapturedPieces) =>
+        set(() => ({ capturedPieces: newCapturedPieces })),
+    clearCapturedPieces: () =>
+        set(() => ({ capturedPieces: initialCapturedPieces })),
 }));
 
 export default useStepStore;

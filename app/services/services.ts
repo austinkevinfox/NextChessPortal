@@ -1,4 +1,7 @@
-import { initialPositions } from "@/app/components/PositionConstants";
+import {
+    initialPositions,
+    initialCapturedPieces,
+} from "@/app/components/PositionConstants";
 import {
     AnnotatedMove,
     BoardPositionHash,
@@ -193,24 +196,6 @@ const getFocusNotations = (
 
 export const getStepData = (moves: string[]): StepData[] => {
     const movesAnnotated = moves.map((rawMove) => getAnnotatedMove(rawMove));
-    const initialCapturedPieces = {
-        white: {
-            pawn: [],
-            knight: [],
-            bishop: [],
-            rook: [],
-            queen: [],
-            king: [],
-        },
-        black: {
-            pawn: [],
-            knight: [],
-            bishop: [],
-            rook: [],
-            queen: [],
-            king: [],
-        },
-    };
     const stepDataArray: StepData[] = [
         {
             boardPositions: initialPositions,

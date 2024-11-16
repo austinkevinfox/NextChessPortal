@@ -1,4 +1,4 @@
-import { Piece } from "../Interfaces";
+import { Piece } from "@/app/Interfaces";
 import {
     WhitePawn,
     WhiteKnight,
@@ -260,5 +260,24 @@ export const initialPositions = {
         name: "rook",
         code: "R",
         component: WhiteRook,
+    },
+};
+
+export const initialCapturedPieces = {
+    white: {
+        pawn: [],
+        knight: [],
+        bishop: [],
+        rook: [],
+        queen: [],
+        king: [],
+    },
+    black: {
+        pawn: [],
+        knight: [],
+        bishop: [],
+        rook: [],
+        queen: [],
+        king: [],
     },
 };

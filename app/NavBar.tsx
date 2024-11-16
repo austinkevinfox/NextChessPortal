@@ -1,8 +1,8 @@
 "use client";
+import classnames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaChessKing } from "react-icons/fa";
-import classnames from "classnames";
 import useStepStore from "./state-management/step/store";
 
 const NavBar = () => {
@@ -12,6 +12,7 @@ const NavBar = () => {
         setSourceSquare,
         setTargetSquare,
         setTargetSquarePotentials,
+        clearCapturedPieces,
     } = useStepStore();
 
     const resetStore = (isGameLive: boolean) => {
@@ -19,6 +20,7 @@ const NavBar = () => {
         setSourceSquare("");
         setTargetSquare("");
         setTargetSquarePotentials([]);
+        clearCapturedPieces();
     };
 
     const links = [

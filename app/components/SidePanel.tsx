@@ -1,16 +1,14 @@
-import { Flex, Box } from "@radix-ui/themes";
-import { CapturedPieces } from "../Interfaces";
+import { Box, Flex } from "@radix-ui/themes";
+import useStepStore from "../state-management/step/store";
 import CapturedPiecesDisplay from "./CapturedPiecesDisplay";
 import Score from "./Score";
-import useStepStore from "../state-management/step/store";
 
 interface Props {
     playerColor: "white" | "black";
-    capturedPieces?: CapturedPieces;
 }
 
-const SidePanel = ({ playerColor, capturedPieces }: Props) => {
-    const { activePlayer } = useStepStore();
+const SidePanel = ({ playerColor }: Props) => {
+    const { activePlayer, capturedPieces } = useStepStore();
     const captureColor = playerColor === "white" ? "black" : "white";
 
     return (

@@ -19,6 +19,7 @@ const Board = ({ focusPositions = [] }: Props) => {
         setSource,
         setTargetSquarePotentials,
         setBoardPositions,
+        setCapturedPiece,
     } = useStepStore();
 
     useEffect(() => {
@@ -35,6 +36,11 @@ const Board = ({ focusPositions = [] }: Props) => {
 
     const handleTargetClick = (algebraic: string): void => {
         let tmpPositions = { ...boardPositions };
+        if (tmpPositions[algebraic]) {
+            console.log("capture", tmpPositions[algebraic]);
+            setCapturedPiece(tmpPositions[algebraic]);
+        }
+
         tmpPositions[algebraic] = source!.piece;
         tmpPositions[source!.square] = null;
         setBoardPositions(tmpPositions);
