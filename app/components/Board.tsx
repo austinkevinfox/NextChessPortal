@@ -6,11 +6,9 @@ import BoardLoadingSpinner from "./Board/BoardLoadingSpinner";
 import { initialPositions } from "./PositionConstants";
 import Square from "./Square/Square";
 
-interface Props {
-    focusPositions: string[] | undefined;
-}
 
-const Board = ({ focusPositions = [] }: Props) => {
+
+const Board = () => {
     const {
         activePlayer,
         source,
@@ -37,7 +35,6 @@ const Board = ({ focusPositions = [] }: Props) => {
     const handleTargetClick = (algebraic: string): void => {
         let tmpPositions = { ...boardPositions };
         if (tmpPositions[algebraic]) {
-            console.log("capture", tmpPositions[algebraic]);
             setCapturedPiece(tmpPositions[algebraic]);
         }
 
@@ -63,7 +60,6 @@ const Board = ({ focusPositions = [] }: Props) => {
                                 fileIndex={index}
                                 rank={rank}
                                 piece={boardPositions[positionKey]}
-                                isFocus={focusPositions.includes(positionKey)}
                                 onTargetClick={handleTargetClick}
                             />
                         );

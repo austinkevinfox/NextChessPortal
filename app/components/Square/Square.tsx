@@ -11,7 +11,6 @@ interface Props {
     fileIndex: number;
     rank: number;
     piece: Piece | null;
-    isFocus: boolean;
     onTargetClick: (algebraic: string) => void;
 }
 
@@ -22,31 +21,22 @@ const bgColors: { [key: string]: string } = {
     blackPotentialTarget: "bg-slate-800 hover:bg-amber-500",
 };
 
-const Square = ({
-    color,
-    rank,
-    fileIndex,
-    piece,
-    isFocus,
-    onTargetClick,
-}: Props) => {
+const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
     const {
         isLive,
         activePlayer,
         boardPositions,
-        sourceSquare,
+        source,
         targetSquare,
         targetSquarePotentials,
         setSource,
-        setSourceSquare,
         setTargetSquarePotentials,
         setTargetSquare,
     } = useStepStore();
     const file = Files[fileIndex];
     const algebraicCoordinate = `${file}${rank}`;
     const isFocused =
-        isFocus ||
-        sourceSquare === algebraicCoordinate ||
+        source.square === algebraicCoordinate ||
         targetSquare === algebraicCoordinate;
 
     const getBgColor = () => {
@@ -74,7 +64,7 @@ const Square = ({
         piece: Piece;
     }) => {
         setSource({ square: algebraicCoordinate, piece });
-        setSourceSquare(`${file}${rank}`);
+        setTargetSquare("");
 
         const potentialSquares = getMovesByPiece({
             positions: boardPositions,
@@ -100,7 +90,7 @@ const Square = ({
 
             // Move to vacant position
             if (
-                sourceSquare.length > 0 &&
+                source.square.length > 0 &&
                 targetSquarePotentials.includes(algebraicCoordinate)
             ) {
                 onTargetClick(algebraicCoordinate);

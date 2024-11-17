@@ -35,10 +35,7 @@ const ClientPanel = ({ game }: { game: Game }) => {
                 result={game.result}
             />
 
-            <GameTable
-                focusPositions={stepData[stepIndex].focusPositions}
-                movesPanel={<MovesPanel moves={moves} />}
-            />
+            <GameTable movesPanel={<MovesPanel moves={moves} />} />
         </>
     );
 };
