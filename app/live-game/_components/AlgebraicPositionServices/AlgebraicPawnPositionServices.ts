@@ -1,5 +1,5 @@
 // import { BoardPosition, Piece, EnPassan } from "../Interfaces";
-import { BoardPositionHash } from "@/app/Interfaces";
+import { BoardPositionHash, EnPassan } from "@/app/Interfaces";
 import {
     getNorthFile1Space,
     getSouthFile1Space,
@@ -44,27 +44,18 @@ export const getAlgebraicPawnMoves = (
             pawnMoves.push(`${file}4`);
         }
 
-        // if (
-        //     isPawnAbleToCapture(
-        //         boardPositions,
-        //         northEastDiagonal,
-        //         enPassanNotation,
-        //         activePlayer
-        //     )
-        // ) {
-        //     pawnMoves = [...pawnMoves, ...northEastDiagonal];
-        // }
-
-        // if (
-        //     isPawnAbleToCapture(
-        //         boardPositions,
-        //         northWestDiagonal,
-        //         enPassanNotation,
-        //         activePlayer
-        //     )
-        // ) {
-        //     pawnMoves = [...pawnMoves, ...northWestDiagonal];
-        // }
+        [northEastDiagonal, northWestDiagonal].forEach((diagonal) => {
+            if (
+                isPawnAbleToCapture(
+                    boardPositions,
+                    diagonal,
+                    enPassanNotation,
+                    activePlayer
+                )
+            ) {
+                pawnMoves = [...pawnMoves, ...diagonal];
+            }
+        });
     } else {
         const southFile = getSouthFile1Space(
             file + rank,
@@ -89,27 +80,18 @@ export const getAlgebraicPawnMoves = (
             pawnMoves.push(`${file}5`);
         }
 
-        // if (
-        //     isPawnAbleToCapture(
-        //         boardPositions,
-        //         southEastDiagonal,
-        //         enPassanNotation,
-        //         activePlayer
-        //     )
-        // ) {
-        //     pawnMoves = [...pawnMoves, ...southEastDiagonal];
-        // }
-
-        // if (
-        //     isPawnAbleToCapture(
-        //         boardPositions,
-        //         southWestDiagonal,
-        //         enPassanNotation,
-        //         activePlayer
-        //     )
-        // ) {
-        //     pawnMoves = [...pawnMoves, ...southWestDiagonal];
-        // }
+        [southEastDiagonal, southWestDiagonal].forEach((diagonal) => {
+            if (
+                isPawnAbleToCapture(
+                    boardPositions,
+                    diagonal,
+                    enPassanNotation,
+                    activePlayer
+                )
+            ) {
+                pawnMoves = [...pawnMoves, ...diagonal];
+            }
+        });
     }
 
     // pawnMoves = omitKingExposingThreats(
@@ -160,18 +142,15 @@ export const getAlgebraicPawnMoves = (
 //     target: number
 // ): boolean => piece.name === "pawn" && Math.abs(source + 1 - target) === 16;
 
-// const isPawnAbleToCapture = (
-//     boardPositions: BoardPosition[],
-//     targetPositions: string[],
-//     enPassanNotation: EnPassan | null,
-//     activePlayer: string
-// ): boolean => {
-//     const targetSquare = boardPositions.find(
-//         (position) => position.algebraicNotation === targetPositions[0]
-//     );
-//     return (
-//         (targetSquare?.piece !== null &&
-//             targetSquare?.piece.color !== activePlayer) ||
-//         enPassanNotation?.landingSquareNotation === targetPositions[0]
-//     );
-// };
+const isPawnAbleToCapture = (
+    boardPositions: BoardPositionHash,
+    targetPositions: string[],
+    enPassanNotation: EnPassan | null,
+    activePlayer: string
+): boolean => {
+    const targetSquare = boardPositions[targetPositions[0]];
+    return (
+        (targetSquare && targetSquare.color !== activePlayer) ||
+        enPassanNotation?.landingSquareNotation === targetPositions[0]
+    );
+};
