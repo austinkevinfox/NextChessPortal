@@ -7,6 +7,7 @@ import {
     getNorthWestDiagonal1Space,
     getSouthEastDiagonal1Space,
     getSouthWestDiagonal1Space,
+    omitKingExposingThreats,
     // omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
 
@@ -94,13 +95,13 @@ export const getAlgebraicPawnMoves = (
         });
     }
 
-    // pawnMoves = omitKingExposingThreats(
-    //     file,
-    //     rank,
-    //     pawnMoves,
-    //     boardPositions,
-    //     activePlayer
-    // );
+    pawnMoves = omitKingExposingThreats(
+        file,
+        rank,
+        pawnMoves,
+        boardPositions,
+        activePlayer
+    );
 
     return pawnMoves;
 };
