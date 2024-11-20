@@ -1,8 +1,13 @@
 import { initialCapturedPieces } from "@/app/components/PositionConstants";
-import { BoardPositionHash, CapturedPieces, Piece } from "@/app/Interfaces";
+import {
+    BoardPositionHash,
+    CapturedPieces,
+    Piece,
+    EnPassantConfig,
+} from "@/app/Interfaces";
 import { create } from "zustand";
 
-interface Position {
+export interface Position {
     square: string;
     piece: Piece | null;
 }
@@ -16,6 +21,7 @@ interface StepStore {
     targetSquare: string;
     boardPositions: BoardPositionHash;
     capturedPieces: CapturedPieces;
+    enPassantPotentials: EnPassantConfig | null;
     incrementStep: () => void;
     decrementStep: () => void;
     setStep: (index: number) => void;
@@ -27,6 +33,9 @@ interface StepStore {
     setBoardPositions: (positions: BoardPositionHash) => void;
     setCapturedPiece: (piece: Piece) => void;
     setCapturedPieces: (newCapturedPieces: CapturedPieces) => void;
+    setEnPassantPotentials: (
+        newEnPassantPotentials: EnPassantConfig | null
+    ) => void;
     clearCapturedPieces: () => void;
 }
 
@@ -39,6 +48,7 @@ const useStepStore = create<StepStore>((set) => ({
     targetSquare: "",
     boardPositions: {},
     capturedPieces: initialCapturedPieces,
+    enPassantPotentials: null,
     incrementStep: () => set((store) => ({ stepIndex: store.stepIndex + 1 })),
     decrementStep: () => set((store) => ({ stepIndex: store.stepIndex - 1 })),
     setStep: (newIndex) => set(() => ({ stepIndex: newIndex })),
@@ -67,6 +77,8 @@ const useStepStore = create<StepStore>((set) => ({
         })),
     setCapturedPieces: (newCapturedPieces) =>
         set(() => ({ capturedPieces: newCapturedPieces })),
+    setEnPassantPotentials: (newEnPassantPotentials) =>
+        set({ enPassantPotentials: newEnPassantPotentials }),
     clearCapturedPieces: () =>
         set(() => ({ capturedPieces: initialCapturedPieces })),
 }));

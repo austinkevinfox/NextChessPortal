@@ -51,3 +51,9 @@ export interface CapturedPieces {
     white: PiecesByKind;
     black: PiecesByKind;
 }
+
+export interface EnPassantConfig {
+    sources: string[];
+    target: string;
+    capture: string;
+}

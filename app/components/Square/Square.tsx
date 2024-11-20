@@ -29,6 +29,7 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
         source,
         targetSquare,
         targetSquarePotentials,
+        enPassantPotentials,
         setSource,
         setTargetSquarePotentials,
         setTargetSquare,
@@ -73,6 +74,14 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
             file,
             rank,
         });
+
+        if (
+            enPassantPotentials?.sources.includes(algebraicCoordinate) &&
+            enPassantPotentials?.target.length === 2
+        ) {
+            potentialSquares.push(enPassantPotentials.target);
+        }
+
         setTargetSquarePotentials(potentialSquares);
     };
 

@@ -1,23 +1,25 @@
 "use client";
+import { getEnPassantConfig } from "@/app/services/EnPassantServices";
 import { ReactNode, useEffect } from "react";
-import { getFileRankFromIndices } from "../services/PieceServices";
+import { EnPassantConfig, Piece } from "@/app/Interfaces";
+import { getFileRankFromIndices } from "@/app/services/PieceServices";
 import useStepStore from "../state-management/step/store";
 import BoardLoadingSpinner from "./Board/BoardLoadingSpinner";
 import { initialPositions } from "./PositionConstants";
 import Square from "./Square/Square";
-
-
 
 const Board = () => {
     const {
         activePlayer,
         source,
         boardPositions,
+        enPassantPotentials,
         setActivePlayer,
         setSource,
         setTargetSquarePotentials,
         setBoardPositions,
         setCapturedPiece,
+        setEnPassantPotentials,
     } = useStepStore();
 
     useEffect(() => {
@@ -34,9 +36,29 @@ const Board = () => {
 
     const handleTargetClick = (algebraic: string): void => {
         let tmpPositions = { ...boardPositions };
+
         if (tmpPositions[algebraic]) {
             setCapturedPiece(tmpPositions[algebraic]);
         }
+
+        if (
+            algebraic === enPassantPotentials?.target &&
+            enPassantPotentials?.capture.length === 2
+        ) {
+            setCapturedPiece(
+                tmpPositions[enPassantPotentials.capture] as Piece
+            );
+            tmpPositions[enPassantPotentials.capture] = null;
+        }
+
+        const enPassantConfig = getEnPassantConfig({
+            positions: tmpPositions,
+            activePlayer,
+            algebraic,
+            source}
+        );
+
+        setEnPassantPotentials(enPassantConfig);
 
         tmpPositions[algebraic] = source!.piece;
         tmpPositions[source!.square] = null;
