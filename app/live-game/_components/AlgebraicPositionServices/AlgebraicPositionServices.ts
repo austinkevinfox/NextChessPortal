@@ -266,159 +266,159 @@ const getRankLine = (
     return rankLine;
 };
 
-// export const omitKingExposingThreats = (
-//     file: string,
-//     rank: string,
-//     moves: string[],
-//     boardPositions: BoardPositionHash,
-//     activePlayer: string
-// ): string[] => {
-//     const kingSquare = getKingSquare({ boardPositions, activePlayer });
-//     const [kingFileStr, kingRankStr] = kingSquare.split("");
-//     const kingFileIndex = Files[kingFileStr as FileType];
-//     const kingRank = parseInt(kingRankStr);
-//     let tmpMoves = [...moves];
-//     // Build Attacker Positions
-//     let attackerPositions: AttackerPositions = {
-//         bishop: [],
-//         rook: [],
-//         queen: [],
-//     };
+export const omitKingExposingThreats = (
+    file: string,
+    rank: string,
+    moves: string[],
+    boardPositions: BoardPositionHash,
+    activePlayer: string
+): string[] => {
+    const kingSquare = getKingSquare({ boardPositions, activePlayer });
+    const [kingFileStr, kingRankStr] = kingSquare.split("");
+    const kingFileIndex = Files[kingFileStr as FileType];
+    const kingRank = parseInt(kingRankStr);
+    let tmpMoves = [...moves];
+    // Build Attacker Positions
+    let attackerPositions: AttackerPositions = {
+        bishop: [],
+        rook: [],
+        queen: [],
+    };
 
-//     Object.keys(attackerPositions).forEach((key) => {
-//         attackerPositions[key as AttackerType] = boardPositions
-//             .filter(
-//                 (position) =>
-//                     position.piece?.name === key &&
-//                     position.piece?.color !== activePlayer
-//             )
-//             .map((position) => position.algebraicNotation);
-//     });
+    Object.keys(attackerPositions).forEach((key) => {
+        attackerPositions[key as AttackerType] = Object.keys(
+            boardPositions
+        ).filter(
+            (algebraic) =>
+                boardPositions[algebraic]?.name === key &&
+                boardPositions[algebraic]?.color !== activePlayer
+        );
+    });
 
-//     attackerPositions.bishop.forEach((bishopPosition) => {
-//         const [bishopFileStr, bishopRankStr] = bishopPosition.split("");
-//         const bishopFileIndex = Files[bishopFileStr as FileType];
-//         const bishopRank = parseInt(bishopRankStr);
+    attackerPositions.bishop.forEach((bishopPosition) => {
+        const [bishopFileStr, bishopRankStr] = bishopPosition.split("");
+        const bishopFileIndex = Files[bishopFileStr as FileType];
+        const bishopRank = parseInt(bishopRankStr);
 
-//         const deltaRank = Math.abs(kingRank - bishopRank);
-//         const deltaFile = Math.abs(kingFileIndex - bishopFileIndex);
-//         let squares: string[] = [];
+        const deltaRank = Math.abs(kingRank - bishopRank);
+        const deltaFile = Math.abs(kingFileIndex - bishopFileIndex);
+        let squares: string[] = [];
 
-//         if (deltaRank === deltaFile) {
-//             // Bishop has a path to King
-//             squares = getDiagonalSquares({
-//                 moves,
-//                 kingFileIndex,
-//                 kingRank,
-//                 attackerFileIndex: bishopFileIndex,
-//                 attackerRank: bishopRank,
-//             });
-//         }
+        if (deltaRank === deltaFile) {
+            // Bishop has a path to King
+            squares = getDiagonalSquares({
+                moves,
+                kingFileIndex,
+                kingRank,
+                attackerFileIndex: bishopFileIndex,
+                attackerRank: bishopRank,
+            });
+        }
 
-//         if (squares.length) {
-//             tmpMoves = getMovesFilteredForKingSafety({
-//                 file,
-//                 rank,
-//                 moves,
-//                 boardPositions,
-//                 squares,
-//             });
-//         }
-//     });
+        if (squares.length) {
+            tmpMoves = getMovesFilteredForKingSafety({
+                file,
+                rank,
+                moves,
+                boardPositions,
+                squares,
+            });
+        }
+    });
 
-//     attackerPositions.rook.forEach((rookPosition) => {
-//         const [rookFileStr, rookRankStr] = rookPosition.split("");
-//         const rookFileIndex = Files[rookFileStr as FileType];
-//         const rookRank = parseInt(rookRankStr);
-//         let squares: string[] = [];
+    attackerPositions.rook.forEach((rookPosition) => {
+        const [rookFileStr, rookRankStr] = rookPosition.split("");
+        const rookFileIndex = Files[rookFileStr as FileType];
+        const rookRank = parseInt(rookRankStr);
+        let squares: string[] = [];
 
-//         if (rookFileIndex === kingFileIndex) {
-//             // Rook has north/south path to King
-//             squares = getStraightLineSquares({
-//                 moves,
-//                 kingIndex: kingRank,
-//                 attackerIndex: rookRank,
-//                 type: "File",
-//                 lineIndex: rookFileIndex,
-//             });
-//         }
+        if (rookFileIndex === kingFileIndex) {
+            // Rook has north/south path to King
+            squares = getStraightLineSquares({
+                moves,
+                kingIndex: kingRank,
+                attackerIndex: rookRank,
+                type: "File",
+                lineIndex: rookFileIndex,
+            });
+        }
 
-//         if (rookRank === kingRank) {
-//             // Rook has east/west path to King
-//             squares = getStraightLineSquares({
-//                 moves,
-//                 kingIndex: kingFileIndex,
-//                 attackerIndex: rookFileIndex,
-//                 type: "Rank",
-//                 lineIndex: rookRank,
-//             });
-//         }
+        if (rookRank === kingRank) {
+            // Rook has east/west path to King
+            squares = getStraightLineSquares({
+                moves,
+                kingIndex: kingFileIndex,
+                attackerIndex: rookFileIndex,
+                type: "Rank",
+                lineIndex: rookRank,
+            });
+        }
 
-//         if (squares.length) {
-//             tmpMoves = getMovesFilteredForKingSafety({
-//                 file,
-//                 rank,
-//                 moves,
-//                 boardPositions,
-//                 squares,
-//             });
-//         }
-//     });
+        if (squares.length) {
+            tmpMoves = getMovesFilteredForKingSafety({
+                file,
+                rank,
+                moves,
+                boardPositions,
+                squares,
+            });
+        }
+    });
 
-//     attackerPositions.queen.forEach((queenPosition) => {
-//         const [queenFileStr, queenRankStr] = queenPosition.split("");
-//         const queenFileIndex = Files[queenFileStr as FileType];
-//         const queenRank = parseInt(queenRankStr);
-//         const deltaRank = Math.abs(kingRank - queenRank);
-//         const deltaFile = Math.abs(kingFileIndex - queenFileIndex);
-//         let squares: string[] = [];
+    attackerPositions.queen.forEach((queenPosition) => {
+        const [queenFileStr, queenRankStr] = queenPosition.split("");
+        const queenFileIndex = Files[queenFileStr as FileType];
+        const queenRank = parseInt(queenRankStr);
+        const deltaRank = Math.abs(kingRank - queenRank);
+        const deltaFile = Math.abs(kingFileIndex - queenFileIndex);
+        let squares: string[] = [];
 
-//         if (deltaRank === deltaFile) {
-//             // Queen has a path to King
-//             squares = getDiagonalSquares({
-//                 moves,
-//                 kingFileIndex,
-//                 kingRank,
-//                 attackerFileIndex: queenFileIndex,
-//                 attackerRank: queenRank,
-//             });
-//         }
+        if (deltaRank === deltaFile) {
+            // Queen has a path to King
+            squares = getDiagonalSquares({
+                moves,
+                kingFileIndex,
+                kingRank,
+                attackerFileIndex: queenFileIndex,
+                attackerRank: queenRank,
+            });
+        }
 
-//         if (queenFileIndex === kingFileIndex) {
-//             // Queen has north/south path to King
-//             squares = getStraightLineSquares({
-//                 moves,
-//                 kingIndex: kingRank,
-//                 attackerIndex: queenRank,
-//                 type: "File",
-//                 lineIndex: queenFileIndex,
-//             });
-//         }
+        if (queenFileIndex === kingFileIndex) {
+            // Queen has north/south path to King
+            squares = getStraightLineSquares({
+                moves,
+                kingIndex: kingRank,
+                attackerIndex: queenRank,
+                type: "File",
+                lineIndex: queenFileIndex,
+            });
+        }
 
-//         if (queenRank === kingRank) {
-//             // Queen has east/west path to King
-//             squares = getStraightLineSquares({
-//                 moves,
-//                 kingIndex: kingFileIndex,
-//                 attackerIndex: queenFileIndex,
-//                 type: "Rank",
-//                 lineIndex: queenRank,
-//             });
-//         }
+        if (queenRank === kingRank) {
+            // Queen has east/west path to King
+            squares = getStraightLineSquares({
+                moves,
+                kingIndex: kingFileIndex,
+                attackerIndex: queenFileIndex,
+                type: "Rank",
+                lineIndex: queenRank,
+            });
+        }
 
-//         if (squares.length) {
-//             tmpMoves = getMovesFilteredForKingSafety({
-//                 file,
-//                 rank,
-//                 moves,
-//                 boardPositions,
-//                 squares,
-//             });
-//         }
-//     });
+        if (squares.length) {
+            tmpMoves = getMovesFilteredForKingSafety({
+                file,
+                rank,
+                moves,
+                boardPositions,
+                squares,
+            });
+        }
+    });
 
-//     return tmpMoves;
-// };
+    return tmpMoves;
+};
 
 interface StraightLineInterface {
     moves: string[];
@@ -488,29 +488,26 @@ const getDiagonalSquares = ({
     return diagonalSquares;
 };
 
-// const getMovesFilteredForKingSafety = ({
-//     moves,
-//     file,
-//     rank,
-//     boardPositions,
-//     squares,
-// }: {
-//     moves: string[];
-//     file: string;
-//     rank: string;
-//     boardPositions: BoardPosition[];
-//     squares: string[];
-// }): string[] => {
-//     let isBlock = false;
-//     squares.slice(1).every((square) => {
-//         if (square !== file + rank) {
-//             isBlock =
-//                 boardPositions.find(
-//                     (position) => position.algebraicNotation === square
-//                 )?.piece !== null;
-//         }
-//         return !isBlock;
-//     });
+const getMovesFilteredForKingSafety = ({
+    moves,
+    file,
+    rank,
+    boardPositions,
+    squares,
+}: {
+    moves: string[];
+    file: string;
+    rank: string;
+    boardPositions: BoardPositionHash;
+    squares: string[];
+}): string[] => {
+    let isBlock = false;
+    squares.slice(1).every((square) => {
+        if (square !== file + rank) {
+            isBlock = boardPositions[square] !== null
+        }
+        return !isBlock;
+    });
 
-//     return isBlock ? moves : moves.filter((move) => squares.includes(move));
-// };
+    return isBlock ? moves : moves.filter((move) => squares.includes(move));
+};

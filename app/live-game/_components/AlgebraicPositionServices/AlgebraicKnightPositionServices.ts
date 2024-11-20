@@ -1,6 +1,6 @@
 import { BoardPositionHash } from "@/app/Interfaces";
 import { Files } from "./AlgebraicNotationConstants";
-import { getThreatsByPiece } from "./AlgebraicPositionServices";
+import { getThreatsByPiece, omitKingExposingThreats } from "./AlgebraicPositionServices";
 
 declare type FileType = keyof typeof Files;
 
@@ -40,13 +40,13 @@ export const getAlgebraicKnightMoves = (
         }
     });
 
-    // knightMoves = omitKingExposingThreats(
-    //     file,
-    //     rank,
-    //     knightMoves,
-    //     boardPositions,
-    //     activePlayer
-    // );
+    knightMoves = omitKingExposingThreats(
+        file,
+        rank,
+        knightMoves,
+        boardPositions,
+        activePlayer
+    );
 
     return knightMoves;
 };

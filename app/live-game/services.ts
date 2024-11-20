@@ -43,15 +43,6 @@ export const getMovesByPiece = ({
             tmpPositions,
             activePlayer
         );
-        //  possibleMoves = possibleMoves.filter((notation) => {
-        //      let position = tmpPositions.find(
-        //          (item) => item.algebraicNotation === notation
-        //      );
-        //      return (
-        //          position?.piece === null ||
-        //          position?.piece.color !== activePlayer
-        //      );
-        //  });
     }
 
     if (pieceToMove === "bishop") {
