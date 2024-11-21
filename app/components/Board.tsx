@@ -71,7 +71,11 @@ const Board = () => {
         setTargetSquarePotentials([]);
         setActivePlayer(activePlayer === "white" ? "black" : "white");
         setCheckingPositions(
-            getChecks({ positions: tmpPositions, activePlayer })
+            getChecks({
+                positions: tmpPositions,
+                activePlayer,
+                targetSquare: algebraic,
+            })
         );
     };
 

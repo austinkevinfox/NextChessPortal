@@ -2,6 +2,7 @@ import { Files } from "./AlgebraicNotationConstants";
 import { getKingSquare } from "./AlgebraicKingPositionServices";
 import { BoardPositionHash } from "@/app/Interfaces";
 import { Position } from "@/app/state-management/step/store";
+import { getKnightThreats } from "./AlgebraicKnightPositionServices";
 
 declare type AttackerPositions = {
     bishop: string[];
@@ -269,7 +270,8 @@ const getRankLine = (
 
 export const getKingThreats = (
     boardPositions: BoardPositionHash,
-    activePlayer: string
+    activePlayer: "white" | "black",
+    targetSquare: string
 ): Position[] | null => {
     const kingSquare = getKingSquare({ boardPositions, activePlayer });
     const [kingFileStr, kingRankStr] = kingSquare.split("");
@@ -414,6 +416,17 @@ export const getKingThreats = (
 
         if (queenCheck) {
             allChecks.push(queenCheck);
+        }
+    });
+
+    const knightThreats = getKnightThreats(boardPositions, activePlayer);
+
+    knightThreats.forEach((knightAttack) => {
+        if (knightAttack === kingSquare) {
+            allChecks.push({
+                square: targetSquare,
+                piece: boardPositions[targetSquare],
+            });
         }
     });
 

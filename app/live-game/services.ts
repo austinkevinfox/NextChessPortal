@@ -19,12 +19,14 @@ interface GetMovesByPieceArgs {
 export const getChecks = ({
     positions,
     activePlayer,
+    targetSquare,
 }: {
     positions: BoardPositionHash;
     activePlayer: "white" | "black";
+    targetSquare: string;
 }): Position[] | null => {
     const nextPlayer = activePlayer === "white" ? "black" : "white";
-    return getKingThreats(positions, nextPlayer);
+    return getKingThreats(positions, nextPlayer, targetSquare);
 };
 
 export const getMovesByPiece = ({
