@@ -9,6 +9,7 @@ import {
     getSouthWestDiagonal,
     getThreatsByPiece,
     getWestRank,
+    omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
 
 export const getAlgebraicQueenMoves = (
@@ -54,13 +55,13 @@ export const getAlgebraicQueenMoves = (
         ...southEastDiagonal,
     ];
 
-    // queenMoves = omitKingExposingThreats(
-    //     file,
-    //     rank,
-    //     queenMoves,
-    //     boardPositions,
-    //     activePlayer
-    // );
+    queenMoves = omitKingExposingThreats(
+        file,
+        rank,
+        queenMoves,
+        boardPositions,
+        activePlayer
+    );
 
     return queenMoves;
 };

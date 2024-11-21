@@ -8,7 +8,6 @@ import {
     getSouthEastDiagonal1Space,
     getSouthWestDiagonal1Space,
     omitKingExposingThreats,
-    // omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
 
 export const getAlgebraicPawnMoves = (
