@@ -91,7 +91,10 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
         if (isLive) {
             const algebraicCoordinate = `${file}${rank}`;
 
-            if (piece && targetSquarePotentials.length === 0) {
+            if (
+                piece?.color === activePlayer &&
+                targetSquarePotentials.length === 0
+            ) {
                 initMove({
                     file,
                     rank,
