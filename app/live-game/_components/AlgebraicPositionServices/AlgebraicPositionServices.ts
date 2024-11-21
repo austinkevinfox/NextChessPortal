@@ -3,6 +3,7 @@ import { getKingSquare } from "./AlgebraicKingPositionServices";
 import { BoardPositionHash } from "@/app/Interfaces";
 import { Position } from "@/app/state-management/step/store";
 import { getKnightThreats } from "./AlgebraicKnightPositionServices";
+import { getPawnThreats } from "./AlgebraicPawnPositionServices";
 
 declare type AttackerPositions = {
     bishop: string[];
@@ -419,17 +420,29 @@ export const getKingThreats = (
         }
     });
 
-    const knightThreats = getKnightThreats(boardPositions, activePlayer);
+    if (boardPositions[targetSquare]?.name === "knight") {
+        const knightThreats = getKnightThreats(boardPositions, activePlayer);
 
-    knightThreats.forEach((knightAttack) => {
-        if (knightAttack === kingSquare) {
+        knightThreats.forEach((knightAttack) => {
+            if (knightAttack === kingSquare) {
+                allChecks.push({
+                    square: targetSquare,
+                    piece: boardPositions[targetSquare],
+                });
+            }
+        });
+    }
+
+    if (boardPositions[targetSquare]?.name === "pawn") {
+        const pawnThreats = getPawnThreats({ activePlayer, targetSquare });
+
+        if (pawnThreats.includes(kingSquare)) {
             allChecks.push({
                 square: targetSquare,
                 piece: boardPositions[targetSquare],
             });
         }
-    });
-
+    }
     return allChecks.length > 0 ? allChecks : null;
 };
 

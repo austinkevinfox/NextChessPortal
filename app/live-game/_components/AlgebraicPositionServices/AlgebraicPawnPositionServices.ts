@@ -8,6 +8,7 @@ import {
     getSouthWestDiagonal1Space,
     omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
+import { Files, FileType } from "@/app/components/PositionConstants";
 
 export const getAlgebraicPawnMoves = (
     file: string,
@@ -102,6 +103,36 @@ export const getAlgebraicPawnMoves = (
     );
 
     return pawnMoves;
+};
+
+export const getPawnThreats = ({
+    activePlayer,
+    targetSquare,
+}: {
+    activePlayer: "white" | "black";
+    targetSquare: string;
+}): string[] => {
+    const [pawnFileStr, pawnRankStr] = targetSquare.split("");
+    const pawnFileIndex = Files[pawnFileStr as FileType];
+    const rankIncrement = activePlayer === "white" ? -1 : 1;
+    let attackSquares: string[] = [];
+
+    if (pawnFileIndex > 0) {
+        attackSquares.push(
+            `${Files[pawnFileIndex - 1]}${
+                parseInt(pawnRankStr) + rankIncrement
+            }`
+        );
+    }
+
+    if (pawnFileIndex < 7) {
+        attackSquares.push(
+            `${Files[pawnFileIndex + 1]}${
+                parseInt(pawnRankStr) + rankIncrement
+            }`
+        );
+    }
+    return attackSquares;
 };
 
 // interface EnPassanNotationProps {
