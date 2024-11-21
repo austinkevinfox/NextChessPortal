@@ -1,8 +1,8 @@
 "use client";
+import { Piece } from "@/app/Interfaces";
 import { getEnPassantConfig } from "@/app/services/EnPassantServices";
-import { ReactNode, useEffect } from "react";
-import { EnPassantConfig, Piece } from "@/app/Interfaces";
 import { getFileRankFromIndices } from "@/app/services/PieceServices";
+import { ReactNode, useEffect } from "react";
 import useStepStore from "../state-management/step/store";
 import BoardLoadingSpinner from "./Board/BoardLoadingSpinner";
 import { initialPositions } from "./PositionConstants";
@@ -55,8 +55,8 @@ const Board = () => {
             positions: tmpPositions,
             activePlayer,
             algebraic,
-            source}
-        );
+            source,
+        });
 
         setEnPassantPotentials(enPassantConfig);
 
@@ -70,7 +70,9 @@ const Board = () => {
 
     return (
         <div className="relative">
-            {!boardPositions["a1"] && <BoardLoadingSpinner />}
+            {Object.keys(boardPositions).length === 0 && (
+                <BoardLoadingSpinner />
+            )}
             <div className="h-full aspect-square flex flex-wrap">
                 {[8, 7, 6, 5, 4, 3, 2, 1].map((rank): ReactNode => {
                     return [0, 1, 2, 3, 4, 5, 6, 7].map((index): ReactNode => {

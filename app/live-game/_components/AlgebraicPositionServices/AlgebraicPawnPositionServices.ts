@@ -1,4 +1,3 @@
-// import { BoardPosition, Piece, EnPassan } from "../Interfaces";
 import { BoardPositionHash, EnPassan } from "@/app/Interfaces";
 import {
     getNorthFile1Space,

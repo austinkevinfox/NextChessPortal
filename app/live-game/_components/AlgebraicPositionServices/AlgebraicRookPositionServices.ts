@@ -5,6 +5,7 @@ import {
     getSouthFile,
     getThreatsByPiece,
     getWestRank,
+    omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
 
 export const getAlgebraicRookMoves = (
@@ -21,13 +22,13 @@ export const getAlgebraicRookMoves = (
 
     let rookMoves = [...northFile, ...eastRank, ...southFile, ...westRank];
 
-    // rookMoves = omitKingExposingThreats(
-    //     file,
-    //     rank,
-    //     rookMoves,
-    //     boardPositions,
-    //     activePlayer
-    // );
+    rookMoves = omitKingExposingThreats(
+        file,
+        rank,
+        rookMoves,
+        boardPositions,
+        activePlayer
+    );
 
     return rookMoves;
 };
