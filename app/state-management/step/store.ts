@@ -20,6 +20,7 @@ interface StepStore {
     targetSquarePotentials: string[];
     targetSquare: string;
     boardPositions: BoardPositionHash;
+    checkingPositions: Position[] | null;
     capturedPieces: CapturedPieces;
     enPassantPotentials: EnPassantConfig | null;
     incrementStep: () => void;
@@ -31,6 +32,7 @@ interface StepStore {
     setTargetSquare: (algebraic: string) => void;
     setTargetSquarePotentials: (algebraics: string[]) => void;
     setBoardPositions: (positions: BoardPositionHash) => void;
+    setCheckingPositions: (positions: Position[] | null) => void;
     setCapturedPiece: (piece: Piece) => void;
     setCapturedPieces: (newCapturedPieces: CapturedPieces) => void;
     setEnPassantPotentials: (
@@ -47,6 +49,7 @@ const useStepStore = create<StepStore>((set) => ({
     targetSquarePotentials: [],
     targetSquare: "",
     boardPositions: {},
+    checkingPositions: null,
     capturedPieces: initialCapturedPieces,
     enPassantPotentials: null,
     incrementStep: () => set((store) => ({ stepIndex: store.stepIndex + 1 })),
@@ -62,6 +65,8 @@ const useStepStore = create<StepStore>((set) => ({
         })),
     setBoardPositions: (newPositions) =>
         set(() => ({ boardPositions: newPositions })),
+    setCheckingPositions: (newCheckingPositions) =>
+        set(() => ({ checkingPositions: newCheckingPositions })),
     setCapturedPiece: (piece) =>
         set((state) => ({
             capturedPieces: {

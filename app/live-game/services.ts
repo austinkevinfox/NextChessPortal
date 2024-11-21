@@ -1,8 +1,10 @@
 import { BoardPositionHash } from "../Interfaces";
+import { Position } from "../state-management/step/store";
 import { getAlgebraicBishopMoves } from "./_components/AlgebraicPositionServices/AlgebraicBishopPositionServices";
 import { getAlgebraicKingMoves } from "./_components/AlgebraicPositionServices/AlgebraicKingPositionServices";
 import { getAlgebraicKnightMoves } from "./_components/AlgebraicPositionServices/AlgebraicKnightPositionServices";
 import { getAlgebraicPawnMoves } from "./_components/AlgebraicPositionServices/AlgebraicPawnPositionServices";
+import { getKingThreats } from "./_components/AlgebraicPositionServices/AlgebraicPositionServices";
 import { getAlgebraicQueenMoves } from "./_components/AlgebraicPositionServices/AlgebraicQueenPositionServices";
 import { getAlgebraicRookMoves } from "./_components/AlgebraicPositionServices/AlgebraicRookPositionServices";
 
@@ -13,6 +15,17 @@ interface GetMovesByPieceArgs {
     file: string;
     rank: number;
 }
+
+export const getChecks = ({
+    positions,
+    activePlayer,
+}: {
+    positions: BoardPositionHash;
+    activePlayer: "white" | "black";
+}): Position[] | null => {
+    const nextPlayer = activePlayer === "white" ? "black" : "white";
+    return getKingThreats(positions, nextPlayer);
+};
 
 export const getMovesByPiece = ({
     positions,

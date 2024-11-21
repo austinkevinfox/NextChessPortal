@@ -33,6 +33,7 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
         setSource,
         setTargetSquarePotentials,
         setTargetSquare,
+        setCheckingPositions,
     } = useStepStore();
     const file = Files[fileIndex];
     const algebraicCoordinate = `${file}${rank}`;
@@ -66,6 +67,7 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
     }) => {
         setSource({ square: algebraicCoordinate, piece });
         setTargetSquare("");
+        setCheckingPositions(null);
 
         const potentialSquares = getMovesByPiece({
             positions: boardPositions,

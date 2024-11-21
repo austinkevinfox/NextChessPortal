@@ -7,17 +7,21 @@ import useStepStore from "../state-management/step/store";
 import BoardLoadingSpinner from "./Board/BoardLoadingSpinner";
 import { initialPositions } from "./PositionConstants";
 import Square from "./Square/Square";
+import { getChecks } from "../live-game/services";
+import CheckToast from "../live-game/_components/CheckToast";
 
 const Board = () => {
     const {
         activePlayer,
         source,
         boardPositions,
+        checkingPositions,
         enPassantPotentials,
         setActivePlayer,
         setSource,
         setTargetSquarePotentials,
         setBoardPositions,
+        setCheckingPositions,
         setCapturedPiece,
         setEnPassantPotentials,
     } = useStepStore();
@@ -66,6 +70,9 @@ const Board = () => {
         setSource({ ...source, piece: null });
         setTargetSquarePotentials([]);
         setActivePlayer(activePlayer === "white" ? "black" : "white");
+        setCheckingPositions(
+            getChecks({ positions: tmpPositions, activePlayer })
+        );
     };
 
     return (
@@ -73,6 +80,8 @@ const Board = () => {
             {Object.keys(boardPositions).length === 0 && (
                 <BoardLoadingSpinner />
             )}
+
+            {checkingPositions && <CheckToast />}
             <div className="h-full aspect-square flex flex-wrap">
                 {[8, 7, 6, 5, 4, 3, 2, 1].map((rank): ReactNode => {
                     return [0, 1, 2, 3, 4, 5, 6, 7].map((index): ReactNode => {
