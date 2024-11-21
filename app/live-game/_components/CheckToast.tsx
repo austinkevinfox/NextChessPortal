@@ -1,7 +1,7 @@
 import * as Toast from "@radix-ui/react-toast";
 import { useState } from "react";
 
-const CheckToast = () => {
+const CheckToast = ({ isMate = true }: { isMate?: boolean }) => {
     const [open, setOpen] = useState(true);
     return (
         <Toast.Provider swipeDirection="down">
@@ -11,7 +11,8 @@ const CheckToast = () => {
                 onOpenChange={setOpen}
             >
                 <Toast.Title className="mb-[5px] text-[15px] font-medium text-slate12 [grid-area:_title]">
-                    CHECK
+                    <span>CHECK</span>
+                    {isMate && <span>&nbsp;MATE</span>}
                 </Toast.Title>
             </Toast.Root>
 

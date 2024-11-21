@@ -15,13 +15,13 @@ const Board = () => {
         activePlayer,
         source,
         boardPositions,
-        checkingPositions,
+        checkNotice,
         enPassantPotentials,
         setActivePlayer,
         setSource,
         setTargetSquarePotentials,
         setBoardPositions,
-        setCheckingPositions,
+        setCheckNotice,
         setCapturedPiece,
         setEnPassantPotentials,
     } = useStepStore();
@@ -70,7 +70,7 @@ const Board = () => {
         setSource({ ...source, piece: null });
         setTargetSquarePotentials([]);
         setActivePlayer(activePlayer === "white" ? "black" : "white");
-        setCheckingPositions(
+        setCheckNotice(
             getChecks({
                 positions: tmpPositions,
                 activePlayer,
@@ -85,7 +85,7 @@ const Board = () => {
                 <BoardLoadingSpinner />
             )}
 
-            {checkingPositions && <CheckToast />}
+            {checkNotice && <CheckToast isMate={checkNotice.isMate} />}
             <div className="h-full aspect-square flex flex-wrap">
                 {[8, 7, 6, 5, 4, 3, 2, 1].map((rank): ReactNode => {
                     return [0, 1, 2, 3, 4, 5, 6, 7].map((index): ReactNode => {

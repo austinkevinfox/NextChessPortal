@@ -57,3 +57,13 @@ export interface EnPassantConfig {
     target: string;
     capture: string;
 }
+
+export interface Position {
+    square: string;
+    piece: Piece | null;
+}
+
+export interface CheckNotice {
+    positions: Position[];
+    isMate: boolean;
+}

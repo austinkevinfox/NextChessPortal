@@ -1,7 +1,6 @@
 import { Files } from "./AlgebraicNotationConstants";
-import { getKingSquare } from "./AlgebraicKingPositionServices";
-import { BoardPositionHash } from "@/app/Interfaces";
-import { Position } from "@/app/state-management/step/store";
+import { getKingSquare, isMate } from "./AlgebraicKingPositionServices";
+import { BoardPositionHash, CheckNotice, Position } from "@/app/Interfaces";
 import { getKnightThreats } from "./AlgebraicKnightPositionServices";
 import { getPawnThreats } from "./AlgebraicPawnPositionServices";
 
@@ -273,7 +272,7 @@ export const getKingThreats = (
     boardPositions: BoardPositionHash,
     activePlayer: "white" | "black",
     targetSquare: string
-): Position[] | null => {
+): CheckNotice | null => {
     const kingSquare = getKingSquare({ boardPositions, activePlayer });
     const [kingFileStr, kingRankStr] = kingSquare.split("");
     const kingFileIndex = Files[kingFileStr as FileType];
@@ -443,7 +442,16 @@ export const getKingThreats = (
             });
         }
     }
-    return allChecks.length > 0 ? allChecks : null;
+
+    return allChecks.length > 0
+        ? {
+              positions: allChecks,
+              isMate: isMate({
+                  boardPositions,
+                  activePlayer,
+              }),
+          }
+        : null;
 };
 
 export const omitKingExposingThreats = (
