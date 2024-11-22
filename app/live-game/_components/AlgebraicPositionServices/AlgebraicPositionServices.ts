@@ -702,6 +702,14 @@ const getDiagonalSquaresToKing = ({
     return diagonalSquares;
 };
 
+const getIsSquareOccupied = ({
+    boardPositions,
+    algebraicNotation,
+}: {
+    boardPositions: BoardPositionHash;
+    algebraicNotation: string;
+}): boolean => boardPositions[algebraicNotation] !== null;
+
 const getMovesFilteredForKingSafety = ({
     moves,
     file,
@@ -718,7 +726,10 @@ const getMovesFilteredForKingSafety = ({
     let isBlock = false;
     squares.slice(1).every((square) => {
         if (square !== file + rank) {
-            isBlock = boardPositions[square] !== null;
+            isBlock = getIsSquareOccupied({
+                boardPositions,
+                algebraicNotation: square,
+            });
         }
         return !isBlock;
     });

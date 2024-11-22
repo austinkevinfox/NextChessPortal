@@ -9,6 +9,7 @@ import { initialPositions } from "./PositionConstants";
 import Square from "./Square/Square";
 import { getChecks } from "../live-game/services";
 import CheckToast from "../live-game/_components/CheckToast";
+import GameOverToast from "./GameOverToast";
 
 const Board = () => {
     const {
@@ -86,6 +87,7 @@ const Board = () => {
             )}
 
             {checkNotice && <CheckToast isMate={checkNotice.isMate} />}
+            {checkNotice?.isMate && <GameOverToast isOpen={true} />}
             <div className="h-full aspect-square flex flex-wrap">
                 {[8, 7, 6, 5, 4, 3, 2, 1].map((rank): ReactNode => {
                     return [0, 1, 2, 3, 4, 5, 6, 7].map((index): ReactNode => {
