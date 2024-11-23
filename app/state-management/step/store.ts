@@ -1,10 +1,14 @@
-import { initialCapturedPieces } from "@/app/components/PositionConstants";
+import {
+    initialCapturedPieces,
+    initialCastling,
+} from "@/app/components/PositionConstants";
 import {
     BoardPositionHash,
     CapturedPieces,
-    Piece,
-    EnPassantConfig,
+    Castling,
     CheckNotice,
+    EnPassantConfig,
+    Piece,
     Position,
 } from "@/app/Interfaces";
 import { create } from "zustand";
@@ -19,6 +23,7 @@ interface StepStore {
     boardPositions: BoardPositionHash;
     checkNotice: CheckNotice | null;
     capturedPieces: CapturedPieces;
+    castling: Castling;
     enPassantPotentials: EnPassantConfig | null;
     incrementStep: () => void;
     decrementStep: () => void;
@@ -32,6 +37,11 @@ interface StepStore {
     setCheckNotice: (newCheckNotice: CheckNotice | null) => void;
     setCapturedPiece: (piece: Piece) => void;
     setCapturedPieces: (newCapturedPieces: CapturedPieces) => void;
+    setCastlingOnKingMove: (color: "white" | "black") => void;
+    setCastlingOnRookMove: (
+        color: "white" | "black",
+        side: "kingSide" | "queenSide"
+    ) => void;
     setEnPassantPotentials: (
         newEnPassantPotentials: EnPassantConfig | null
     ) => void;
@@ -48,6 +58,7 @@ const useStepStore = create<StepStore>((set) => ({
     boardPositions: {},
     checkNotice: null,
     capturedPieces: initialCapturedPieces,
+    castling: initialCastling,
     enPassantPotentials: null,
     incrementStep: () => set((store) => ({ stepIndex: store.stepIndex + 1 })),
     decrementStep: () => set((store) => ({ stepIndex: store.stepIndex - 1 })),
@@ -83,6 +94,20 @@ const useStepStore = create<StepStore>((set) => ({
         set({ enPassantPotentials: newEnPassantPotentials }),
     clearCapturedPieces: () =>
         set(() => ({ capturedPieces: initialCapturedPieces })),
+    setCastlingOnKingMove: (color) =>
+        set((state) => ({
+            castling: {
+                ...state.castling,
+                [color]: { kingSide: false, queenSide: false },
+            },
+        })),
+    setCastlingOnRookMove: (color, side) =>
+        set((state) => ({
+            castling: {
+                ...state.castling,
+                [color]: { ...state.castling[color], [side]: false },
+            },
+        })),
 }));
 
 export default useStepStore;

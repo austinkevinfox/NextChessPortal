@@ -52,6 +52,16 @@ export interface CapturedPieces {
     black: PiecesByKind;
 }
 
+export interface CastlingBySide {
+    kingSide: boolean;
+    queenSide: boolean;
+}
+
+export interface Castling {
+    white: CastlingBySide;
+    black: CastlingBySide;
+}
+
 export interface EnPassantConfig {
     sources: string[];
     target: string;

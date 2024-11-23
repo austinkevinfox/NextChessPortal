@@ -3,19 +3,20 @@ import { Piece } from "@/app/Interfaces";
 import { getEnPassantConfig } from "@/app/services/EnPassantServices";
 import { getFileRankFromIndices } from "@/app/services/PieceServices";
 import { ReactNode, useEffect } from "react";
+import CheckToast from "../live-game/_components/CheckToast";
+import { getChecks } from "../live-game/services";
 import useStepStore from "../state-management/step/store";
 import BoardLoadingSpinner from "./Board/BoardLoadingSpinner";
+import GameOverToast from "./GameOverToast";
 import { initialPositions } from "./PositionConstants";
 import Square from "./Square/Square";
-import { getChecks } from "../live-game/services";
-import CheckToast from "../live-game/_components/CheckToast";
-import GameOverToast from "./GameOverToast";
 
 const Board = () => {
     const {
         activePlayer,
         source,
         boardPositions,
+        castling,
         checkNotice,
         enPassantPotentials,
         setActivePlayer,
@@ -24,6 +25,8 @@ const Board = () => {
         setBoardPositions,
         setCheckNotice,
         setCapturedPiece,
+        setCastlingOnKingMove,
+        setCastlingOnRookMove,
         setEnPassantPotentials,
     } = useStepStore();
 
@@ -64,6 +67,34 @@ const Board = () => {
         });
 
         setEnPassantPotentials(enPassantConfig);
+
+        if (
+            source!.piece?.code === "K" &&
+            (castling[activePlayer].kingSide ||
+                castling[activePlayer].queenSide)
+        ) {
+            const castleRank = activePlayer === "white" ? 1 : 8;
+            if (algebraic === `g${castleRank}`) {
+                const rook = tmpPositions[`h${castleRank}`];
+                tmpPositions[`f${castleRank}`] = rook;
+                tmpPositions[`h${castleRank}`] = null;
+            }
+            if (algebraic === `c${castleRank}`) {
+                const rook = tmpPositions[`a${castleRank}`];
+                tmpPositions[`d${castleRank}`] = rook;
+                tmpPositions[`a${castleRank}`] = null;
+            }
+
+            setCastlingOnKingMove(activePlayer);
+        }
+
+        if (source!.piece?.code === "R") {
+            const castleSide =
+                source!.square.charAt(0) === "a" ? "queenSide" : "kingSide";
+            if (castling[activePlayer][castleSide]) {
+                setCastlingOnRookMove(activePlayer, castleSide);
+            }
+        }
 
         tmpPositions[algebraic] = source!.piece;
         tmpPositions[source!.square] = null;

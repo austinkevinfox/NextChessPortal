@@ -1,17 +1,17 @@
 import { Piece } from "@/app/Interfaces";
 import {
-    WhitePawn,
-    WhiteKnight,
-    WhiteBishop,
-    WhiteRook,
-    WhiteQueen,
-    WhiteKing,
-    BlackPawn,
-    BlackKnight,
     BlackBishop,
-    BlackRook,
-    BlackQueen,
     BlackKing,
+    BlackKnight,
+    BlackPawn,
+    BlackQueen,
+    BlackRook,
+    WhiteBishop,
+    WhiteKing,
+    WhiteKnight,
+    WhitePawn,
+    WhiteQueen,
+    WhiteRook,
 } from "@/app/public/svg-no-shadow";
 
 export enum Files {
@@ -280,4 +280,9 @@ export const initialCapturedPieces = {
         queen: [],
         king: [],
     },
+};
+
+export const initialCastling = {
+    white: { kingSide: true, queenSide: true },
+    black: { kingSide: true, queenSide: true },
 };

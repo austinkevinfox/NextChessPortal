@@ -29,6 +29,7 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
         source,
         targetSquare,
         targetSquarePotentials,
+        castling,
         enPassantPotentials,
         setSource,
         setTargetSquarePotentials,
@@ -73,6 +74,7 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
             positions: boardPositions,
             activePlayer,
             pieceToMove: piece.name,
+            castling,
             file,
             rank,
         });
