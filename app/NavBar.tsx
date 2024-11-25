@@ -3,7 +3,7 @@ import classnames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaChessKing } from "react-icons/fa";
-import useStepStore from "./state-management/step/store";
+import useStepStore from "./state-management/store";
 
 const NavBar = () => {
     const currentPath = usePathname();

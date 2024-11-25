@@ -2,7 +2,7 @@
 import { Game } from "@prisma/client";
 import { useEffect, useMemo } from "react";
 import { getArrayOfMoves, getStepData } from "../services/services";
-import useStepStore from "../state-management/step/store";
+import useStepStore from "../state-management/store";
 import ControlPanel from "./ControlPanel";
 import GameOverToast from "./GameOverToast";
 import GameTable from "./GameTable";

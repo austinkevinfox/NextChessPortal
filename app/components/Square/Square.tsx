@@ -1,6 +1,6 @@
 import { Piece } from "@/app/Interfaces";
 import { getMovesByPiece } from "@/app/live-game/services";
-import useStepStore from "@/app/state-management/step/store";
+import useStepStore from "@/app/state-management/store";
 import { Box, Flex } from "@radix-ui/themes";
 import Image from "next/image";
 import { Files } from "../PositionConstants";

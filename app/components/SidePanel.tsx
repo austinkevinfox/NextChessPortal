@@ -1,5 +1,5 @@
 import { Box, Flex } from "@radix-ui/themes";
-import useStepStore from "../state-management/step/store";
+import useStepStore from "../state-management/store";
 import CapturedPiecesDisplay from "./CapturedPiecesDisplay";
 import Score from "./Score";
 

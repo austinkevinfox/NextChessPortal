@@ -1,5 +1,5 @@
 "use client";
-import useStepStore from "@/app/state-management/step/store";
+import useStepStore from "@/app/state-management/store";
 import GameTable from "@/app/components/GameTable";
 import { useEffect } from "react";
 

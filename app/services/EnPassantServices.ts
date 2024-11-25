@@ -1,6 +1,10 @@
-import { BoardPositionHash, EnPassantConfig, Piece } from "@/app/Interfaces";
 import { Files, FileType } from "@/app/components/PositionConstants";
-import { Position } from "@/app/state-management/step/store";
+import {
+    BoardPositionHash,
+    EnPassantConfig,
+    Piece,
+    Position,
+} from "@/app/Interfaces";
 
 export const getEnPassantConfig = ({
     positions,

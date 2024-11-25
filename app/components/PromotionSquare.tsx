@@ -1,6 +1,6 @@
 import { Flex } from "@radix-ui/themes";
 import Image from "next/image";
-import useStepStore from "../state-management/step/store";
+import useStepStore from "../state-management/store";
 import { promotionChoices } from "./PositionConstants";
 import { Piece } from "../Interfaces";
 import { getChecks } from "../live-game/services";

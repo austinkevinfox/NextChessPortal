@@ -1,4 +1,4 @@
-import useStepStore from "@/app/state-management/step/store";
+import useStepStore from "@/app/state-management/store";
 import MovePair from "./MovePair";
 import { useEffect } from "react";
 

@@ -3,7 +3,7 @@ import { Flex, IconButton } from "@radix-ui/themes";
 import { ReactNode, useEffect, useState } from "react";
 import { FaPause, FaPlay, FaStepBackward, FaStepForward } from "react-icons/fa";
 import { BiReset } from "react-icons/bi";
-import useStepStore from "../state-management/step/store";
+import useStepStore from "../state-management/store";
 
 const ControlPanel = ({ moves }: { moves: string[] }) => {
     const [isPlaying, setIsPlaying] = useState(false);

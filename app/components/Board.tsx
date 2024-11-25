@@ -5,7 +5,7 @@ import { getFileRankFromIndices } from "@/app/services/PieceServices";
 import { ReactNode, useEffect } from "react";
 import CheckToast from "../live-game/_components/CheckToast";
 import { getChecks } from "../live-game/services";
-import useStepStore from "../state-management/step/store";
+import useStepStore from "../state-management/store";
 import BoardLoadingSpinner from "./Board/BoardLoadingSpinner";
 import GameOverToast from "./GameOverToast";
 import { initialPositions } from "./PositionConstants";
