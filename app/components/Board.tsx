@@ -115,10 +115,7 @@ const Board = () => {
         );
 
         // Handle promotion or toggle active player
-        if (
-            (source!.piece?.code === "P" && algebraic.charAt(1) === "1") ||
-            algebraic.charAt(1) === "8"
-        ) {
+        if (source!.piece?.code === "P" && /(1|8)$/.test(algebraic)) {
             setPromotionConfig({ color: activePlayer, square: algebraic });
         } else {
             setActivePlayer(activePlayer === "white" ? "black" : "white");

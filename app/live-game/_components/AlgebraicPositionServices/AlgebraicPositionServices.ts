@@ -305,8 +305,17 @@ export const getKingThreats = (
         const deltaRank = Math.abs(kingRank - bishopRank);
         const deltaFile = Math.abs(kingFileIndex - bishopFileIndex);
         let squares: string[] = [];
+        let bishopCheck = null;
 
-        if (deltaRank === deltaFile) {
+        if (
+            Math.abs(kingFileIndex - bishopFileIndex) === 1 &&
+            Math.abs(kingRank - bishopRank) === 1
+        ) {
+            bishopCheck = {
+                square: bishopPosition,
+                piece: boardPositions[bishopPosition],
+            };
+        } else if (deltaRank === deltaFile) {
             // Bishop has a path to King
             squares = getDiagonalSquares({
                 moves,
@@ -317,11 +326,13 @@ export const getKingThreats = (
             });
         }
 
-        const bishopCheck = getChecksByClearPath({
-            boardPositions,
-            pieceNotation: bishopPosition,
-            squares,
-        });
+        if (!bishopCheck && squares.length > 0) {
+            bishopCheck = getChecksByClearPath({
+                boardPositions,
+                pieceNotation: bishopPosition,
+                squares,
+            });
+        }
 
         if (bishopCheck) {
             allChecks.push(bishopCheck);
@@ -333,34 +344,51 @@ export const getKingThreats = (
         const rookFileIndex = Files[rookFileStr as FileType];
         const rookRank = parseInt(rookRankStr);
         let squares: string[] = [];
+        let rookCheck = null;
 
         if (rookFileIndex === kingFileIndex) {
-            // Rook has north/south path to King
-            squares = getStraightLineSquares({
-                moves,
-                kingIndex: kingRank,
-                attackerIndex: rookRank,
-                type: "File",
-                lineIndex: rookFileIndex,
-            });
+            if (Math.abs(kingRank - rookRank) === 1) {
+                rookCheck = {
+                    square: rookPosition,
+                    piece: boardPositions[rookPosition],
+                };
+            } else {
+                // Rook has north/south path to King
+                squares = getStraightLineSquares({
+                    moves,
+                    kingIndex: kingRank,
+                    attackerIndex: rookRank,
+                    type: "File",
+                    lineIndex: rookFileIndex,
+                });
+            }
         }
 
         if (rookRank === kingRank) {
-            // Rook has east/west path to King
-            squares = getStraightLineSquares({
-                moves,
-                kingIndex: kingFileIndex,
-                attackerIndex: rookFileIndex,
-                type: "Rank",
-                lineIndex: rookRank,
-            });
+            if (Math.abs(kingFileIndex - rookFileIndex) === 1) {
+                rookCheck = {
+                    square: rookPosition,
+                    piece: boardPositions[rookPosition],
+                };
+            } else {
+                // Rook has east/west path to King
+                squares = getStraightLineSquares({
+                    moves,
+                    kingIndex: kingFileIndex,
+                    attackerIndex: rookFileIndex,
+                    type: "Rank",
+                    lineIndex: rookRank,
+                });
+            }
         }
 
-        const rookCheck = getChecksByClearPath({
-            boardPositions,
-            pieceNotation: rookPosition,
-            squares,
-        });
+        if (!rookCheck && squares.length > 0) {
+            rookCheck = getChecksByClearPath({
+                boardPositions,
+                pieceNotation: rookPosition,
+                squares,
+            });
+        }
 
         if (rookCheck) {
             allChecks.push(rookCheck);
@@ -374,8 +402,17 @@ export const getKingThreats = (
         const deltaRank = Math.abs(kingRank - queenRank);
         const deltaFile = Math.abs(kingFileIndex - queenFileIndex);
         let squares: string[] = [];
+        let queenCheck = null;
 
-        if (deltaRank === deltaFile) {
+        if (
+            Math.abs(kingFileIndex - queenFileIndex) === 1 &&
+            Math.abs(kingRank - queenRank) === 1
+        ) {
+            queenCheck = {
+                square: queenPosition,
+                piece: boardPositions[queenPosition],
+            };
+        } else if (deltaRank === deltaFile) {
             // Queen has a path to King
             squares = getDiagonalSquares({
                 moves,
@@ -387,33 +424,48 @@ export const getKingThreats = (
         }
 
         if (queenFileIndex === kingFileIndex) {
-            // Queen has north/south path to King
-            squares = getStraightLineSquares({
-                moves,
-                kingIndex: kingRank,
-                attackerIndex: queenRank,
-                type: "File",
-                lineIndex: queenFileIndex,
-            });
+            if (Math.abs(kingRank - queenRank) === 1) {
+                queenCheck = {
+                    square: queenPosition,
+                    piece: boardPositions[queenPosition],
+                };
+            } else {
+                // Queen has north/south path to King
+                squares = getStraightLineSquares({
+                    moves,
+                    kingIndex: kingRank,
+                    attackerIndex: queenRank,
+                    type: "File",
+                    lineIndex: queenFileIndex,
+                });
+            }
         }
 
         if (queenRank === kingRank) {
-            // Queen has east/west path to King
-            squares = getStraightLineSquares({
-                moves,
-                kingIndex: kingFileIndex,
-                attackerIndex: queenFileIndex,
-                type: "Rank",
-                lineIndex: queenRank,
-            });
+            if (Math.abs(kingFileIndex - queenFileIndex) === 1) {
+                queenCheck = {
+                    square: queenPosition,
+                    piece: boardPositions[queenPosition],
+                };
+            } else {
+                // Queen has east/west path to King
+                squares = getStraightLineSquares({
+                    moves,
+                    kingIndex: kingFileIndex,
+                    attackerIndex: queenFileIndex,
+                    type: "Rank",
+                    lineIndex: queenRank,
+                });
+            }
         }
 
-        const queenCheck = getChecksByClearPath({
-            boardPositions,
-            pieceNotation: queenPosition,
-            squares,
-        });
-
+        if (!queenCheck && squares.length > 0) {
+            queenCheck = getChecksByClearPath({
+                boardPositions,
+                pieceNotation: queenPosition,
+                squares,
+            });
+        }
         if (queenCheck) {
             allChecks.push(queenCheck);
         }
@@ -627,7 +679,7 @@ const getStraightLineSquares = ({
         type === "File" ? Files[lineIndex] : lineIndex;
     let tmpMoves = [...moves];
     let squares: string[] = [];
-    let nextIndex = attackerIndex + nextIncrement;
+    let nextIndex = attackerIndex;
 
     while (nextIndex !== kingIndex) {
         let notation =
@@ -747,6 +799,7 @@ const getChecksByClearPath = ({
     squares: string[];
 }): Position | null => {
     let isPieceChecking = false;
+
     squares
         .filter((square) => square !== pieceNotation)
         .every((square) => {
