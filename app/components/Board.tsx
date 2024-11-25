@@ -9,6 +9,7 @@ import useStepStore from "../state-management/step/store";
 import BoardLoadingSpinner from "./Board/BoardLoadingSpinner";
 import GameOverToast from "./GameOverToast";
 import { initialPositions } from "./PositionConstants";
+import PromotionModal from "./PromotionModal";
 import Square from "./Square/Square";
 
 const Board = () => {
@@ -19,6 +20,7 @@ const Board = () => {
         castling,
         checkNotice,
         enPassantPotentials,
+        promotionConfig,
         setActivePlayer,
         setSource,
         setTargetSquarePotentials,
@@ -28,6 +30,7 @@ const Board = () => {
         setCastlingOnKingMove,
         setCastlingOnRookMove,
         setEnPassantPotentials,
+        setPromotionConfig,
     } = useStepStore();
 
     useEffect(() => {
@@ -99,9 +102,10 @@ const Board = () => {
         tmpPositions[algebraic] = source!.piece;
         tmpPositions[source!.square] = null;
         setBoardPositions(tmpPositions);
+
         setSource({ ...source, piece: null });
         setTargetSquarePotentials([]);
-        setActivePlayer(activePlayer === "white" ? "black" : "white");
+
         setCheckNotice(
             getChecks({
                 positions: tmpPositions,
@@ -109,6 +113,16 @@ const Board = () => {
                 targetSquare: algebraic,
             })
         );
+
+        // Handle promotion or toggle active player
+        if (
+            (source!.piece?.code === "P" && algebraic.charAt(1) === "1") ||
+            algebraic.charAt(1) === "8"
+        ) {
+            setPromotionConfig({ color: activePlayer, square: algebraic });
+        } else {
+            setActivePlayer(activePlayer === "white" ? "black" : "white");
+        }
     };
 
     return (
@@ -136,6 +150,8 @@ const Board = () => {
                     });
                 })}
             </div>
+
+            {promotionConfig && <PromotionModal />}
         </div>
     );
 };

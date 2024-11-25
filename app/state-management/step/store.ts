@@ -17,6 +17,7 @@ interface StepStore {
     stepIndex: number;
     isLive: boolean;
     activePlayer: "white" | "black";
+    promotionConfig: { color: "white" | "black"; square: string } | null;
     source: Position;
     targetSquarePotentials: string[];
     targetSquare: string;
@@ -30,6 +31,9 @@ interface StepStore {
     setStep: (index: number) => void;
     setLive: (value: boolean) => void;
     setActivePlayer: (color: "white" | "black") => void;
+    setPromotionConfig: (
+        newConfig: { color: "white" | "black"; square: string } | null
+    ) => void;
     setSource: (position: Position) => void;
     setTargetSquare: (algebraic: string) => void;
     setTargetSquarePotentials: (algebraics: string[]) => void;
@@ -52,6 +56,7 @@ const useStepStore = create<StepStore>((set) => ({
     stepIndex: 0,
     isLive: false,
     activePlayer: "white",
+    promotionConfig: null,
     source: { square: "", piece: null },
     targetSquarePotentials: [],
     targetSquare: "",
@@ -65,6 +70,8 @@ const useStepStore = create<StepStore>((set) => ({
     setStep: (newIndex) => set(() => ({ stepIndex: newIndex })),
     setLive: (newValue) => set(() => ({ isLive: newValue })),
     setActivePlayer: (color) => set(() => ({ activePlayer: color })),
+    setPromotionConfig: (newConfig) =>
+        set(() => ({ promotionConfig: newConfig })),
     setSource: (newSource: Position) => set(() => ({ source: newSource })),
     setTargetSquare: (newValue) => set(() => ({ targetSquare: newValue })),
     setTargetSquarePotentials: (newValues) =>

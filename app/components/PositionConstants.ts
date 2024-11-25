@@ -286,3 +286,58 @@ export const initialCastling = {
     white: { kingSide: true, queenSide: true },
     black: { kingSide: true, queenSide: true },
 };
+
+export const promotionChoices = {
+    white: {
+        queen: <Piece>{
+            color: "white",
+            name: "queen",
+            code: "Q",
+            component: WhiteQueen,
+        },
+        rook: <Piece>{
+            color: "white",
+            name: "rook",
+            code: "R",
+            component: WhiteRook,
+        },
+        bishop: <Piece>{
+            color: "white",
+            name: "bishop",
+            code: "B",
+            component: WhiteBishop,
+        },
+        knight: <Piece>{
+            color: "white",
+            name: "knight",
+            code: "N",
+            component: WhiteKnight,
+        },
+    },
+    black: {
+        queen: <Piece>{
+            color: "black",
+            name: "queen",
+            code: "Q",
+            component: BlackQueen,
+        },
+        rook: <Piece>{
+            color: "black",
+            name: "rook",
+            code: "R",
+            component: BlackRook,
+        },
+        bishop: <Piece>{
+            color: "black",
+            name: "bishop",
+            code: "B",
+            component: BlackBishop,
+        },
+        knight: <Piece>{
+            color: "black",
+            name: "knight",
+            code: "N",
+            component: BlackKnight,
+        },
+    },
+};
