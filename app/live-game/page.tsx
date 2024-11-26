@@ -1,15 +1,22 @@
 "use client";
-import useStepStore from "@/app/state-management/store";
 import GameTable from "@/app/components/GameTable";
-import { useEffect } from "react";
+import useStepStore from "@/app/state-management/store";
+import { useEffect, useState } from "react";
+import MovesPanel from "../components/MovesPanel/MovesPanel";
 
 const LiveGame = () => {
-    const { setLive } = useStepStore();
+    const [moves, setMoves] = useState<string[]>([]);
+    const { setLive, liveMoves } = useStepStore();
 
     useEffect(() => {
         setLive(true);
     }, []);
-    return <GameTable />;
+
+    useEffect(() => {
+        setMoves(liveMoves);
+    }, [liveMoves]);
+
+    return <GameTable movesPanel={<MovesPanel moves={moves} />} />;
 };
 
 export default LiveGame;

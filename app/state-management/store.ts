@@ -26,6 +26,7 @@ interface StepStore {
     capturedPieces: CapturedPieces;
     castling: Castling;
     enPassantPotentials: EnPassantConfig | null;
+    liveMoves: string[];
     incrementStep: () => void;
     decrementStep: () => void;
     setStep: (index: number) => void;
@@ -50,6 +51,10 @@ interface StepStore {
         newEnPassantPotentials: EnPassantConfig | null
     ) => void;
     clearCapturedPieces: () => void;
+    clearLiveMoves: () => void;
+    addLiveMove: (newMove: string) => void;
+    appendToLastLiveMove: (text: string, indexAdjust: number) => void;
+    updateLastLiveMove: (newMove: string) => void;
 }
 
 const useStepStore = create<StepStore>((set) => ({
@@ -65,6 +70,7 @@ const useStepStore = create<StepStore>((set) => ({
     capturedPieces: initialCapturedPieces,
     castling: initialCastling,
     enPassantPotentials: null,
+    liveMoves: [],
     incrementStep: () => set((store) => ({ stepIndex: store.stepIndex + 1 })),
     decrementStep: () => set((store) => ({ stepIndex: store.stepIndex - 1 })),
     setStep: (newIndex) => set(() => ({ stepIndex: newIndex })),
@@ -114,6 +120,20 @@ const useStepStore = create<StepStore>((set) => ({
                 ...state.castling,
                 [color]: { ...state.castling[color], [side]: false },
             },
+        })),
+    clearLiveMoves: () => set(() => ({ liveMoves: [] })),
+    addLiveMove: (newMove) =>
+        set((state) => ({ liveMoves: [...state.liveMoves, newMove] })),
+    appendToLastLiveMove: (text, indexAdjust) =>
+        set((state) => {
+            const tmpMoves = [...state.liveMoves];
+            const index = tmpMoves.length - 1 - indexAdjust;
+            tmpMoves[index] += text;
+            return { liveMoves: tmpMoves };
+        }),
+    updateLastLiveMove: (newMove) =>
+        set((state) => ({
+            liveMoves: [...state.liveMoves.slice(0, -1), newMove],
         })),
 }));
 

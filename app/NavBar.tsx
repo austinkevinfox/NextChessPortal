@@ -13,6 +13,7 @@ const NavBar = () => {
         setTargetSquare,
         setTargetSquarePotentials,
         clearCapturedPieces,
+        clearLiveMoves,
     } = useStepStore();
 
     const resetStore = (isGameLive: boolean) => {
@@ -21,6 +22,7 @@ const NavBar = () => {
         setTargetSquare("");
         setTargetSquarePotentials([]);
         clearCapturedPieces();
+        clearLiveMoves();
     };
 
     const links = [

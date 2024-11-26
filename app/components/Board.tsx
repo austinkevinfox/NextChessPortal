@@ -31,6 +31,8 @@ const Board = () => {
         setCastlingOnRookMove,
         setEnPassantPotentials,
         setPromotionConfig,
+        addLiveMove,
+        updateLastLiveMove,
     } = useStepStore();
 
     useEffect(() => {
@@ -47,9 +49,19 @@ const Board = () => {
 
     const handleTargetClick = (algebraic: string): void => {
         let tmpPositions = { ...boardPositions };
+        let newMove = algebraic;
 
         if (tmpPositions[algebraic]) {
             setCapturedPiece(tmpPositions[algebraic]);
+            const capturePrefix =
+                source.piece?.code === "P"
+                    ? source.square.charAt(0)
+                    : source.piece?.code;
+            newMove = `${capturePrefix}x${algebraic}`;
+        } else {
+            newMove = `${
+                source.piece?.code !== "P" ? source.piece?.code : ""
+            }${algebraic}`;
         }
 
         if (
@@ -60,6 +72,7 @@ const Board = () => {
                 tmpPositions[enPassantPotentials.capture] as Piece
             );
             tmpPositions[enPassantPotentials.capture] = null;
+            newMove = `${source.square.charAt(0)}x${algebraic} e.p.`;
         }
 
         const enPassantConfig = getEnPassantConfig({
@@ -81,11 +94,13 @@ const Board = () => {
                 const rook = tmpPositions[`h${castleRank}`];
                 tmpPositions[`f${castleRank}`] = rook;
                 tmpPositions[`h${castleRank}`] = null;
+                newMove = "0-0";
             }
             if (algebraic === `c${castleRank}`) {
                 const rook = tmpPositions[`a${castleRank}`];
                 tmpPositions[`d${castleRank}`] = rook;
                 tmpPositions[`a${castleRank}`] = null;
+                newMove = "0-0-0";
             }
 
             setCastlingOnKingMove(activePlayer);
@@ -102,9 +117,15 @@ const Board = () => {
         tmpPositions[algebraic] = source!.piece;
         tmpPositions[source!.square] = null;
         setBoardPositions(tmpPositions);
-
         setSource({ ...source, piece: null });
         setTargetSquarePotentials([]);
+
+        if (activePlayer === "white") {
+            addLiveMove(newMove);
+            addLiveMove("...");
+        } else {
+            updateLastLiveMove(newMove);
+        }
 
         setCheckNotice(
             getChecks({

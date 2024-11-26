@@ -14,6 +14,7 @@ const PromotionSquare = ({ pieceName }: Props) => {
         activePlayer,
         promotionConfig,
         boardPositions,
+        appendToLastLiveMove,
         setActivePlayer,
         setBoardPositions,
         setPromotionConfig,
@@ -27,15 +28,19 @@ const PromotionSquare = ({ pieceName }: Props) => {
         const tmpBoardPositions = { ...boardPositions };
         tmpBoardPositions[targetSquare] = piece;
 
+        appendToLastLiveMove(
+            `=${piece.code}`,
+            activePlayer === "white" ? 1 : 0
+        );
+
         setBoardPositions(tmpBoardPositions);
-
-        const tmpCheckNotice = getChecks({
-            positions: tmpBoardPositions,
-            activePlayer,
-            targetSquare,
-        });
-
-        setCheckNotice(tmpCheckNotice);
+        setCheckNotice(
+            getChecks({
+                positions: tmpBoardPositions,
+                activePlayer,
+                targetSquare,
+            })
+        );
         setActivePlayer(activePlayer === "white" ? "black" : "white");
         setPromotionConfig(null);
     };
