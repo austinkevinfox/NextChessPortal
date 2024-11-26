@@ -9,6 +9,7 @@ const NavBar = () => {
     const currentPath = usePathname();
     const {
         setLive,
+        setActivePlayer,
         setSource,
         setTargetSquare,
         setTargetSquarePotentials,
@@ -18,6 +19,7 @@ const NavBar = () => {
 
     const resetStore = (isGameLive: boolean) => {
         setLive(isGameLive);
+        setActivePlayer("white");
         setSource({ square: "", piece: null });
         setTargetSquare("");
         setTargetSquarePotentials([]);

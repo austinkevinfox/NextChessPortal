@@ -2,13 +2,14 @@ import { Box, Flex } from "@radix-ui/themes";
 import useStepStore from "../state-management/store";
 import CapturedPiecesDisplay from "./CapturedPiecesDisplay";
 import Score from "./Score";
+import Clock from "../live-game/_components/Clock";
 
 interface Props {
     playerColor: "white" | "black";
 }
 
 const SidePanel = ({ playerColor }: Props) => {
-    const { activePlayer, capturedPieces } = useStepStore();
+    const { isLive, activePlayer, capturedPieces } = useStepStore();
     const captureColor = playerColor === "white" ? "black" : "white";
 
     return (
@@ -24,13 +25,20 @@ const SidePanel = ({ playerColor }: Props) => {
             >
                 <Flex justify="between">
                     <Box>{playerColor}</Box>
+                    {isLive && (
+                        <Clock isActive={playerColor === activePlayer} />
+                    )}
                     <Score
                         playerColor={playerColor}
                         capturedPieces={capturedPieces}
                     />
                 </Flex>
             </div>
-            <div className="h-1/2 p-4 bg-slate-300">
+            <div
+                className={`h-1/2 p-4 bg-slate-300 ${
+                    playerColor === "white" ? "rounded-br-lg" : "rounded-bl-lg"
+                }`}
+            >
                 {capturedPieces?.[captureColor]?.pawn && (
                     <CapturedPiecesDisplay
                         captureColor={captureColor}
