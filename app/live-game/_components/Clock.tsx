@@ -1,3 +1,4 @@
+import useStepStore from "@/app/state-management/store";
 import { useEffect, useState } from "react";
 
 interface ClockProps {
@@ -5,12 +6,13 @@ interface ClockProps {
 }
 
 const Clock = ({ isActive }: ClockProps) => {
+    const { checkNotice } = useStepStore();
     const [time, setTime] = useState(0);
 
     useEffect(() => {
         let interval: ReturnType<typeof setInterval> = setInterval(() => null);
 
-        if (isActive) {
+        if (isActive && (!checkNotice || !checkNotice.isMate)) {
             if (time >= 3600000) {
                 clearInterval(interval);
             } else {
@@ -23,7 +25,7 @@ const Clock = ({ isActive }: ClockProps) => {
         }
 
         return () => clearInterval(interval);
-    }, [isActive, time]);
+    }, [isActive, checkNotice, time]);
     return (
         <div className="w-16 pl-1">
             <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>

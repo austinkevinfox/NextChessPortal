@@ -2,12 +2,13 @@
 import { Piece } from "@/app/Interfaces";
 import { getEnPassantConfig } from "@/app/services/EnPassantServices";
 import { getFileRankFromIndices } from "@/app/services/PieceServices";
+import { Result } from "@prisma/client";
 import { ReactNode, useEffect } from "react";
 import CheckToast from "../live-game/_components/CheckToast";
 import { getChecks } from "../live-game/services";
 import useStepStore from "../state-management/store";
 import BoardLoadingSpinner from "./Board/BoardLoadingSpinner";
-import GameOverToast from "./GameOverToast";
+import GameOverModal from "./GameOverModal";
 import { initialPositions } from "./PositionConstants";
 import PromotionModal from "./PromotionModal";
 import Square from "./Square/Square";
@@ -127,18 +128,18 @@ const Board = () => {
             updateLastLiveMove(newMove);
         }
 
-        setCheckNotice(
-            getChecks({
-                positions: tmpPositions,
-                activePlayer,
-                targetSquare: algebraic,
-            })
-        );
+        const tmpCheckNotice = getChecks({
+            positions: tmpPositions,
+            activePlayer,
+            targetSquare: algebraic,
+        });
+
+        setCheckNotice(tmpCheckNotice);
 
         // Handle promotion or toggle active player
         if (source!.piece?.code === "P" && /(1|8)$/.test(algebraic)) {
             setPromotionConfig({ color: activePlayer, square: algebraic });
-        } else {
+        } else if (!tmpCheckNotice || !tmpCheckNotice.isMate) {
             setActivePlayer(activePlayer === "white" ? "black" : "white");
         }
     };
@@ -150,7 +151,13 @@ const Board = () => {
             )}
 
             {checkNotice && <CheckToast isMate={checkNotice.isMate} />}
-            {checkNotice?.isMate && <GameOverToast isOpen={true} />}
+            {checkNotice?.isMate && (
+                <GameOverModal
+                    result={
+                        activePlayer === "white" ? Result.WHITE : Result.BLACK
+                    }
+                />
+            )}
             <div className="h-full aspect-square flex flex-wrap">
                 {[8, 7, 6, 5, 4, 3, 2, 1].map((rank): ReactNode => {
                     return [0, 1, 2, 3, 4, 5, 6, 7].map((index): ReactNode => {

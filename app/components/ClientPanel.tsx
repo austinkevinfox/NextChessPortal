@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import { getArrayOfMoves, getStepData } from "../services/services";
 import useStepStore from "../state-management/store";
 import ControlPanel from "./ControlPanel";
-import GameOverToast from "./GameOverToast";
+import GameOverModal from "./GameOverModal";
 import GameTable from "./GameTable";
 import MovesPanel from "./MovesPanel/MovesPanel";
 
@@ -30,10 +30,9 @@ const ClientPanel = ({ game }: { game: Game }) => {
     return (
         <>
             <ControlPanel moves={moves} />
-            <GameOverToast
-                isOpen={stepIndex === moves.length}
-                result={game.result}
-            />
+            {stepIndex === moves.length && (
+                <GameOverModal result={game.result} />
+            )}
 
             <GameTable movesPanel={<MovesPanel moves={moves} />} />
         </>

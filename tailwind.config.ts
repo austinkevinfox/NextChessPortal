@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-const { blackA } = require("@radix-ui/colors");
+const { violet, blackA } = require("@radix-ui/colors");
 
 const config: Config = {
     content: [
@@ -12,6 +12,7 @@ const config: Config = {
             colors: {
                 background: "var(--background)",
                 foreground: "var(--foreground)",
+                ...violet,
                 ...blackA,
             },
             keyframes: {
