@@ -4,10 +4,10 @@ import { getEnPassantConfig } from "@/app/services/EnPassantServices";
 import { getFileRankFromIndices } from "@/app/services/PieceServices";
 import { Result } from "@prisma/client";
 import { ReactNode, useEffect } from "react";
-import CheckToast from "../live-game/_components/CheckToast";
 import { getChecks } from "../live-game/services";
 import useStepStore from "../state-management/store";
 import BoardLoadingSpinner from "./Board/BoardLoadingSpinner";
+import CheckNotice from "./Board/CheckNotice";
 import GameOverModal from "./GameOverModal";
 import { initialPositions } from "./PositionConstants";
 import PromotionModal from "./PromotionModal";
@@ -150,7 +150,7 @@ const Board = () => {
                 <BoardLoadingSpinner />
             )}
 
-            {checkNotice && <CheckToast isMate={checkNotice.isMate} />}
+            {checkNotice && <CheckNotice isMate={checkNotice.isMate} />}
             {checkNotice?.isMate && (
                 <GameOverModal
                     result={
