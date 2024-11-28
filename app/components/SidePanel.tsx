@@ -35,7 +35,7 @@ const SidePanel = ({ playerColor }: Props) => {
                 </Flex>
             </div>
             <div
-                className={`h-1/2 p-4 bg-slate-300 ${
+                className={`min-h-[100px] p-4 bg-slate-300 ${
                     playerColor === "white" ? "rounded-br-lg" : "rounded-bl-lg"
                 }`}
             >

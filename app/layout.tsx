@@ -34,7 +34,7 @@ export default function RootLayout({
             >
                 <Theme>
                     <NavBar />
-                    <main>{children}</main>
+                    <main className="lg:flex justify-center">{children}</main>
                 </Theme>
             </body>
         </html>
