@@ -17,12 +17,12 @@ const CastlingPathSquares = {
 };
 
 const CastlingFullPathSquares = {
-    kingSide: ["e", "f", "g", "h"],
-    queenSide: ["a", "b", "c", "d", "e"],
+    kingSide: ["e", "f", "g"],
+    queenSide: ["b", "c", "d", "e"],
 };
 const ShortThreatFiles = {
-    kingSide: ["d", "e", "f", "g", "h"],
-    queenSide: ["a", "b", "c", "d", "e", "f"],
+    kingSide: ["d", "e", "f", "g"],
+    queenSide: ["b", "c", "d", "e", "f"],
 };
 
 interface CastlingPathArgs {
