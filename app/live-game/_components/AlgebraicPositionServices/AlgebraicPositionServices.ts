@@ -1,8 +1,14 @@
-import { Files } from "./AlgebraicNotationConstants";
-import { getKingSquare, isMate } from "./AlgebraicKingPositionServices";
 import { BoardPositionHash, CheckNotice, Position } from "@/app/Interfaces";
+import { getIsBishopDefendingSquare } from "./AlgebraicBishopPositionServices";
+import { getKingSquare, isMate } from "./AlgebraicKingPositionServices";
 import { getKnightThreats } from "./AlgebraicKnightPositionServices";
-import { getPawnThreats } from "./AlgebraicPawnPositionServices";
+import { Files } from "./AlgebraicNotationConstants";
+import {
+    getIsPawnDefendingSquare,
+    getPawnThreats,
+} from "./AlgebraicPawnPositionServices";
+import { getIsQueenDefendingSquare } from "./AlgebraicQueenPositionServices";
+import { getIsRookDefendingSquare } from "./AlgebraicRookPositionServices";
 
 declare type AttackerPositions = {
     bishop: string[];
@@ -233,6 +239,59 @@ const getFileLine = (
     }
 
     return fileLine;
+};
+
+export const isSquareDefended = ({
+    square,
+    boardPositions,
+    activePlayer,
+}: {
+    square: string;
+    boardPositions: BoardPositionHash;
+    activePlayer: "white" | "black";
+}): boolean => {
+    const defendingPlayer = activePlayer === "white" ? "black" : "white";
+
+    if (
+        getIsPawnDefendingSquare({
+            defendingPlayer,
+            boardPositions,
+            square,
+        })
+    ) {
+        return true;
+    }
+
+    if (
+        getIsBishopDefendingSquare({
+            defendingPlayer,
+            boardPositions,
+            square,
+        })
+    ) {
+        return true;
+    }
+
+    if (
+        getIsRookDefendingSquare({
+            defendingPlayer,
+            boardPositions,
+            square,
+        })
+    ) {
+        return true;
+    }
+
+    if (
+        getIsQueenDefendingSquare({
+            defendingPlayer,
+            boardPositions,
+            square,
+        })
+    ) {
+        return true;
+    }
+    return false;
 };
 
 const getRankLine = (

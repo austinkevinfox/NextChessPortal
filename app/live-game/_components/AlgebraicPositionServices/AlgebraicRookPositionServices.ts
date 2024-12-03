@@ -7,6 +7,7 @@ import {
     getWestRank,
     omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
+import { isFileClear, isRankClear } from "./ClearPathServices";
 
 export const getAlgebraicRookMoves = (
     file: string,
@@ -43,3 +44,46 @@ export const getRookThreats = (
         pieceName: "rook",
         callback: getAlgebraicRookMoves,
     });
+
+export const getIsRookDefendingSquare = ({
+    defendingPlayer,
+    boardPositions,
+    square,
+}: {
+    defendingPlayer: "white" | "black";
+    boardPositions: BoardPositionHash;
+    square: string;
+}): boolean => {
+    const [fileStr, rankStr] = square.split("");
+    let isRookDefending = false;
+    const rookPositions = Object.keys(boardPositions).filter(
+        (notation) =>
+            boardPositions[notation]?.color === defendingPlayer &&
+            boardPositions[notation]?.code === "R"
+    );
+
+    rookPositions.every((position) => {
+        const [rookFile, rookRank] = position.split("");
+        isRookDefending = false;
+
+        if (rookFile === fileStr) {
+            // traverse file
+            isRookDefending = isFileClear({
+                boardPositions,
+                positionA: position,
+                positionB: square,
+            });
+        }
+        if (rookRank === rankStr) {
+            // traverse rank
+            isRookDefending = isRankClear({
+                boardPositions,
+                positionA: position,
+                positionB: square,
+            });
+        }
+        return !isRookDefending;
+    });
+
+    return isRookDefending;
+};

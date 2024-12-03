@@ -11,6 +11,7 @@ import {
     getWestRank,
     omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
+import { isDiagonalClear, isFileClear, isRankClear } from "./ClearPathServices";
 
 export const getAlgebraicQueenMoves = (
     file: string,
@@ -76,3 +77,55 @@ export const getQueenThreats = (
         pieceName: "queen",
         callback: getAlgebraicQueenMoves,
     });
+
+export const getIsQueenDefendingSquare = ({
+    defendingPlayer,
+    boardPositions,
+    square,
+}: {
+    defendingPlayer: "white" | "black";
+    boardPositions: BoardPositionHash;
+    square: string;
+}): boolean => {
+    const [fileStr, rankStr] = square.split("");
+    let isQueenDefending = false;
+    const queenPositions = Object.keys(boardPositions).filter(
+        (notation) =>
+            boardPositions[notation]?.color === defendingPlayer &&
+            boardPositions[notation]?.code === "Q"
+    );
+
+    queenPositions.every((position) => {
+        const [queenFile, queenRank] = position.split("");
+        isQueenDefending = false;
+
+        if (queenFile === fileStr) {
+            // traverse file
+            isQueenDefending = isFileClear({
+                boardPositions,
+                positionA: position,
+                positionB: square,
+            });
+        }
+        if (queenRank === rankStr) {
+            // traverse rank
+            isQueenDefending = isRankClear({
+                boardPositions,
+                positionA: position,
+                positionB: square,
+            });
+        }
+
+        if (queenFile !== fileStr && queenRank !== rankStr) {
+            isQueenDefending = isDiagonalClear({
+                boardPositions,
+                positionA: position,
+                positionB: square,
+            });
+        }
+
+        return !isQueenDefending;
+    });
+
+    return isQueenDefending;
+};

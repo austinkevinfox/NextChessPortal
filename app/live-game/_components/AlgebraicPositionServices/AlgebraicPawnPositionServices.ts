@@ -1,14 +1,14 @@
+import { Files, FileType } from "@/app/components/PositionConstants";
 import { BoardPositionHash, EnPassan } from "@/app/Interfaces";
 import {
-    getNorthFile1Space,
-    getSouthFile1Space,
     getNorthEastDiagonal1Space,
+    getNorthFile1Space,
     getNorthWestDiagonal1Space,
     getSouthEastDiagonal1Space,
+    getSouthFile1Space,
     getSouthWestDiagonal1Space,
     omitKingExposingThreats,
 } from "./AlgebraicPositionServices";
-import { Files, FileType } from "@/app/components/PositionConstants";
 
 export const getAlgebraicPawnMoves = (
     file: string,
@@ -105,6 +105,36 @@ export const getAlgebraicPawnMoves = (
     return pawnMoves;
 };
 
+export const getIsPawnDefendingSquare = ({
+    defendingPlayer,
+    boardPositions,
+    square,
+}: {
+    defendingPlayer: "white" | "black";
+    boardPositions: BoardPositionHash;
+    square: string;
+}): boolean => {
+    const [fileStr, rankStr] = square.split("");
+    const fileIndex = Files[fileStr as FileType];
+    const rank = parseInt(rankStr);
+    let eastPosition = null;
+    let westPosition = null;
+
+    if (defendingPlayer === "white") {
+        eastPosition = boardPositions[`${Files[fileIndex + 1]}${rank - 1}`];
+        westPosition = boardPositions[`${Files[fileIndex - 1]}${rank - 1}`];
+    } else {
+        eastPosition = boardPositions[`${Files[fileIndex + 1]}${rank + 1}`];
+        westPosition = boardPositions[`${Files[fileIndex - 1]}${rank + 1}`];
+    }
+
+    return (
+        (eastPosition?.color === defendingPlayer &&
+            eastPosition?.code === "P") ||
+        (westPosition?.color === defendingPlayer && westPosition?.code === "P")
+    );
+};
+
 export const getPawnThreats = ({
     activePlayer,
     targetSquare,
@@ -134,43 +164,6 @@ export const getPawnThreats = ({
     }
     return attackSquares;
 };
-
-// interface EnPassanNotationProps {
-//     positions: BoardPosition[];
-//     squareIndex: number;
-//     source: number;
-//     target: number;
-//     activePlayer: string;
-// }
-
-// export const getEnPassanNotation = ({
-//     positions,
-//     squareIndex,
-//     source,
-//     target,
-//     activePlayer,
-// }: EnPassanNotationProps): EnPassan | null => {
-//     const tmpPositions = [...positions];
-//     const tmpPiece = tmpPositions[squareIndex].piece!;
-//     if (isPawnMove2SquareOpening(tmpPiece, source, target)) {
-//         const indices = [1, 2].map((j) =>
-//             activePlayer === "white" ? squareIndex - 8 * j : squareIndex + 8 * j
-//         );
-//         const enPassonObject: EnPassan = {
-//             captureSquareNotation: tmpPositions[indices[1]].algebraicNotation,
-//             landingSquareNotation: tmpPositions[indices[0]].algebraicNotation,
-//         };
-//         return enPassonObject;
-//     } else {
-//         return null;
-//     }
-// };
-
-// const isPawnMove2SquareOpening = (
-//     piece: Piece,
-//     source: number,
-//     target: number
-// ): boolean => piece.name === "pawn" && Math.abs(source + 1 - target) === 16;
 
 const isPawnAbleToCapture = (
     boardPositions: BoardPositionHash,

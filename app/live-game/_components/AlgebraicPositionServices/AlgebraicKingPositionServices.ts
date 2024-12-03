@@ -11,6 +11,7 @@ import {
     getSouthFile1Space,
     getSouthWestDiagonal1Space,
     getWestRank1Space,
+    isSquareDefended,
 } from "./AlgebraicPositionServices";
 import { getQueenThreats } from "./AlgebraicQueenPositionServices";
 import { getRookThreats } from "./AlgebraicRookPositionServices";
@@ -109,7 +110,17 @@ export const getAlgebraicKingMoves = (
         activePlayer
     );
 
-    return kingMoves.filter((square) => !squaresUnderAttack.includes(square));
+    let returnKingMoves: string[] = [];
+
+    kingMoves
+        .filter((square) => !squaresUnderAttack.includes(square))
+        .forEach((square) => {
+            if (!isSquareDefended({ square, boardPositions, activePlayer })) {
+                returnKingMoves.push(square);
+            }
+        });
+
+    return returnKingMoves;
 };
 
 interface Threats {
