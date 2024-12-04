@@ -117,16 +117,35 @@ export const getIsPawnDefendingSquare = ({
     const [fileStr, rankStr] = square.split("");
     const fileIndex = Files[fileStr as FileType];
     const rank = parseInt(rankStr);
-    let eastPosition = null;
-    let westPosition = null;
+    let eastNotation = null;
+    let westNotation = null;
+
+    if (
+        isPawnMovableToSquare({
+            defendingPlayer,
+            boardPositions,
+            square,
+        })
+    ) {
+        return true;
+    }
+
+    // Can pawn capture to square?
+
+    if (boardPositions[square] === null) {
+        return false;
+    }
 
     if (defendingPlayer === "white") {
-        eastPosition = boardPositions[`${Files[fileIndex + 1]}${rank - 1}`];
-        westPosition = boardPositions[`${Files[fileIndex - 1]}${rank - 1}`];
+        eastNotation = `${Files[fileIndex + 1]}${rank - 1}`;
+        westNotation = `${Files[fileIndex - 1]}${rank - 1}`;
     } else {
-        eastPosition = boardPositions[`${Files[fileIndex + 1]}${rank + 1}`];
-        westPosition = boardPositions[`${Files[fileIndex - 1]}${rank + 1}`];
+        eastNotation = `${Files[fileIndex + 1]}${rank + 1}`;
+        westNotation = `${Files[fileIndex - 1]}${rank + 1}`;
     }
+
+    const eastPosition = boardPositions[eastNotation];
+    const westPosition = boardPositions[westNotation];
 
     return (
         (eastPosition?.color === defendingPlayer &&
@@ -176,4 +195,37 @@ const isPawnAbleToCapture = (
         (targetSquare && targetSquare.color !== activePlayer) ||
         enPassanNotation?.landingSquareNotation === targetPositions[0]
     );
+};
+
+const isPawnMovableToSquare = ({
+    defendingPlayer,
+    boardPositions,
+    square,
+}: {
+    defendingPlayer: "white" | "black";
+    boardPositions: BoardPositionHash;
+    square: string;
+}): boolean => {
+    if (boardPositions[square] !== null) {
+        return false;
+    }
+
+    const [fileStr, rankStr] = square.split("");
+    const rankInt = parseInt(rankStr);
+    const sourceRankInt = rankInt + (defendingPlayer === "white" ? -1 : 1);
+    const sourcePosition = boardPositions[`${fileStr}${sourceRankInt}`];
+
+    if (sourcePosition === null) {
+        return false;
+    }
+
+    if (
+        sourcePosition.color == defendingPlayer &&
+        sourcePosition.code === "P" &&
+        boardPositions[square] === null
+    ) {
+        return true;
+    }
+
+    return false;
 };

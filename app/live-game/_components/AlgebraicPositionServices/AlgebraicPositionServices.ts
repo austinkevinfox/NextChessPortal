@@ -1,7 +1,10 @@
 import { BoardPositionHash, CheckNotice, Position } from "@/app/Interfaces";
 import { getIsBishopDefendingSquare } from "./AlgebraicBishopPositionServices";
 import { getKingSquare, isMate } from "./AlgebraicKingPositionServices";
-import { getKnightThreats } from "./AlgebraicKnightPositionServices";
+import {
+    getIsKnightDefendingSquare,
+    getKnightThreats,
+} from "./AlgebraicKnightPositionServices";
 import { Files } from "./AlgebraicNotationConstants";
 import {
     getIsPawnDefendingSquare,
@@ -244,16 +247,24 @@ const getFileLine = (
 export const isSquareDefended = ({
     square,
     boardPositions,
-    activePlayer,
+    defendingPlayer,
 }: {
     square: string;
     boardPositions: BoardPositionHash;
-    activePlayer: "white" | "black";
+    defendingPlayer: "white" | "black";
 }): boolean => {
-    const defendingPlayer = activePlayer === "white" ? "black" : "white";
-
     if (
         getIsPawnDefendingSquare({
+            defendingPlayer,
+            boardPositions,
+            square,
+        })
+    ) {
+        return true;
+    }
+
+    if (
+        getIsKnightDefendingSquare({
             defendingPlayer,
             boardPositions,
             square,
@@ -329,15 +340,19 @@ const getRankLine = (
 
 export const getKingThreats = (
     boardPositions: BoardPositionHash,
-    activePlayer: "white" | "black",
+    nextPlayer: "white" | "black",
     targetSquare: string
 ): CheckNotice | null => {
-    const kingSquare = getKingSquare({ boardPositions, activePlayer });
+    const kingSquare = getKingSquare({
+        boardPositions,
+        activePlayer: nextPlayer,
+    });
     const [kingFileStr, kingRankStr] = kingSquare.split("");
     const kingFileIndex = Files[kingFileStr as FileType];
     const kingRank = parseInt(kingRankStr);
     const moves: string[] = [];
     let allChecks: Position[] = [];
+    let areChecksNegligible: boolean[] = [];
 
     // Build Attacker Positions
     let attackerPositions: AttackerPositions = {
@@ -352,7 +367,7 @@ export const getKingThreats = (
         ).filter(
             (algebraic) =>
                 boardPositions[algebraic]?.name === key &&
-                boardPositions[algebraic]?.color !== activePlayer
+                boardPositions[algebraic]?.color !== nextPlayer
         );
     });
 
@@ -374,6 +389,7 @@ export const getKingThreats = (
                 square: bishopPosition,
                 piece: boardPositions[bishopPosition],
             };
+            squares = [bishopPosition];
         } else if (deltaRank === deltaFile) {
             // Bishop has a path to King
             squares = getDiagonalSquares({
@@ -395,6 +411,16 @@ export const getKingThreats = (
 
         if (bishopCheck) {
             allChecks.push(bishopCheck);
+
+            const isSomeCheckPathDefended = squares.some((square) =>
+                isSquareDefended({
+                    square,
+                    boardPositions,
+                    defendingPlayer: nextPlayer,
+                })
+            );
+
+            areChecksNegligible.push(isSomeCheckPathDefended);
         }
     });
 
@@ -451,6 +477,15 @@ export const getKingThreats = (
 
         if (rookCheck) {
             allChecks.push(rookCheck);
+            const isSomeCheckPathDefended = squares.some((square) =>
+                isSquareDefended({
+                    square,
+                    boardPositions,
+                    defendingPlayer: nextPlayer,
+                })
+            );
+
+            areChecksNegligible.push(isSomeCheckPathDefended);
         }
     });
 
@@ -527,11 +562,20 @@ export const getKingThreats = (
         }
         if (queenCheck) {
             allChecks.push(queenCheck);
+            const isSomeCheckPathDefended = squares.some((square) =>
+                isSquareDefended({
+                    square,
+                    boardPositions,
+                    defendingPlayer: nextPlayer,
+                })
+            );
+
+            areChecksNegligible.push(isSomeCheckPathDefended);
         }
     });
 
     if (boardPositions[targetSquare]?.name === "knight") {
-        const knightThreats = getKnightThreats(boardPositions, activePlayer);
+        const knightThreats = getKnightThreats(boardPositions, nextPlayer);
 
         knightThreats.forEach((knightAttack) => {
             if (knightAttack === kingSquare) {
@@ -539,18 +583,23 @@ export const getKingThreats = (
                     square: targetSquare,
                     piece: boardPositions[targetSquare],
                 });
+                areChecksNegligible.push(false);
             }
         });
     }
 
     if (boardPositions[targetSquare]?.name === "pawn") {
-        const pawnThreats = getPawnThreats({ activePlayer, targetSquare });
+        const pawnThreats = getPawnThreats({
+            activePlayer: nextPlayer,
+            targetSquare,
+        });
 
         if (pawnThreats.includes(kingSquare)) {
             allChecks.push({
                 square: targetSquare,
                 piece: boardPositions[targetSquare],
             });
+            areChecksNegligible.push(false);
         }
     }
 
@@ -559,7 +608,8 @@ export const getKingThreats = (
               positions: allChecks,
               isMate: isMate({
                   boardPositions,
-                  activePlayer,
+                  activePlayer: nextPlayer,
+                  areChecksNegligible,
               }),
           }
         : null;

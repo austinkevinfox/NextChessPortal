@@ -25,6 +25,11 @@ export const isFileClear = ({
 
     const rankAInt = parseInt(rankA);
     const rankBInt = parseInt(rankB);
+
+    if (Math.abs(rankAInt - rankBInt) === 1) {
+        return true;
+    }
+
     const rankIncrement = rankAInt < rankBInt ? 1 : -1;
     let nextRank = rankAInt + rankIncrement;
     let isClear = true;
@@ -61,6 +66,10 @@ export const isRankClear = ({
     const fileAInt = Files[fileA as FileType];
     const fileBInt = Files[fileB as FileType];
 
+    if (Math.abs(fileAInt - fileBInt) === 1) {
+        return true;
+    }
+
     const fileIncrement = fileAInt < fileBInt ? 1 : -1;
     let nextFileInt = fileAInt + fileIncrement;
     let isClear = true;
@@ -93,6 +102,15 @@ export const isDiagonalClear = ({
     const fileBInt = Files[fileB as FileType];
     const rankAInt = parseInt(rankA);
     const rankBInt = parseInt(rankB);
+
+    if (Math.abs(fileAInt - fileBInt) !== Math.abs(rankAInt - rankBInt)) {
+        return false;
+    }
+
+    if (Math.abs(rankAInt - rankBInt) === 1) {
+        return true;
+    }
+
     const fileIncrement = fileAInt < fileBInt ? 1 : -1;
     const rankIncrement = rankAInt < rankBInt ? 1 : -1;
     let nextFileInt = fileAInt + fileIncrement;
