@@ -213,6 +213,10 @@ const isPawnMovableToSquare = ({
     const [fileStr, rankStr] = square.split("");
     const rankInt = parseInt(rankStr);
     const sourceRankInt = rankInt + (defendingPlayer === "white" ? -1 : 1);
+
+    if (sourceRankInt < 1 || sourceRankInt > 8) {
+        return false;
+    }
     const sourcePosition = boardPositions[`${fileStr}${sourceRankInt}`];
 
     if (sourcePosition === null) {

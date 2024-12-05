@@ -1,4 +1,4 @@
-import { BoardPositionHash, Position } from "@/app/Interfaces";
+import { BoardPositionHash } from "@/app/Interfaces";
 import { getBishopThreats } from "./AlgebraicBishopPositionServices";
 import { getKnightThreats } from "./AlgebraicKnightPositionServices";
 import { Files } from "./AlgebraicNotationConstants";
@@ -23,7 +23,8 @@ export const getAlgebraicKingMoves = (
     boardPositions: BoardPositionHash,
     activePlayer: "white" | "black",
     isKingSideCastleAvailable: boolean,
-    isQueenSideCastleAvailable: boolean
+    isQueenSideCastleAvailable: boolean,
+    isVerifyMate: boolean = false
 ): string[] => {
     const rank = rankNumber.toString();
     const northFile = getNorthFile1Space(
@@ -114,17 +115,21 @@ export const getAlgebraicKingMoves = (
 
     kingMoves.filter((square) => !squaresUnderAttack.includes(square));
 
-    kingMoves.forEach((square) => {
-        if (
-            !isSquareDefended({
-                square,
-                boardPositions,
-                defendingPlayer: activePlayer,
-            })
-        ) {
-            returnKingMoves.push(square);
-        }
-    });
+    if (isVerifyMate) {
+        kingMoves.forEach((square) => {
+            if (
+                !isSquareDefended({
+                    square,
+                    boardPositions,
+                    defendingPlayer: activePlayer,
+                })
+            ) {
+                returnKingMoves.push(square);
+            }
+        });
+    } else {
+        returnKingMoves = kingMoves;
+    }
 
     return returnKingMoves;
 };
@@ -199,7 +204,8 @@ export const isMate = ({
             boardPositions,
             activePlayer,
             false,
-            false
+            false,
+            true
         );
         isKingMovable = kingMoves.length > 0;
     }

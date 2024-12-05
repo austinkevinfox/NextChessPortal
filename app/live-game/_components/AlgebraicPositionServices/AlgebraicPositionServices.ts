@@ -1,6 +1,10 @@
 import { BoardPositionHash, CheckNotice, Position } from "@/app/Interfaces";
 import { getIsBishopDefendingSquare } from "./AlgebraicBishopPositionServices";
-import { getKingSquare, isMate } from "./AlgebraicKingPositionServices";
+import {
+    getAlgebraicKingMoves,
+    getKingSquare,
+    isMate,
+} from "./AlgebraicKingPositionServices";
 import {
     getIsKnightDefendingSquare,
     getKnightThreats,
@@ -576,6 +580,15 @@ export const getKingThreats = (
 
     if (boardPositions[targetSquare]?.name === "knight") {
         const knightThreats = getKnightThreats(boardPositions, nextPlayer);
+        const kingMoves = getAlgebraicKingMoves(
+            kingFileStr,
+            kingRank,
+            boardPositions,
+            nextPlayer,
+            false,
+            false,
+            false
+        );
 
         knightThreats.forEach((knightAttack) => {
             if (knightAttack === kingSquare) {
@@ -583,7 +596,16 @@ export const getKingThreats = (
                     square: targetSquare,
                     piece: boardPositions[targetSquare],
                 });
-                areChecksNegligible.push(false);
+
+                const isCheckNegligible =
+                    kingMoves.length > 0 ||
+                    isSquareDefended({
+                        square: targetSquare,
+                        boardPositions,
+                        defendingPlayer: nextPlayer,
+                    });
+
+                areChecksNegligible.push(isCheckNegligible);
             }
         });
     }
@@ -593,13 +615,30 @@ export const getKingThreats = (
             activePlayer: nextPlayer,
             targetSquare,
         });
+        const kingMoves = getAlgebraicKingMoves(
+            kingFileStr,
+            kingRank,
+            boardPositions,
+            nextPlayer,
+            false,
+            false,
+            false
+        );
 
         if (pawnThreats.includes(kingSquare)) {
             allChecks.push({
                 square: targetSquare,
                 piece: boardPositions[targetSquare],
             });
-            areChecksNegligible.push(false);
+            const isCheckNegligible =
+                kingMoves.length > 0 ||
+                isSquareDefended({
+                    square: targetSquare,
+                    boardPositions,
+                    defendingPlayer: nextPlayer,
+                });
+
+            areChecksNegligible.push(isCheckNegligible);
         }
     }
 
