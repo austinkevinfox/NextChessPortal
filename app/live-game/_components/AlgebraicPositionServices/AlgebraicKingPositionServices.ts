@@ -17,31 +17,30 @@ import { getQueenThreats } from "./AlgebraicQueenPositionServices";
 import { getRookThreats } from "./AlgebraicRookPositionServices";
 declare type FileType = keyof typeof Files;
 
-export const getAlgebraicKingMoves = (
-    file: string,
-    rankNumber: number,
-    boardPositions: BoardPositionHash,
-    activePlayer: "white" | "black",
-    isKingSideCastleAvailable: boolean,
-    isQueenSideCastleAvailable: boolean,
-    isVerifyMate: boolean = false
-): string[] => {
-    const rank = rankNumber.toString();
+interface GetKingMoveSquaresArgs {
+    file: string;
+    rank: number;
+    boardPositions: BoardPositionHash;
+    activePlayer: "white" | "black";
+}
+
+export const getKingMoveSquares = ({
+    file,
+    rank,
+    boardPositions,
+    activePlayer,
+}: GetKingMoveSquaresArgs): string[] => {
     const northFile = getNorthFile1Space(
         file + rank,
         boardPositions,
         activePlayer
     );
+
     const eastRank = getEastRank1Space(
         file + rank,
         boardPositions,
         activePlayer
     );
-
-    if (isKingSideCastleAvailable) {
-        const castlingPosition = activePlayer === "white" ? "g1" : "g8";
-        eastRank.push(castlingPosition);
-    }
 
     const southFile = getSouthFile1Space(
         file + rank,
@@ -54,11 +53,6 @@ export const getAlgebraicKingMoves = (
         boardPositions,
         activePlayer
     );
-
-    if (isQueenSideCastleAvailable) {
-        const castlingPosition = activePlayer === "white" ? "c1" : "c8";
-        westRank.push(castlingPosition);
-    }
 
     const northEastDiagonal = getNorthEastDiagonal1Space(
         file + rank,
@@ -111,27 +105,9 @@ export const getAlgebraicKingMoves = (
         activePlayer
     );
 
-    let returnKingMoves: string[] = [];
-
     kingMoves.filter((square) => !squaresUnderAttack.includes(square));
 
-    if (isVerifyMate) {
-        kingMoves.forEach((square) => {
-            if (
-                !isSquareDefended({
-                    square,
-                    boardPositions,
-                    defendingPlayer: activePlayer,
-                })
-            ) {
-                returnKingMoves.push(square);
-            }
-        });
-    } else {
-        returnKingMoves = kingMoves;
-    }
-
-    return returnKingMoves;
+    return kingMoves;
 };
 
 interface Threats {
@@ -193,21 +169,39 @@ export const isMate = ({
     if (areChecksNegligible.some((datum) => datum)) {
         return false;
     }
+    return isKingImmovable({
+        boardPositions,
+        activePlayer,
+    });
+};
 
+const isKingImmovable = ({
+    boardPositions,
+    activePlayer,
+}: {
+    boardPositions: BoardPositionHash;
+    activePlayer: "white" | "black";
+}): boolean => {
     const kingSquare = getKingSquare({ boardPositions, activePlayer });
     let isKingMovable = false;
     if (kingSquare) {
         const [file, rank] = kingSquare.split("");
-        const kingMoves = getAlgebraicKingMoves(
+        const kingMoveSquares = getKingMoveSquares({
             file,
-            parseInt(rank),
+            rank: parseInt(rank),
             boardPositions,
             activePlayer,
-            false,
-            false,
-            true
+        });
+
+        isKingMovable = kingMoveSquares.some(
+            (square) =>
+                !isSquareDefended({
+                    square,
+                    boardPositions,
+                    defendingPlayer:
+                        activePlayer === "white" ? "black" : "white",
+                })
         );
-        isKingMovable = kingMoves.length > 0;
     }
 
     return !isKingMovable;

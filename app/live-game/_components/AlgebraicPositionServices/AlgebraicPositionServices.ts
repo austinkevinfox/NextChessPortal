@@ -1,9 +1,9 @@
 import { BoardPositionHash, CheckNotice, Position } from "@/app/Interfaces";
 import { getIsBishopDefendingSquare } from "./AlgebraicBishopPositionServices";
 import {
-    getAlgebraicKingMoves,
+    getKingMoveSquares,
     getKingSquare,
-    isMate,
+    isMate
 } from "./AlgebraicKingPositionServices";
 import {
     getIsKnightDefendingSquare,
@@ -580,15 +580,12 @@ export const getKingThreats = (
 
     if (boardPositions[targetSquare]?.name === "knight") {
         const knightThreats = getKnightThreats(boardPositions, nextPlayer);
-        const kingMoves = getAlgebraicKingMoves(
-            kingFileStr,
-            kingRank,
+        const kingMoves = getKingMoveSquares({
+            file: kingFileStr,
+            rank: kingRank,
             boardPositions,
-            nextPlayer,
-            false,
-            false,
-            false
-        );
+            activePlayer: nextPlayer,
+        });
 
         knightThreats.forEach((knightAttack) => {
             if (knightAttack === kingSquare) {
@@ -615,15 +612,12 @@ export const getKingThreats = (
             activePlayer: nextPlayer,
             targetSquare,
         });
-        const kingMoves = getAlgebraicKingMoves(
-            kingFileStr,
-            kingRank,
+        const kingMoves = getKingMoveSquares({
+            file: kingFileStr,
+            rank: kingRank,
             boardPositions,
-            nextPlayer,
-            false,
-            false,
-            false
-        );
+            activePlayer: nextPlayer,
+        });
 
         if (pawnThreats.includes(kingSquare)) {
             allChecks.push({
