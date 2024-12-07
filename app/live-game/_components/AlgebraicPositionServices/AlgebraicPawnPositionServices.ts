@@ -114,12 +114,6 @@ export const getIsPawnDefendingSquare = ({
     boardPositions: BoardPositionHash;
     square: string;
 }): boolean => {
-    const [fileStr, rankStr] = square.split("");
-    const fileIndex = Files[fileStr as FileType];
-    const rank = parseInt(rankStr);
-    let eastNotation = null;
-    let westNotation = null;
-
     if (
         isPawnMovableToSquare({
             defendingPlayer,
@@ -130,11 +124,31 @@ export const getIsPawnDefendingSquare = ({
         return true;
     }
 
-    // Can pawn capture to square?
+    return isSquareCapturableByPawn({
+        defendingPlayer,
+        boardPositions,
+        square,
+    });
+};
 
+export const isSquareCapturableByPawn = ({
+    defendingPlayer,
+    boardPositions,
+    square,
+}: {
+    defendingPlayer: "white" | "black";
+    boardPositions: BoardPositionHash;
+    square: string;
+}): boolean => {
     if (boardPositions[square] === null) {
         return false;
     }
+
+    const [fileStr, rankStr] = square.split("");
+    const fileIndex = Files[fileStr as FileType];
+    const rank = parseInt(rankStr);
+    let eastNotation = null;
+    let westNotation = null;
 
     if (defendingPlayer === "white") {
         eastNotation = `${Files[fileIndex + 1]}${rank - 1}`;

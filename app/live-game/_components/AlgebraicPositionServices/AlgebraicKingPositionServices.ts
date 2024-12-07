@@ -1,6 +1,4 @@
 import { BoardPositionHash } from "@/app/Interfaces";
-import { getBishopThreats } from "./AlgebraicBishopPositionServices";
-import { getKnightThreats } from "./AlgebraicKnightPositionServices";
 import { Files } from "./AlgebraicNotationConstants";
 import {
     getEastRank1Space,
@@ -11,10 +9,9 @@ import {
     getSouthFile1Space,
     getSouthWestDiagonal1Space,
     getWestRank1Space,
+    isSquareCapturable,
     isSquareDefended,
 } from "./AlgebraicPositionServices";
-import { getQueenThreats } from "./AlgebraicQueenPositionServices";
-import { getRookThreats } from "./AlgebraicRookPositionServices";
 declare type FileType = keyof typeof Files;
 
 interface GetKingMoveSquaresArgs {
@@ -75,19 +72,6 @@ export const getKingMoveSquares = ({
         activePlayer
     );
 
-    // Premptively remove squares of immediate jeopardy
-    const threats = getThreatsToKing({
-        boardPositions,
-        activePlayer,
-    });
-
-    let squaresUnderAttack: string[] = [
-        ...threats.knightThreats,
-        ...threats.bishopThreats,
-        ...threats.rookThreats,
-        ...threats.queenThreats,
-    ];
-
     let kingMoves = [
         ...northFile,
         ...eastRank,
@@ -99,45 +83,14 @@ export const getKingMoveSquares = ({
         ...southWestDiagonal,
     ];
 
-    kingMoves = getMovesWithoutPawnThreats(
-        kingMoves,
-        boardPositions,
-        activePlayer
+    return kingMoves.filter(
+        (square) =>
+            !isSquareCapturable({
+                square,
+                boardPositions,
+                defendingPlayer: activePlayer === "white" ? "black" : "white",
+            })
     );
-
-    kingMoves.filter((square) => !squaresUnderAttack.includes(square));
-
-    return kingMoves;
-};
-
-interface Threats {
-    pawnThreats: string[];
-    knightThreats: string[];
-    bishopThreats: string[];
-    rookThreats: string[];
-    queenThreats: string[];
-}
-export const getThreatsToKing = ({
-    boardPositions,
-    activePlayer,
-}: {
-    boardPositions: BoardPositionHash;
-    activePlayer: "white" | "black";
-}): Threats => {
-    let threats: Threats = {
-        pawnThreats: [],
-        knightThreats: [],
-        bishopThreats: [],
-        rookThreats: [],
-        queenThreats: [],
-    };
-
-    threats.knightThreats = getKnightThreats(boardPositions, activePlayer);
-    threats.bishopThreats = getBishopThreats(boardPositions, activePlayer);
-    threats.rookThreats = getRookThreats(boardPositions, activePlayer);
-    threats.queenThreats = getQueenThreats(boardPositions, activePlayer);
-
-    return threats;
 };
 
 export const getKingSquare = ({
@@ -205,39 +158,4 @@ const isKingImmovable = ({
     }
 
     return !isKingMovable;
-};
-
-const getMovesWithoutPawnThreats = (
-    kingMoves: string[],
-    positions: BoardPositionHash,
-    activePlayer: string
-): string[] => {
-    let safeMoves: string[] = [...kingMoves];
-
-    kingMoves.forEach((kingMove) => {
-        const [newFileStr, newRankStr] = kingMove.split("");
-        const newFileIndex = Files[newFileStr as FileType];
-        const newRank = parseInt(newRankStr);
-        const rankIncrement = activePlayer === "white" ? 1 : -1;
-        const pawnRank = newRank + rankIncrement;
-        if (pawnRank <= 8 && pawnRank >= 1) {
-            [-1, 1].forEach((fileIncrement) => {
-                const pawnFile = Files[newFileIndex + fileIncrement];
-                if (pawnFile) {
-                    const pawnPosition = pawnFile + pawnRank;
-                    const tmpPosition = positions[pawnPosition];
-                    if (
-                        tmpPosition?.name === "pawn" &&
-                        tmpPosition?.color !== activePlayer
-                    ) {
-                        safeMoves = safeMoves.filter(
-                            (notation) => notation !== kingMove
-                        );
-                    }
-                }
-            });
-        }
-    });
-
-    return safeMoves;
 };

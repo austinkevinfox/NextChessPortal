@@ -13,6 +13,7 @@ import { Files } from "./AlgebraicNotationConstants";
 import {
     getIsPawnDefendingSquare,
     getPawnThreats,
+    isSquareCapturableByPawn,
 } from "./AlgebraicPawnPositionServices";
 import { getIsQueenDefendingSquare } from "./AlgebraicQueenPositionServices";
 import { getIsRookDefendingSquare } from "./AlgebraicRookPositionServices";
@@ -259,6 +260,67 @@ export const isSquareDefended = ({
 }): boolean => {
     if (
         getIsPawnDefendingSquare({
+            defendingPlayer,
+            boardPositions,
+            square,
+        })
+    ) {
+        return true;
+    }
+
+    if (
+        getIsKnightDefendingSquare({
+            defendingPlayer,
+            boardPositions,
+            square,
+        })
+    ) {
+        return true;
+    }
+
+    if (
+        getIsBishopDefendingSquare({
+            defendingPlayer,
+            boardPositions,
+            square,
+        })
+    ) {
+        return true;
+    }
+
+    if (
+        getIsRookDefendingSquare({
+            defendingPlayer,
+            boardPositions,
+            square,
+        })
+    ) {
+        return true;
+    }
+
+    if (
+        getIsQueenDefendingSquare({
+            defendingPlayer,
+            boardPositions,
+            square,
+        })
+    ) {
+        return true;
+    }
+    return false;
+};
+
+export const isSquareCapturable = ({
+    square,
+    boardPositions,
+    defendingPlayer,
+}: {
+    square: string;
+    boardPositions: BoardPositionHash;
+    defendingPlayer: "white" | "black";
+}): boolean => {
+    if (
+        isSquareCapturableByPawn({
             defendingPlayer,
             boardPositions,
             square,
