@@ -121,18 +121,25 @@ const Board = () => {
         setSource({ ...source, piece: null });
         setTargetSquarePotentials([]);
 
+        const tmpCheckNotice = getChecks({
+            positions: tmpPositions,
+            activePlayer,
+            targetSquare: algebraic,
+        });
+
+        if (tmpCheckNotice?.positions?.length! > 0) {
+            newMove += "+";
+        }
+        if (tmpCheckNotice?.isMate) {
+            newMove += "+";
+        }
+
         if (activePlayer === "white") {
             addLiveMove(newMove);
             addLiveMove("...");
         } else {
             updateLastLiveMove(newMove);
         }
-
-        const tmpCheckNotice = getChecks({
-            positions: tmpPositions,
-            activePlayer,
-            targetSquare: algebraic,
-        });
 
         setCheckNotice(tmpCheckNotice);
 
