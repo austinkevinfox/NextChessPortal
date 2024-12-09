@@ -17,7 +17,9 @@ const GameTable = ({ movesPanel }: Props) => {
                 <Board />
                 <Flex direction="column" gap="3" className="h-full">
                     <SidePanel playerColor="white" />
-                    <div className="hidden md:block ml-4">{movesPanel}</div>
+                    <div className="hidden md:block ml-4 h-[calc(100vh-300px)]">
+                        {movesPanel}
+                    </div>
                 </Flex>
             </div>
             <div className="sm:block md:hidden mt-4 ml-5">{movesPanel}</div>
