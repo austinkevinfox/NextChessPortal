@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FaTrashCan } from "react-icons/fa6";
 import RoundHoverIcon from "./RoundHoverIcon";
+import GridButtonTooltip from "./tooltip/Tooltip";
 
 const DeleteButton = ({ gameId }: { gameId: number }) => {
     const router = useRouter();
@@ -16,11 +17,13 @@ const DeleteButton = ({ gameId }: { gameId: number }) => {
     };
 
     return (
-        <Box onClick={handleClick}>
-            <RoundHoverIcon>
-                <FaTrashCan />
-            </RoundHoverIcon>
-        </Box>
+        <GridButtonTooltip content="Delete game">
+            <Box onClick={handleClick}>
+                <RoundHoverIcon>
+                    <FaTrashCan />
+                </RoundHoverIcon>
+            </Box>
+        </GridButtonTooltip>
     );
 };
 
