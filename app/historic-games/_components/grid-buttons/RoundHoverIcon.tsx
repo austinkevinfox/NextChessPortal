@@ -3,7 +3,7 @@ import React, { ReactElement } from "react";
 
 const RoundHoverIcon = ({ children }: { children: ReactElement }) => {
     return (
-        <Flex className="w-fit aspect-square p-2 hover:bg-amber-200 rounded-full">
+        <Flex className="w-fit aspect-square p-2 hover:bg-amber-200 rounded-full cursor-pointer">
             {children}
         </Flex>
     );
