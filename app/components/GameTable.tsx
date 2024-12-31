@@ -1,3 +1,4 @@
+"use client";
 import { Board } from "@/app/components";
 import { ReactElement } from "react";
 import SidePanel from "./SidePanel";

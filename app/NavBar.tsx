@@ -66,6 +66,7 @@ const NavBar = () => {
                                 "hover:text-zinc-800 transition-colors": true,
                             })}
                             href={link.href}
+                            prefetch={true}
                             onClick={link.callback}
                         >
                             {link.label}
