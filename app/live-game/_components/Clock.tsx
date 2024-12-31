@@ -6,25 +6,30 @@ interface ClockProps {
 }
 
 const Clock = ({ isActive }: ClockProps) => {
-    const { checkNotice } = useStepStore();
+    const { checkNotice, liveMoves } = useStepStore();
     const [time, setTime] = useState(0);
 
     useEffect(() => {
-        let interval: ReturnType<typeof setInterval> = setInterval(() => null);
+        // Clock will start after black makes first move.
+        if (liveMoves.filter((move) => move !== "...").length > 1) {
+            let interval: ReturnType<typeof setInterval> = setInterval(
+                () => null
+            );
 
-        if (isActive && (!checkNotice || !checkNotice.isMate)) {
-            if (time >= 3600000) {
-                clearInterval(interval);
+            if (isActive && (!checkNotice || !checkNotice.isMate)) {
+                if (time >= 3600000) {
+                    clearInterval(interval);
+                } else {
+                    interval = setInterval(() => {
+                        setTime((prevTime) => prevTime + 1000);
+                    }, 1000);
+                }
             } else {
-                interval = setInterval(() => {
-                    setTime((prevTime) => prevTime + 1000);
-                }, 1000);
+                clearInterval(interval);
             }
-        } else {
-            clearInterval(interval);
-        }
 
-        return () => clearInterval(interval);
+            return () => clearInterval(interval);
+        }
     }, [isActive, checkNotice, time]);
     return (
         <div className="w-16 pl-1">
