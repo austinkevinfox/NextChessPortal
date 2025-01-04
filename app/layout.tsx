@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import "@radix-ui/themes/styles.css";
-import { Theme } from "@radix-ui/themes";
+import { Flex, Theme } from "@radix-ui/themes";
 import NavBar from "./NavBar";
 
 const geistSans = localFont({
@@ -32,9 +32,11 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh`}
             >
-                <Theme>
+                <Theme className="h-full">
                     <NavBar />
-                    <main className="lg:flex justify-center">{children}</main>
+                    <Flex justify="center" className="h-full">
+                        {children}
+                    </Flex>
                 </Theme>
             </body>
         </html>
