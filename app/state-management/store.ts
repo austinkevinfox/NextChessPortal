@@ -16,6 +16,7 @@ import { create } from "zustand";
 interface StepStore {
     stepIndex: number;
     isLive: boolean;
+    isLoaded: boolean;
     activePlayer: "white" | "black";
     promotionConfig: { color: "white" | "black"; square: string } | null;
     source: Position;
@@ -31,6 +32,7 @@ interface StepStore {
     decrementStep: () => void;
     setStep: (index: number) => void;
     setLive: (value: boolean) => void;
+    setLoaded: (value: boolean) => void;
     setActivePlayer: (color: "white" | "black") => void;
     setPromotionConfig: (
         newConfig: { color: "white" | "black"; square: string } | null
@@ -60,6 +62,7 @@ interface StepStore {
 const useStepStore = create<StepStore>((set) => ({
     stepIndex: 0,
     isLive: false,
+    isLoaded: false,
     activePlayer: "white",
     promotionConfig: null,
     source: { square: "", piece: null },
@@ -75,6 +78,7 @@ const useStepStore = create<StepStore>((set) => ({
     decrementStep: () => set((store) => ({ stepIndex: store.stepIndex - 1 })),
     setStep: (newIndex) => set(() => ({ stepIndex: newIndex })),
     setLive: (newValue) => set(() => ({ isLive: newValue })),
+    setLoaded: (newValue) => set(() => ({ isLoaded: newValue })),
     setActivePlayer: (color) => set(() => ({ activePlayer: color })),
     setPromotionConfig: (newConfig) =>
         set(() => ({ promotionConfig: newConfig })),

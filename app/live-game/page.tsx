@@ -6,9 +6,10 @@ import MovesPanel from "../components/MovesPanel/MovesPanel";
 
 const LiveGame = () => {
     const [moves, setMoves] = useState<string[]>([]);
-    const { setLive, liveMoves } = useStepStore();
+    const { setLive, setLoaded, liveMoves } = useStepStore();
 
     useEffect(() => {
+        setLoaded(true);
         setLive(true);
     }, []);
 

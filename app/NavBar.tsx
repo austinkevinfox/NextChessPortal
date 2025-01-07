@@ -1,14 +1,19 @@
 "use client";
+import { Flex, Spinner } from "@radix-ui/themes";
 import classnames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { FaChessKing } from "react-icons/fa";
 import useStepStore from "./state-management/store";
 
 const NavBar = () => {
+    const [navigatingId, setNavigatingId] = useState(-1);
     const currentPath = usePathname();
     const {
+        isLoaded,
         setLive,
+        setLoaded,
         setActivePlayer,
         setSource,
         setTargetSquare,
@@ -16,6 +21,12 @@ const NavBar = () => {
         clearCapturedPieces,
         clearLiveMoves,
     } = useStepStore();
+
+    useEffect(() => {
+        if (isLoaded) {
+            setNavigatingId(-1);
+        }
+    }, [isLoaded]);
 
     const resetStore = (isGameLive: boolean) => {
         setLive(isGameLive);
@@ -27,18 +38,28 @@ const NavBar = () => {
         clearLiveMoves();
     };
 
+    const onClick = (linkId: number) => {
+        const selectedLink = links.find((link) => link.id === linkId);
+        setLoaded(false);
+        setNavigatingId(linkId);
+        resetStore(selectedLink?.href === "/live-game");
+    };
+
     const links = [
         {
             id: 0,
             label: "Historic Games",
             href: "/historic-games",
-            callback: () => resetStore(false),
         },
         {
             id: 1,
             label: "Live Game",
             href: "/live-game",
-            callback: () => resetStore(true),
+        },
+        {
+            id: 2,
+            label: "Profile",
+            href: "/profile",
         },
     ];
 
@@ -67,9 +88,18 @@ const NavBar = () => {
                             })}
                             href={link.href}
                             prefetch={true}
-                            onClick={link.callback}
+                            onClick={() => onClick(link.id)}
                         >
-                            {link.label}
+                            <Flex align="center" gap="1">
+                                {link.label}
+                                <Spinner
+                                    className={`${
+                                        navigatingId === link.id
+                                            ? "visible"
+                                            : "invisible"
+                                    }`}
+                                />
+                            </Flex>
                         </Link>
                     </li>
                 ))}

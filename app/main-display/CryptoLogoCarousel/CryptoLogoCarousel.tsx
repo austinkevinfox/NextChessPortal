@@ -1,8 +1,5 @@
 import Image from "next/image";
-import { default as BTC } from "@/app/public/bitcoin-btc-logo.svg";
-import { default as ETH } from "@/app/public/ethereum-eth-logo.svg";
-import { default as DOGE } from "@/app/public/dogecoin-doge-logo.svg";
-import { default as XRP } from "@/app/public/xrp-xrp-logo.svg";
+import { BTC, ETH, DOGE, XRP } from "@/app/public/crypto-icons";
 import "./style.css";
 import { Box } from "@radix-ui/themes";
 
