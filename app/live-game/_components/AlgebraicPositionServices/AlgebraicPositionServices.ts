@@ -459,7 +459,6 @@ export const getKingThreats = (
         } else if (deltaRank === deltaFile) {
             // Bishop has a path to King
             squares = getDiagonalSquares({
-                moves,
                 kingFileIndex,
                 kingRank,
                 attackerFileIndex: bishopFileIndex,
@@ -573,7 +572,6 @@ export const getKingThreats = (
         } else if (deltaRank === deltaFile) {
             // Queen has a path to King
             squares = getDiagonalSquares({
-                moves,
                 kingFileIndex,
                 kingRank,
                 attackerFileIndex: queenFileIndex,
@@ -747,7 +745,6 @@ export const omitKingExposingThreats = (
         if (deltaRank === deltaFile) {
             // Bishop has a path to King
             squares = getDiagonalSquares({
-                moves,
                 kingFileIndex,
                 kingRank,
                 attackerFileIndex: bishopFileIndex,
@@ -814,7 +811,6 @@ export const omitKingExposingThreats = (
         if (deltaRank === deltaFile) {
             // Queen has a path to King
             squares = getDiagonalSquares({
-                moves,
                 kingFileIndex,
                 kingRank,
                 attackerFileIndex: queenFileIndex,
@@ -887,14 +883,12 @@ const getStraightLineSquares = ({
 };
 
 interface DiagonalInterface {
-    moves: string[];
     kingFileIndex: number;
     kingRank: number;
     attackerFileIndex: number;
     attackerRank: number;
 }
 const getDiagonalSquares = ({
-    moves,
     kingFileIndex,
     kingRank,
     attackerFileIndex,
