@@ -416,7 +416,6 @@ export const getKingThreats = (
     const [kingFileStr, kingRankStr] = kingSquare.split("");
     const kingFileIndex = Files[kingFileStr as FileType];
     const kingRank = parseInt(kingRankStr);
-    const moves: string[] = [];
     const allChecks: Position[] = [];
     const areChecksNegligible: boolean[] = [];
 
