@@ -18,8 +18,6 @@ const bgColors: { [key: string]: string } = {
 };
 
 const Square = ({ color, rank, fileIndex, piece, isFocus }: Props) => {
-    const file = Files[fileIndex];
-
     return (
         <>
             <Flex

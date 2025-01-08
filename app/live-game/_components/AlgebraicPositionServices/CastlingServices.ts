@@ -126,7 +126,7 @@ const isCastlingPathThreatenedByLongRangePiece = ({
     const castleRank = activePlayer === "white" ? 1 : 8;
 
     // Build Attacker Positions
-    let attackerPositions: AttackerPositions = {
+    const attackerPositions: AttackerPositions = {
         bishop: [],
         rook: [],
         queen: [],

@@ -17,7 +17,7 @@ const GameOverModal = ({ result }: Props) => {
                     </Dialog.Title>
                     <Dialog.Description className="mb-5 mt-2.5 text-[15px] leading-normal">
                         {result === Result.DRAW ? (
-                            <>It's a draw</>
+                            <>It&apos;s a draw</>
                         ) : (
                             <>The winner is {result}</>
                         )}

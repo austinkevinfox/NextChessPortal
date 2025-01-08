@@ -12,7 +12,6 @@ import {
     isSquareCapturable,
     isSquareDefended,
 } from "./AlgebraicPositionServices";
-declare type FileType = keyof typeof Files;
 
 interface GetKingMoveSquaresArgs {
     file: string;
@@ -72,7 +71,7 @@ export const getKingMoveSquares = ({
         activePlayer
     );
 
-    let kingMoves = [
+    const kingMoves = [
         ...northFile,
         ...eastRank,
         ...southFile,

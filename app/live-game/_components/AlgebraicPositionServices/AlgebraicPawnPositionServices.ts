@@ -178,7 +178,7 @@ export const getPawnThreats = ({
     const [pawnFileStr, pawnRankStr] = targetSquare.split("");
     const pawnFileIndex = Files[pawnFileStr as FileType];
     const rankIncrement = activePlayer === "white" ? -1 : 1;
-    let attackSquares: string[] = [];
+    const attackSquares: string[] = [];
 
     if (pawnFileIndex > 0) {
         attackSquares.push(

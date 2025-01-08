@@ -49,7 +49,7 @@ const Board = () => {
     };
 
     const handleTargetClick = (algebraic: string): void => {
-        let tmpPositions = { ...boardPositions };
+        const tmpPositions = { ...boardPositions };
         let newMove = algebraic;
 
         if (tmpPositions[algebraic]) {
@@ -127,7 +127,7 @@ const Board = () => {
             targetSquare: algebraic,
         });
 
-        if (tmpCheckNotice?.positions?.length! > 0) {
+        if (tmpCheckNotice?.positions && tmpCheckNotice.positions.length > 0) {
             newMove += "+";
         }
         if (tmpCheckNotice?.isMate) {

@@ -28,8 +28,6 @@ export const getEnPassantConfig = ({
             Math.abs(parseInt(sourceRank) - parseInt(targetRank)) === 2
         ) {
             // Get opposing pawns in position for en passant
-            let opposingPawnsInPosition: Piece[] = [];
-            let opposingPawn: Piece | null;
             const opposingColor = activePlayer === "white" ? "black" : "white";
             const sourceFileIndex = Files[sourceFile as FileType];
             let sourceNotation: string = "";
@@ -111,18 +109,6 @@ const isOpposingPawnAtSource = ({
     source: Piece | null;
     color: "white" | "black";
 }): boolean => source?.color === color && source?.code === "P";
-
-const getPawnAt = (
-    positions: BoardPositionHash,
-    color: "white" | "black",
-    algebraic: string
-): Piece | null => {
-    const position = positions[algebraic];
-    if (position?.color === color && position?.code === "P") {
-        return position;
-    }
-    return null;
-};
 
 const getEnPassantPotentials = ({
     activePlayer,

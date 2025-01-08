@@ -73,7 +73,7 @@ const getCapturedPieces = (
     capturedPieces: CapturedPieces
 ): CapturedPieces => {
     const tmpCapturedPieces = cloneDeep(capturedPieces);
-    let nextMove = annotatedMove.base;
+    const nextMove = annotatedMove.base;
     const isCapture = /x/.test(nextMove);
     const tmpPositions = { ...gameState.boardPositions };
 
@@ -112,7 +112,7 @@ export const getNextBoardPositions = (
     annotatedMove: AnnotatedMove,
     focusPositions: string[]
 ): BoardPositionHash => {
-    let nextMove = annotatedMove.base;
+    const nextMove = annotatedMove.base;
     const tmpPositions = { ...gameState.boardPositions };
     const castleRank = gameState.activePlayer === "white" ? 1 : 8;
 

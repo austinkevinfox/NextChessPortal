@@ -3,7 +3,7 @@ import { getIsBishopDefendingSquare } from "./AlgebraicBishopPositionServices";
 import {
     getKingMoveSquares,
     getKingSquare,
-    isMate
+    isMate,
 } from "./AlgebraicKingPositionServices";
 import {
     getIsKnightDefendingSquare,
@@ -190,7 +190,7 @@ const getDiagonal = (
     let nextRank = originRank + rankIncrement;
     let nextNotation = Files[nextFileIndex] + nextRank;
     let nextPosition = boardPositions[nextNotation];
-    let diagonal: string[] = [];
+    const diagonal: string[] = [];
     let isLimitReached = false;
 
     while (nextPosition !== undefined && !isLimitReached) {
@@ -225,7 +225,7 @@ const getFileLine = (
     let nextRank = originRank + rankIncrement;
     let nextNotation = originFileString + nextRank;
     let nextPosition = boardPositions[nextNotation];
-    let fileLine: string[] = [];
+    const fileLine: string[] = [];
     let isLimitReached = false;
 
     while (nextPosition !== undefined && !isLimitReached) {
@@ -383,7 +383,7 @@ const getRankLine = (
     let nextFileIndex = originFileIndex + fileIncrement;
     let nextNotation = Files[nextFileIndex] + originRankString;
     let nextPosition = boardPositions[nextNotation];
-    let rankLine: string[] = [];
+    const rankLine: string[] = [];
     let isLimitReached = false;
 
     while (nextPosition !== undefined && !isLimitReached) {
@@ -417,11 +417,11 @@ export const getKingThreats = (
     const kingFileIndex = Files[kingFileStr as FileType];
     const kingRank = parseInt(kingRankStr);
     const moves: string[] = [];
-    let allChecks: Position[] = [];
-    let areChecksNegligible: boolean[] = [];
+    const allChecks: Position[] = [];
+    const areChecksNegligible: boolean[] = [];
 
     // Build Attacker Positions
-    let attackerPositions: AttackerPositions = {
+    const attackerPositions: AttackerPositions = {
         bishop: [],
         rook: [],
         queen: [],
@@ -723,7 +723,7 @@ export const omitKingExposingThreats = (
     const kingRank = parseInt(kingRankStr);
     let tmpMoves = [...moves];
     // Build Attacker Positions
-    let attackerPositions: AttackerPositions = {
+    const attackerPositions: AttackerPositions = {
         bishop: [],
         rook: [],
         queen: [],
@@ -881,12 +881,11 @@ const getStraightLineSquares = ({
     const nextIncrement = attackerIndex > kingIndex ? -1 : 1;
     const lineId: string | number =
         type === "File" ? Files[lineIndex] : lineIndex;
-    let tmpMoves = [...moves];
-    let squares: string[] = [];
+    const squares: string[] = [];
     let nextIndex = attackerIndex;
 
     while (nextIndex !== kingIndex) {
-        let notation =
+        const notation =
             type === "File"
                 ? <string>lineId + nextIndex
                 : Files[nextIndex] + <number>lineId;
@@ -911,7 +910,6 @@ const getDiagonalSquares = ({
     attackerFileIndex,
     attackerRank,
 }: DiagonalInterface): string[] => {
-    let tmpMoves = [...moves];
     const fileDirection: string =
         kingFileIndex < attackerFileIndex ? "west" : "east";
     const rankDirection: string = kingRank < attackerRank ? "south" : "north";
@@ -920,33 +918,7 @@ const getDiagonalSquares = ({
     let nextFileIndex = attackerFileIndex; // + nextFileIncrement;
     let nextRank = attackerRank; // + nextRankIncrement;
     let nextFile: string;
-    let diagonalSquares: string[] = [];
-
-    while (nextRank !== kingRank) {
-        nextFile = Files[nextFileIndex];
-        diagonalSquares.push(nextFile + nextRank);
-        nextFileIndex += nextFileIncrement;
-        nextRank += nextRankIncrement;
-    }
-
-    return diagonalSquares;
-};
-
-const getDiagonalSquaresToKing = ({
-    kingFileIndex,
-    kingRank,
-    attackerFileIndex,
-    attackerRank,
-}: DiagonalInterface): string[] => {
-    const fileDirection: string =
-        kingFileIndex < attackerFileIndex ? "west" : "east";
-    const rankDirection: string = kingRank < attackerRank ? "south" : "north";
-    const nextFileIncrement = fileDirection === "west" ? -1 : 1;
-    const nextRankIncrement = rankDirection === "south" ? -1 : 1;
-    let nextFileIndex = attackerFileIndex; // + nextFileIncrement;
-    let nextRank = attackerRank; // + nextRankIncrement;
-    let nextFile: string;
-    let diagonalSquares: string[] = [];
+    const diagonalSquares: string[] = [];
 
     while (nextRank !== kingRank) {
         nextFile = Files[nextFileIndex];

@@ -75,12 +75,12 @@ const getKnightSquaresBySteps = (
     const fileIndex = Files[file as FileType];
 
     [-2, -1, 1, 2].forEach((i) => {
-        let fileString: string | undefined = Files[fileIndex + i];
+        const fileString: string | undefined = Files[fileIndex + i];
 
         if (fileString) {
             if (i === -2 || i === 2) {
                 [-1, 1].forEach((step) => {
-                    let newPositions = getAlgebraicKnightPositionsByStep(
+                    const newPositions = getAlgebraicKnightPositionsByStep(
                         fileString,
                         rankNumber,
                         step
@@ -89,7 +89,7 @@ const getKnightSquaresBySteps = (
                 });
             } else {
                 [-2, 2].forEach((step) => {
-                    let newPositions = getAlgebraicKnightPositionsByStep(
+                    const newPositions = getAlgebraicKnightPositionsByStep(
                         fileString,
                         rankNumber,
                         step
@@ -107,8 +107,8 @@ const getAlgebraicKnightPositionsByStep = (
     rank: number,
     step: number
 ): string[] => {
-    let result: string[] = [];
-    let tmpRank = rank + step;
+    const result: string[] = [];
+    const tmpRank = rank + step;
     if (tmpRank >= 1 && tmpRank <= 8) {
         result.push(file + tmpRank);
     }
