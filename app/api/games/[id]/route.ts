@@ -6,6 +6,7 @@ export const DELETE = async (
     request: NextRequest,
     { params }: { params: { id: string } }
 ) => {
+    console.log("delete request", request);
     const game = await prisma.game.findUnique({
         where: { id: parseInt(params.id) },
     });
