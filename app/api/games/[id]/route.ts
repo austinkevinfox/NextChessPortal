@@ -23,7 +23,7 @@ export const DELETE = async (
 
 export const PATCH = async (
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) => {
     const body = await request.json();
     const validation = gameSchema.safeParse(body);
@@ -32,8 +32,9 @@ export const PATCH = async (
         return NextResponse.json(validation.error.format(), { status: 400 });
     }
 
+    const { id } = await params;
     const game = await prisma.game.findUnique({
-        where: { id: parseInt(params.id) },
+        where: { id: parseInt(id) },
     });
 
     if (!game) {
