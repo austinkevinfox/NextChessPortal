@@ -3,9 +3,14 @@ import prisma from "@/prisma/client";
 import { Heading } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 
-const PlayHistoricGamePage = async ({ params }: { params: { id: string } }) => {
+const PlayHistoricGamePage = async ({
+    params,
+}: {
+    params: Promise<{ id: string }>;
+}) => {
+    const { id } = await params;
     const game = await prisma.game.findUnique({
-        where: { id: parseInt(params.id) },
+        where: { id: parseInt(id) },
     });
 
     if (!game) notFound();
