@@ -1,5 +1,4 @@
 import { BoardPositionHash } from "@/app/Interfaces";
-import { Files } from "./AlgebraicNotationConstants";
 import {
     getEastRank1Space,
     getNorthEastDiagonal1Space,

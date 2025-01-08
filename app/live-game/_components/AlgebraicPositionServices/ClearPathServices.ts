@@ -1,5 +1,5 @@
 import { BoardPositionHash } from "@/app/Interfaces";
-import { Files } from "./AlgebraicNotationConstants";
+import { Files } from "@/app/components/PositionConstants";
 
 declare type FileType = keyof typeof Files;
 

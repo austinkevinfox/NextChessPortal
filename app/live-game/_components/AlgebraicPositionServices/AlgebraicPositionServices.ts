@@ -1,3 +1,4 @@
+import { Files } from "@/app/components/PositionConstants";
 import { BoardPositionHash, CheckNotice, Position } from "@/app/Interfaces";
 import { getIsBishopDefendingSquare } from "./AlgebraicBishopPositionServices";
 import {
@@ -9,7 +10,6 @@ import {
     getIsKnightDefendingSquare,
     getKnightThreats,
 } from "./AlgebraicKnightPositionServices";
-import { Files } from "./AlgebraicNotationConstants";
 import {
     getIsPawnDefendingSquare,
     getPawnThreats,
@@ -506,7 +506,6 @@ export const getKingThreats = (
             } else {
                 // Rook has north/south path to King
                 squares = getStraightLineSquares({
-                    moves,
                     kingIndex: kingRank,
                     attackerIndex: rookRank,
                     type: "File",
@@ -524,7 +523,6 @@ export const getKingThreats = (
             } else {
                 // Rook has east/west path to King
                 squares = getStraightLineSquares({
-                    moves,
                     kingIndex: kingFileIndex,
                     attackerIndex: rookFileIndex,
                     type: "Rank",
@@ -592,7 +590,6 @@ export const getKingThreats = (
             } else {
                 // Queen has north/south path to King
                 squares = getStraightLineSquares({
-                    moves,
                     kingIndex: kingRank,
                     attackerIndex: queenRank,
                     type: "File",
@@ -610,7 +607,6 @@ export const getKingThreats = (
             } else {
                 // Queen has east/west path to King
                 squares = getStraightLineSquares({
-                    moves,
                     kingIndex: kingFileIndex,
                     attackerIndex: queenFileIndex,
                     type: "Rank",
@@ -779,7 +775,6 @@ export const omitKingExposingThreats = (
         if (rookFileIndex === kingFileIndex) {
             // Rook has north/south path to King
             squares = getStraightLineSquares({
-                moves,
                 kingIndex: kingRank,
                 attackerIndex: rookRank,
                 type: "File",
@@ -790,7 +785,6 @@ export const omitKingExposingThreats = (
         if (rookRank === kingRank) {
             // Rook has east/west path to King
             squares = getStraightLineSquares({
-                moves,
                 kingIndex: kingFileIndex,
                 attackerIndex: rookFileIndex,
                 type: "Rank",
@@ -831,7 +825,6 @@ export const omitKingExposingThreats = (
         if (queenFileIndex === kingFileIndex) {
             // Queen has north/south path to King
             squares = getStraightLineSquares({
-                moves,
                 kingIndex: kingRank,
                 attackerIndex: queenRank,
                 type: "File",
@@ -842,7 +835,6 @@ export const omitKingExposingThreats = (
         if (queenRank === kingRank) {
             // Queen has east/west path to King
             squares = getStraightLineSquares({
-                moves,
                 kingIndex: kingFileIndex,
                 attackerIndex: queenFileIndex,
                 type: "Rank",
@@ -865,14 +857,12 @@ export const omitKingExposingThreats = (
 };
 
 interface StraightLineInterface {
-    moves: string[];
     kingIndex: number;
     attackerIndex: number;
     type: "File" | "Rank";
     lineIndex: number;
 }
 const getStraightLineSquares = ({
-    moves,
     kingIndex,
     attackerIndex,
     type,
