@@ -4,18 +4,19 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const DELETE = async (
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) => {
     console.log("delete request", request);
+    const { id } = await params;
     const game = await prisma.game.findUnique({
-        where: { id: parseInt(params.id) },
+        where: { id: parseInt(id) },
     });
 
     if (!game) {
         return NextResponse.json("Game not found", { status: 400 });
     }
 
-    await prisma.game.delete({ where: { id: parseInt(params.id) } });
+    await prisma.game.delete({ where: { id: parseInt(id) } });
 
     return NextResponse.json({}, { status: 200 });
 };
