@@ -5,10 +5,12 @@ import {
     NewGameButton,
 } from "@/app/historic-games/_components";
 import prisma from "@/prisma/client";
+import { Game } from "@prisma/client";
 import { Table } from "@radix-ui/themes";
+import { getHistoricGames } from "./services";
 
 const HistoricGames = async () => {
-    const games = await prisma.game.findMany();
+    const games: Game[] = await getHistoricGames();
 
     return (
         <>
@@ -38,9 +40,16 @@ const HistoricGames = async () => {
                     {games.map((game) => (
                         <Table.Row key={game.id}>
                             <Table.Cell>
-                                <Link href={`/historic-games/${game.id}`}>
+                                <Link
+                                    href={`historic-games${
+                                        game.event === "static-game"
+                                            ? "/static-game"
+                                            : ""
+                                    }/${game.id}`}
+                                >
                                     {game.title}
                                 </Link>
+
                                 <div className="block md:hidden">
                                     <GameStatusBadge status={game.result} />
                                 </div>

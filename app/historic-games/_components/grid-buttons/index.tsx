@@ -11,7 +11,7 @@ const GridButtons = ({ game }: { game: Game }) => {
             <ViewButton game={game} />
             <ReplayGameButton game={game} />
             <ExternalLinkButton gameUrl={game.url} />
-            <DeleteButton gameId={game.id} />
+            {game.event !== "static-game" && <DeleteButton gameId={game.id} />}
         </Flex>
     );
 };

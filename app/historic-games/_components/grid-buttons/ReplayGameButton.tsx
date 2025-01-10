@@ -9,7 +9,11 @@ const ReplayGameButton = ({ game }: { game: Game }) => {
 
     return (
         <GridButtonTooltip content="Replay game">
-            <NextLink href={`/historic-games/${game.id}/play`}>
+            <NextLink
+                href={`/historic-games${
+                    game.event === "static-game" ? "/static" : ""
+                }/${game.id}/play`}
+            >
                 <RoundHoverIcon>
                     <FaChessBoard />
                 </RoundHoverIcon>
