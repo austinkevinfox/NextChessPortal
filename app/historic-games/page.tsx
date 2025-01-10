@@ -4,7 +4,6 @@ import {
     GridButtons,
     NewGameButton,
 } from "@/app/historic-games/_components";
-import prisma from "@/prisma/client";
 import { Game } from "@prisma/client";
 import { Table } from "@radix-ui/themes";
 import { getHistoricGames } from "./services";

@@ -7,6 +7,7 @@ export const getHistoricGames = async (): Promise<Game[]> => {
     try {
         games = await prisma.game.findMany();
     } catch (e) {
+        console.log("Games failed to load from database.", e);
         games = getStaticGames();
     }
 
