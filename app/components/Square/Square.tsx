@@ -5,7 +5,7 @@ import { Box, Flex } from "@radix-ui/themes";
 import Image from "next/image";
 import { Files } from "../PositionConstants";
 import AlgebraicChar from "./AlgebraicChar";
-import { FaBtc } from "react-icons/fa6";
+import AssociatedCoin from "./AssociatedCoin";
 
 interface Props {
     color: "white" | "black";
@@ -37,7 +37,7 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
         setTargetSquare,
         setCheckNotice,
     } = useStepStore();
-    const isCryptoAttached = false; // Move to state
+
     const file = Files[fileIndex];
     const algebraicCoordinate = `${file}${rank}`;
     const isFocused =
@@ -144,11 +144,7 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
 
                 {piece ? (
                     <>
-                        {isCryptoAttached && (
-                            <Box className="absolute bottom-1/3 left-1 p-1 rounded-full bg-blue-950 border-2 border-slate-400">
-                                <FaBtc color="gold" />
-                            </Box>
-                        )}
+                        <AssociatedCoin pieceName={piece.name} squareColor={color} />
 
                         <Image
                             src={piece.component!}

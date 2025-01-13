@@ -7,27 +7,28 @@ import {
     WhiteQueen,
     WhiteRook,
 } from "@/app/public/svg-no-shadow";
+import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";
 import useStepStore from "@/app/state-management/store";
 import { Table } from "@radix-ui/themes";
-import { useEffect } from "react";
-
 import Image from "next/image";
+import { useEffect } from "react";
 import CryptoSelector from "./_components/CryptoSelector/CryptoSelector";
 
 const ProfilePage = () => {
     const { setLoaded } = useStepStore();
+    const { pieceCoinHash, setCoinToPiece } = useCryptoPieceStore();
 
     useEffect(() => {
         setLoaded(true);
     }, []);
 
     const profilePieces = [
-        { name: "King", component: WhiteKing, crypto: "btc" },
-        { name: "Queen", component: WhiteQueen },
-        { name: "Rook", component: WhiteRook },
-        { name: "Bishop", component: WhiteBishop },
-        { name: "Knight", component: WhiteKnight },
-        { name: "Pawn", component: WhitePawn },
+        { name: "king", component: WhiteKing },
+        { name: "queen", component: WhiteQueen },
+        { name: "rook", component: WhiteRook },
+        { name: "bishop", component: WhiteBishop },
+        { name: "knight", component: WhiteKnight },
+        { name: "pawn", component: WhitePawn },
     ];
 
     return (
@@ -39,7 +40,7 @@ const ProfilePage = () => {
                             Piece
                         </Table.ColumnHeaderCell>
                         <Table.ColumnHeaderCell className="table-cell">
-                            Crypto
+                            Coin
                         </Table.ColumnHeaderCell>
                     </Table.Row>
                 </Table.Header>
@@ -57,7 +58,11 @@ const ProfilePage = () => {
                                 )}
                             </Table.Cell>
                             <Table.Cell className="table-cell">
-                                <CryptoSelector />
+                                <CryptoSelector
+                                    pieceName={piece.name}
+                                    selectedCoin={pieceCoinHash[piece.name]}
+                                    onCoinSelection={setCoinToPiece}
+                                />
                             </Table.Cell>
                         </Table.Row>
                     ))}

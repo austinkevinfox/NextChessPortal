@@ -7,6 +7,10 @@ export interface Piece {
     component: StaticImport;
 }
 
+export interface PieceCoinHash {
+    [pieceName: string]: string | undefined;
+}
+
 export interface BoardPositionHash {
     [notation: string]: Piece | null;
 }
