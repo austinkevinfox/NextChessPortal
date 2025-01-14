@@ -1,6 +1,8 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-### CryptoChess
+
+## CryptoChess
+
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Table of Contents
 
@@ -8,10 +10,6 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
     2	Features
     3	Technologies Used
     4	Installation
-    5	Usage
-    6	Configuration
-    7	Contributing
-    8	License
 
 ## Introduction
 
@@ -65,4 +63,5 @@ npm run dev
 # Or if you're using yarn
 
 yarn dev
+
 Once the app is running, visit http://localhost:3000 in your browser.
