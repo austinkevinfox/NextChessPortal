@@ -1,8 +1,10 @@
+import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";
+import useStepStore from "@/app/state-management/store";
 import { Box, Flex } from "@radix-ui/themes";
-import useStepStore from "../state-management/store";
-import CapturedPiecesDisplay from "./CapturedPiecesDisplay";
-import Score from "./Score";
 import Clock from "../live-game/_components/Clock";
+import CapturedCoins from "./CapturedCoins/CapturedCoins";
+import CapturedPieces from "./CapturedPieces/CapturedPieces";
+import Score from "./Score";
 
 interface Props {
     playerColor: "white" | "black";
@@ -10,6 +12,7 @@ interface Props {
 
 const SidePanel = ({ playerColor }: Props) => {
     const { isLive, activePlayer, capturedPieces } = useStepStore();
+    const { pieceCoinHash } = useCryptoPieceStore();
     const captureColor = playerColor === "white" ? "black" : "white";
 
     return (
@@ -35,49 +38,26 @@ const SidePanel = ({ playerColor }: Props) => {
                 </Flex>
             </div>
             <div
-                className={`min-h-[100px] p-4 bg-slate-300 ${
+                className={`min-h-[100px] p-4 bg-slate-300 divide-y-2 ${
                     playerColor === "white" ? "rounded-br-lg" : "rounded-bl-lg"
                 }`}
             >
-                {capturedPieces?.[captureColor]?.pawn && (
-                    <CapturedPiecesDisplay
+                {capturedPieces?.[captureColor] && (
+                    <CapturedPieces
+                        capturedPiecesByKind={capturedPieces[captureColor]}
                         captureColor={captureColor}
-                        name="pawn"
-                        pieces={capturedPieces[captureColor].pawn}
                     />
                 )}
 
-                {capturedPieces?.[captureColor]?.knight && (
-                    <CapturedPiecesDisplay
-                        captureColor={captureColor}
-                        name="knight"
-                        pieces={capturedPieces[captureColor].knight}
-                    />
-                )}
-
-                {capturedPieces?.[captureColor]?.bishop && (
-                    <CapturedPiecesDisplay
-                        captureColor={captureColor}
-                        name="bishop"
-                        pieces={capturedPieces[captureColor].bishop}
-                    />
-                )}
-
-                {capturedPieces?.[captureColor]?.rook && (
-                    <CapturedPiecesDisplay
-                        captureColor={captureColor}
-                        name="rook"
-                        pieces={capturedPieces[captureColor].rook}
-                    />
-                )}
-
-                {capturedPieces?.[captureColor]?.queen && (
-                    <CapturedPiecesDisplay
-                        captureColor={captureColor}
-                        name="queen"
-                        pieces={capturedPieces[captureColor].queen}
-                    />
-                )}
+                {capturedPieces?.[captureColor] &&
+                    pieceCoinHash &&
+                    Object.values(pieceCoinHash).some(
+                        (coin) => coin && coin.length > 0
+                    ) && (
+                        <CapturedCoins
+                            capturedPiecesByKind={capturedPieces[captureColor]}
+                        />
+                    )}
             </div>
         </div>
     );

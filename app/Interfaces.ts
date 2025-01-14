@@ -42,7 +42,7 @@ export interface AnnotatedMove {
     annotation: string;
 }
 
-interface PiecesByKind {
+export interface PiecesByKind {
     pawn: Piece[];
     knight: Piece[];
     bishop: Piece[];

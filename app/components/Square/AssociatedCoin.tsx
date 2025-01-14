@@ -28,14 +28,14 @@ const AssociatedCoin = ({ pieceName, squareColor }: Props) => {
 
     return coinSymbol ? (
         <Box
-            className={`absolute bottom-1/3 left-1 rounded-full ${
+            className={`absolute bottom-1/3 left-1 rounded-full w-8 h-8 ${
                 squareColor === "black" ? "bg-white" : ""
             }`}
         >
             <Image
                 src={cryptoIcons[coinSymbol]}
                 alt={coinSymbol}
-                className=" w-6"
+                className="h-full"
             />
         </Box>
     ) : null;

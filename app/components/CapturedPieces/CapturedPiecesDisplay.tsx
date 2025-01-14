@@ -1,6 +1,6 @@
 import { Flex } from "@radix-ui/themes";
 import Image from "next/image";
-import { Piece } from "../Interfaces";
+import { Piece } from "@/app/Interfaces";
 
 interface Props {
     captureColor: "white" | "black";
