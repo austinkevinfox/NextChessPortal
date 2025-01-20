@@ -21,6 +21,7 @@
         "@radix-ui/themes": "^3.1.4",
         "axios": "^1.7.7",
         "classnames": "^2.5.1",
+        "cryptocurrency-icons": "^0.18.1",
         "delay": "^6.0.0",
         "lodash": "^4.17.21",
         "lodash.clonedeep": "^4.5.0",

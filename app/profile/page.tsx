@@ -9,10 +9,11 @@ import {
 } from "@/app/public/svg-no-shadow";
 import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";
 import useStepStore from "@/app/state-management/store";
-import { Table } from "@radix-ui/themes";
+import { Flex, Table } from "@radix-ui/themes";
 import Image from "next/image";
 import { useEffect } from "react";
 import CryptoSelector from "./_components/CryptoSelector/CryptoSelector";
+import CryptoSearch from "../components/CryptoSearch";
 
 const ProfilePage = () => {
     const { setLoaded } = useStepStore();
@@ -32,7 +33,7 @@ const ProfilePage = () => {
     ];
 
     return (
-        <>
+        <div className="h-full flex flex-col my-1 md:flex-row">
             <Table.Root variant="surface" className="h-fit">
                 <Table.Header>
                     <Table.Row>
@@ -68,7 +69,8 @@ const ProfilePage = () => {
                     ))}
                 </Table.Body>
             </Table.Root>
-        </>
+            <CryptoSearch />
+        </div>
     );
 };
 
