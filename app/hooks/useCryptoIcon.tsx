@@ -7,6 +7,7 @@ interface Props {
 
 const useCryptoIcon = ({ symbol, type }: Props) => {
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
     const [image, setImage] = useState(null);
 
     useEffect(() => {
@@ -16,6 +17,8 @@ const useCryptoIcon = ({ symbol, type }: Props) => {
                     `@/node_modules/cryptocurrency-icons/${type}/color/${symbol}.png`
                 );
                 setImage(response.default);
+            } catch (e) {
+                setError(true);
             } finally {
                 setLoading(false);
             }
@@ -26,6 +29,7 @@ const useCryptoIcon = ({ symbol, type }: Props) => {
 
     return {
         loading,
+        error,
         image,
     };
 };

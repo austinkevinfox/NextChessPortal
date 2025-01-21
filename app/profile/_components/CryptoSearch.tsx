@@ -1,17 +1,27 @@
 "use client";
-import { Box, Flex, TextField } from "@radix-ui/themes";
+import { Flex, TextField } from "@radix-ui/themes";
 import { default as cryptoManifest } from "cryptocurrency-icons/manifest.json";
 import { useState } from "react";
-import CryptoIcon from "./CryptoIcon";
-
-interface Token {
-    symbol: string;
-    name: string;
-    color: string;
-}
+import CryptoSearchResultItem from "./CryptoSearchResultItem";
+import { Token } from "@/app/Interfaces";
 
 const CryptoSearch = () => {
     const [cryptoList, setCryptoList] = useState<Token[]>([]);
+
+    const orderByName = (a: Token, b: Token) => {
+        const nameA: string = a.name.toLowerCase();
+        const nameB: string = b.name.toLowerCase();
+
+        if (nameA < nameB) {
+            return -1;
+        }
+
+        if (nameA > nameB) {
+            return 1;
+        }
+
+        return 0;
+    };
 
     const handleChange = () => {
         const searchBoxValue = (
@@ -26,6 +36,7 @@ const CryptoSearch = () => {
             );
             const setObj = new Set(rawList.map((o) => JSON.stringify(o)));
             const newCryptoList = Array.from(setObj).map((s) => JSON.parse(s));
+            newCryptoList.sort(orderByName);
             setCryptoList(newCryptoList);
         } else {
             setCryptoList([]);
@@ -33,11 +44,7 @@ const CryptoSearch = () => {
     };
 
     return (
-        <Flex
-            direction="column"
-            gap="1"
-            className="h-full mt-3 md:mt-0 md:ml-8"
-        >
+        <Flex direction="column" gap="1" className="h-5/6 mt-3 md:mt-0 md:ml-8">
             <TextField.Root
                 id="searchBox"
                 placeholder="Search cryptocurrencies"
@@ -45,11 +52,8 @@ const CryptoSearch = () => {
             ></TextField.Root>
 
             <Flex direction="column" gap="1" className="overflow-auto">
-                {cryptoList.map((bit) => (
-                    <Flex key={bit.symbol} gap="1" align="center">
-                        <CryptoIcon symbol={bit.symbol} type="32" />
-                        <Box>{`${bit.name} ${bit.symbol}`}</Box>
-                    </Flex>
+                {cryptoList.map((coin) => (
+                    <CryptoSearchResultItem key={coin.symbol} coin={coin} />
                 ))}
             </Flex>
         </Flex>

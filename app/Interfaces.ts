@@ -81,3 +81,9 @@ export interface CheckNotice {
     positions: Position[];
     isMate: boolean;
 }
+
+export interface Token {
+    symbol: string;
+    name: string;
+    color: string;
+}
