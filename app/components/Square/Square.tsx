@@ -143,15 +143,23 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
                 )}
 
                 {piece ? (
-                    <>
-                        <AssociatedCoin pieceName={piece.name} squareColor={color} />
+                    <Flex
+                        justify="center"
+                        className="relative w-full aspect-square"
+                    >
+                        <div className="absolute top-1 left-2">
+                            <AssociatedCoin
+                                pieceName={piece.name}
+                                squareColor={color}
+                            />
+                        </div>
 
                         <Image
                             src={piece.component!}
-                            alt="test"
+                            alt={piece.name}
                             className={`w-1/2 ${isLive && "cursor-pointer"}`}
                         />
-                    </>
+                    </Flex>
                 ) : (
                     ""
                 )}

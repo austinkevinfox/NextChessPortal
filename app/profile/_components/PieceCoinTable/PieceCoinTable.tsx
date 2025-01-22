@@ -6,14 +6,11 @@ import {
     WhiteQueen,
     WhiteRook,
 } from "@/app/public/svg-no-shadow";
-import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";
 import { Table } from "@radix-ui/themes";
 import Image from "next/image";
 import CryptoDropZone from "../CryptoDropZone/CryptoDropZone";
 
 const PieceCoinTable = () => {
-    const { pieceCoinHash, setCoinToPiece } = useCryptoPieceStore();
-
     const profilePieces = [
         { name: "king", component: WhiteKing },
         { name: "queen", component: WhiteQueen },

@@ -2,9 +2,10 @@
 import CryptoIcon from "@/app/components/CryptoIcon";
 import { Token } from "@/app/Interfaces";
 import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";
-import { Box, Flex } from "@radix-ui/themes";
+import { Flex } from "@radix-ui/themes";
 import { useState } from "react";
 import { MdCancel } from "react-icons/md";
+import CoinNameSymbol from "../CoinNameSymbol";
 
 interface Props {
     coin: Token;
@@ -29,7 +30,7 @@ const CoinDisplay = ({ coin, onDelete }: Props) => {
             onMouseLeave={() => setIsHover(false)}
         >
             <CryptoIcon symbol={coin.symbol} type="32" />
-            <Box>{`${coin.name} ${coin.symbol}`}</Box>
+            <CoinNameSymbol coin={coin} />
             <MdCancel
                 className={`absolute top-0 right-0 ${
                     isHover ? "visible" : "invisible"

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 interface Props {
-    symbol: string;
+    symbol: string | undefined;
     type: string;
 }
 
@@ -21,16 +21,21 @@ const useCryptoIcon = ({ symbol, type }: Props) => {
 
             if (type === "svg") {
                 response = await import(
-                    `@/node_modules/cryptocurrency-icons/svg/color/${symbol.toLowerCase()}.svg`
+                    `@/node_modules/cryptocurrency-icons/svg/color/${
+                        symbol ? symbol.toLowerCase() : "generic"
+                    }.svg`
                 );
             } else {
                 response = await import(
-                    `@/node_modules/cryptocurrency-icons/32/color/${symbol.toLowerCase()}.png`
+                    `@/node_modules/cryptocurrency-icons/32/color/${
+                        symbol ? symbol.toLowerCase() : "generic"
+                    }.png`
                 );
             }
 
             setImage(response.default);
         } catch (e) {
+            console.error(e);
             setError(true);
         } finally {
             setLoading(false);

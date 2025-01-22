@@ -17,14 +17,16 @@ const CryptoIcon = ({ symbol, type }: Props) => {
 
     if (loading)
         return (
-            <Box className="w-10 aspect-square">
+            <Box className="w-8 aspect-square">
                 <ImSpinner size="32" className="animate-spin" />
             </Box>
         );
 
     if (error) return <Image src={generic} alt="Generic" />;
 
-    return image ? <Image src={image} alt={symbol} /> : null;
+    return image ? (
+        <Image src={image} alt={symbol} className="w-8 aspect-square" />
+    ) : null;
 };
 
 export default CryptoIcon;

@@ -1,7 +1,8 @@
 import CryptoIcon from "@/app/components/CryptoIcon";
 import { Token } from "@/app/Interfaces";
 import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";
-import { Box, Flex } from "@radix-ui/themes";
+import { Flex } from "@radix-ui/themes";
+import CoinNameSymbol from "./CoinNameSymbol";
 
 interface Props {
     coin: Token;
@@ -22,7 +23,7 @@ const CryptoSearchResultItem = ({ coin }: Props) => {
             onDragStart={drag}
         >
             <CryptoIcon symbol={coin.symbol} type="32" />
-            <Box>{`${coin.name} ${coin.symbol}`}</Box>
+            <CoinNameSymbol coin={coin} />
         </Flex>
     );
 };
