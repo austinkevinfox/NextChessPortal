@@ -1,8 +1,8 @@
-import { BNB, BTC, DOGE, ETH, SOL, XRP } from "@/app/public/crypto-icons";
+import useCryptoIcon from "@/app/hooks/useCryptoIcon";
+import { Token } from "@/app/Interfaces";
 import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";
-import { Box } from "@radix-ui/themes";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
+import { ImSpinner } from "react-icons/im";
 
 interface Props {
     pieceName: string;
@@ -11,34 +11,20 @@ interface Props {
 
 const AssociatedCoin = ({ pieceName, squareColor }: Props) => {
     const { pieceCoinHash } = useCryptoPieceStore();
-    const coinSymbol = pieceCoinHash[pieceName];
+    const coin: Token | undefined = pieceCoinHash[pieceName];
 
-    type CryptoObject = {
-        [key: string]: StaticImport;
-    };
+    if (!coin) return null;
 
-    const cryptoIcons: CryptoObject = {
-        BTC: BTC,
-        ETH: ETH,
-        XRP: XRP,
-        BNB: BNB,
-        SOL: SOL,
-        DOGE: DOGE,
-    };
+    const { loading, error, image } = useCryptoIcon({
+        symbol: coin.symbol,
+        type: "svg",
+    });
 
-    return coinSymbol ? (
-        <Box
-            className={`absolute bottom-1/3 left-1 rounded-full w-8 h-8 ${
-                squareColor === "black" ? "bg-white" : ""
-            }`}
-        >
-            <Image
-                src={cryptoIcons[coinSymbol]}
-                alt={coinSymbol}
-                className="h-full"
-            />
-        </Box>
-    ) : null;
+    if (error) return null;
+
+    if (loading) return <ImSpinner size="32" className="animate-spin" />;
+
+    return image ? <Image src={image} alt={coin.symbol} /> : null;
 };
 
 export default AssociatedCoin;

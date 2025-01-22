@@ -1,9 +1,9 @@
 "use client";
+import { Token } from "@/app/Interfaces";
 import { Flex, TextField } from "@radix-ui/themes";
 import { default as cryptoManifest } from "cryptocurrency-icons/manifest.json";
 import { useState } from "react";
 import CryptoSearchResultItem from "./CryptoSearchResultItem";
-import { Token } from "@/app/Interfaces";
 
 const CryptoSearch = () => {
     const [cryptoList, setCryptoList] = useState<Token[]>([]);

@@ -1,5 +1,3 @@
-import { Table } from "@radix-ui/themes";
-import CryptoSelector from "../CryptoSelector/CryptoSelector";
 import {
     WhiteBishop,
     WhiteKing,
@@ -9,7 +7,9 @@ import {
     WhiteRook,
 } from "@/app/public/svg-no-shadow";
 import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";
+import { Table } from "@radix-ui/themes";
 import Image from "next/image";
+import CryptoDropZone from "../CryptoDropZone/CryptoDropZone";
 
 const PieceCoinTable = () => {
     const { pieceCoinHash, setCoinToPiece } = useCryptoPieceStore();
@@ -49,11 +49,7 @@ const PieceCoinTable = () => {
                             )}
                         </Table.Cell>
                         <Table.Cell className="table-cell">
-                            <CryptoSelector
-                                pieceName={piece.name}
-                                selectedCoin={pieceCoinHash[piece.name]}
-                                onCoinSelection={setCoinToPiece}
-                            />
+                            <CryptoDropZone pieceName={piece.name} />
                         </Table.Cell>
                     </Table.Row>
                 ))}

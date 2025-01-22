@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -11,21 +12,30 @@ const useCryptoIcon = ({ symbol, type }: Props) => {
     const [image, setImage] = useState(null);
 
     useEffect(() => {
-        const fetchImage = async () => {
-            try {
-                const response = await import(
-                    `@/node_modules/cryptocurrency-icons/${type}/color/${symbol}.png`
-                );
-                setImage(response.default);
-            } catch (e) {
-                setError(true);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchImage();
     }, [symbol, type]);
+
+    const fetchImage = async () => {
+        try {
+            let response;
+
+            if (type === "svg") {
+                response = await import(
+                    `@/node_modules/cryptocurrency-icons/svg/color/${symbol.toLowerCase()}.svg`
+                );
+            } else {
+                response = await import(
+                    `@/node_modules/cryptocurrency-icons/32/color/${symbol.toLowerCase()}.png`
+                );
+            }
+
+            setImage(response.default);
+        } catch (e) {
+            setError(true);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return {
         loading,

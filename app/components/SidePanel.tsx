@@ -52,7 +52,7 @@ const SidePanel = ({ playerColor }: Props) => {
                 {capturedPieces?.[captureColor] &&
                     pieceCoinHash &&
                     Object.values(pieceCoinHash).some(
-                        (coin) => coin && coin.length > 0
+                        (coin) => coin && coin.symbol.length > 0
                     ) && (
                         <CapturedCoins
                             capturedPiecesByKind={capturedPieces[captureColor]}

@@ -8,7 +8,7 @@ export interface Piece {
 }
 
 export interface PieceCoinHash {
-    [pieceName: string]: string | undefined;
+    [pieceName: string]: Token | undefined;
 }
 
 export interface BoardPositionHash {
@@ -85,5 +85,5 @@ export interface CheckNotice {
 export interface Token {
     symbol: string;
     name: string;
-    color: string;
+    color?: string;
 }
