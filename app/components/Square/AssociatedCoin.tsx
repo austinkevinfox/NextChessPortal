@@ -19,8 +19,6 @@ const AssociatedCoin = ({ pieceName, squareColor }: Props) => {
 
     if (!coin) return null;
 
-    
-
     if (error) return null;
 
     if (loading) return <ImSpinner size="32" className="animate-spin" />;

@@ -1,6 +1,5 @@
 "use client";
 import useStepStore from "@/app/state-management/store";
-
 import { useEffect } from "react";
 import CryptoSearch from "./_components/CryptoSearch";
 import PieceCoinTable from "./_components/PieceCoinTable/PieceCoinTable";

@@ -8,9 +8,12 @@ interface Props {
 
 const CapturedCoinDisplay = ({ coinSymbol, count }: Props) => {
     return (
-        <Flex gap="1" py="1" align="center">
-            <CryptoIcon symbol={coinSymbol} type="svg" />
-            <div className="text-xs">({count})</div>
+        <Flex justify="between" align="center">
+            <Flex gap="1" py="1" align="center">
+                <CryptoIcon symbol={coinSymbol} type="svg" />
+                <div className="text-xs">({count})</div>
+            </Flex>
+            <div className="text-xs">{coinSymbol}</div>
         </Flex>
     );
 };
