@@ -34,9 +34,7 @@ export default function RootLayout({
             >
                 <Theme className="h-full">
                     <NavBar />
-                    <Flex justify="center" className="h-full">
-                        {children}
-                    </Flex>
+                    {children}
                 </Theme>
             </body>
         </html>

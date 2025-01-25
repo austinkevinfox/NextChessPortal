@@ -12,6 +12,7 @@ import GameOverModal from "./GameOverModal";
 import { initialPositions } from "./PositionConstants";
 import PromotionModal from "./PromotionModal";
 import Square from "./Square/Square";
+import { Flex } from "@radix-ui/themes";
 
 const Board = () => {
     const {
@@ -152,7 +153,7 @@ const Board = () => {
     };
 
     return (
-        <div className="relative">
+        <Flex className="relative">
             {Object.keys(boardPositions).length === 0 && (
                 <BoardLoadingSpinner />
             )}
@@ -165,7 +166,8 @@ const Board = () => {
                     }
                 />
             )}
-            <div className="h-full aspect-square flex flex-wrap">
+
+            <div className="h-full aspect-square flex flex-wrap px-3 md:px-0">
                 {[8, 7, 6, 5, 4, 3, 2, 1].map((rank): ReactNode => {
                     return [0, 1, 2, 3, 4, 5, 6, 7].map((index): ReactNode => {
                         const positionKey = getFileRankFromIndices(index, rank);
@@ -184,7 +186,7 @@ const Board = () => {
             </div>
 
             {promotionConfig && <PromotionModal />}
-        </div>
+        </Flex>
     );
 };
 
