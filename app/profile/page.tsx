@@ -12,7 +12,7 @@ const ProfilePage = () => {
     }, []);
 
     return (
-        <div className="h-full flex flex-col my-1 md:flex-row">
+        <div className="h-full flex flex-col my-1 mx-3 md:flex-row">
             <PieceCoinTable />
             <CryptoSearch />
         </div>
