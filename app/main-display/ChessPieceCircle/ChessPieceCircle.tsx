@@ -1,15 +1,15 @@
 import { default as ChessCircle } from "@/app/public/chess-circle.svg";
 import { Flex } from "@radix-ui/themes";
 import Image from "next/image";
-import "./style.css";
 import CryptoLogoCarousel from "../CryptoLogoCarousel/CryptoLogoCarousel";
+import "./style.css";
 
 const ChessPieceCircle = () => {
     return (
         <Flex
             justify="center"
             align="center"
-            className="relative w-1/2 md:w-1/4 h-1/2"
+            className="relative w-[150px] h-[150px] md:w-[300px] md:h-[300px] lg:w-[450px] lg:h-[450px]"
         >
             <CryptoLogoCarousel />
             <Image

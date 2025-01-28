@@ -5,9 +5,9 @@ import { Box } from "@radix-ui/themes";
 
 const CryptoLogoCarousel = () => {
     const logoProps = [
+        { src: ETH, alt: "Etherium logo", width: "w-1/2" },
         { src: DOGE, alt: "Dogecoin logo", width: "w-full" },
         { src: XRP, alt: "Ripple logo", width: "w-1/3" },
-        { src: ETH, alt: "Etherium logo", width: "w-1/2" },
         { src: BTC, alt: "Bitcoin logo", width: "w-full" },
     ];
     const duration = 20;
