@@ -1,4 +1,4 @@
-import { Piece, Token, TokenRate } from "@/app/Interfaces";
+import { Piece, TokenRate } from "@/app/Interfaces";
 import { getMovesByPiece } from "@/app/live-game/services";
 import { fetchCoinMap } from "@/app/services/crypto";
 import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";

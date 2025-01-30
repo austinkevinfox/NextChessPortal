@@ -8,7 +8,7 @@ const NewGameButton = () => {
     const { setLoaded } = useStepStore();
     useEffect(() => {
         setLoaded(true);
-    }, []);
+    }, [setLoaded]);
     return (
         <div className="mb-5">
             <Button>

@@ -14,7 +14,7 @@ const ClientPanel = ({ game }: { game: Game }) => {
 
     useEffect(() => {
         setStep(0);
-    }, []);
+    }, [setStep]);
 
     useEffect(() => {
         setBoardPositions(stepData[stepIndex].boardPositions);

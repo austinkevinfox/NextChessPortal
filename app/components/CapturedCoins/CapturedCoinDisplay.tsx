@@ -8,7 +8,7 @@ interface Props {
 }
 
 const CapturedCoinDisplay = ({ coinSymbol, count, price }: Props) => {
-    let internationNumberFormater = new Intl.NumberFormat("en-US", {
+    const internationNumberFormater = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
     });

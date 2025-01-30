@@ -21,7 +21,7 @@ const ControlPanel = ({ moves }: { moves: string[] }) => {
             clearInterval(intervalId);
         }
         return () => clearInterval(intervalId);
-    }, [isPlaying]);
+    }, [isPlaying, incrementStep]);
 
     useEffect(() => {
         if (stepIndex >= moves.length) {
@@ -30,7 +30,7 @@ const ControlPanel = ({ moves }: { moves: string[] }) => {
         } else {
             setIsGameOver(false);
         }
-    }, [stepIndex]);
+    }, [stepIndex, moves.length]);
 
     interface ButtonMap {
         [key: string]: { icon: ReactNode; callback: () => void };
