@@ -1,6 +1,9 @@
 import axios from "axios";
+import { TokenRate } from "../Interfaces";
 
-export const fetchCoinMap = async (codes: string[]) => {
+export const fetchCoinMap = async (
+    codes: string[]
+): Promise<TokenRate[] | undefined> => {
     const response = await axios({
         method: "post",
         url: "https://api.livecoinwatch.com/coins/map",
@@ -20,6 +23,9 @@ export const fetchCoinMap = async (codes: string[]) => {
     });
 
     if (response.status === 200) {
-        console.log("data", response.data);
+        return response.data.map((item: TokenRate) => ({
+            code: item.code,
+            rate: item.rate,
+        }));
     }
 };

@@ -35,7 +35,12 @@ const CryptoSearch = () => {
                     pattern.test(crypto.symbol) || pattern.test(crypto.name)
             );
             const setObj = new Set(rawList.map((o) => JSON.stringify(o)));
-            const newCryptoList = Array.from(setObj).map((s) => JSON.parse(s));
+            const newCryptoList = Array.from(setObj).map((s) => {
+                const tokenObj: Token = JSON.parse(s);
+                // Init rate property here.  Rate will be fetched for selected tokens only.
+                tokenObj.rate = 0;
+                return tokenObj;
+            });
             newCryptoList.sort(orderByName);
             setCryptoList(newCryptoList);
         } else {

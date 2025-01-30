@@ -15,6 +15,7 @@ const CapturedCoins = ({ capturedPiecesByKind }: Props) => {
                 <CapturedCoinDisplay
                     coinSymbol={pieceCoinHash.pawn.symbol}
                     count={capturedPiecesByKind.pawn.length}
+                    price={pieceCoinHash.pawn.rate}
                 />
             )}
 
@@ -22,6 +23,7 @@ const CapturedCoins = ({ capturedPiecesByKind }: Props) => {
                 <CapturedCoinDisplay
                     coinSymbol={pieceCoinHash.knight.symbol}
                     count={capturedPiecesByKind.knight.length}
+                    price={pieceCoinHash.knight.rate}
                 />
             )}
 
@@ -29,6 +31,7 @@ const CapturedCoins = ({ capturedPiecesByKind }: Props) => {
                 <CapturedCoinDisplay
                     coinSymbol={pieceCoinHash.bishop.symbol}
                     count={capturedPiecesByKind.bishop.length}
+                    price={pieceCoinHash.bishop.rate}
                 />
             )}
 
@@ -36,6 +39,7 @@ const CapturedCoins = ({ capturedPiecesByKind }: Props) => {
                 <CapturedCoinDisplay
                     coinSymbol={pieceCoinHash.rook.symbol}
                     count={capturedPiecesByKind.rook.length}
+                    price={pieceCoinHash.rook.rate}
                 />
             )}
 
@@ -43,6 +47,7 @@ const CapturedCoins = ({ capturedPiecesByKind }: Props) => {
                 <CapturedCoinDisplay
                     coinSymbol={pieceCoinHash.queen.symbol}
                     count={capturedPiecesByKind.queen.length}
+                    price={pieceCoinHash.queen.rate}
                 />
             )}
         </div>

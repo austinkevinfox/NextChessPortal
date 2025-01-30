@@ -6,6 +6,7 @@ interface CryptoPieceStore {
     coinInDrag: undefined | Token;
     setCoinInDrag: (coin?: Token) => void;
     setCoinToPiece: (pieceName: string, coin?: Token) => void;
+    setCoinRates: (coins: { symbol: string; rate: number }[]) => void;
 }
 
 const useCryptoPieceStore = create<CryptoPieceStore>((set) => ({
@@ -16,6 +17,18 @@ const useCryptoPieceStore = create<CryptoPieceStore>((set) => ({
         set((state) => ({
             pieceCoinHash: { ...state.pieceCoinHash, [pieceName]: coin },
         })),
+    setCoinRates: (coins) =>
+        set((state) => {
+            const tmpPieceCoinHash = { ...state.pieceCoinHash };
+            coins.forEach((coin) => {
+                Object.keys(tmpPieceCoinHash).forEach((key) => {
+                    if (tmpPieceCoinHash[key]?.symbol === coin.symbol) {
+                        tmpPieceCoinHash[key].rate = coin.rate;
+                    }
+                });
+            });
+            return { pieceCoinHash: tmpPieceCoinHash };
+        }),
 }));
 
 export default useCryptoPieceStore;

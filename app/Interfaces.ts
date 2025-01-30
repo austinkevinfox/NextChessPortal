@@ -85,5 +85,11 @@ export interface CheckNotice {
 export interface Token {
     symbol: string;
     name: string;
+    rate: number;
     color?: string;
+}
+
+export interface TokenRate {
+    code: string;
+    rate: number;
 }

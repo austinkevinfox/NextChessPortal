@@ -1,5 +1,7 @@
-import { Piece } from "@/app/Interfaces";
+import { Piece, Token, TokenRate } from "@/app/Interfaces";
 import { getMovesByPiece } from "@/app/live-game/services";
+import { fetchCoinMap } from "@/app/services/crypto";
+import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";
 import useStepStore from "@/app/state-management/store";
 import { Box, Flex } from "@radix-ui/themes";
 import Image from "next/image";
@@ -23,6 +25,7 @@ const bgColors: { [key: string]: string } = {
 };
 
 const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
+    const { pieceCoinHash, setCoinRates } = useCryptoPieceStore();
     const {
         isLive,
         activePlayer,
@@ -91,6 +94,22 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
         setTargetSquarePotentials(potentialSquares);
     };
 
+    const updateCoinPrices = async () => {
+        const coinSymbols = Object.values(pieceCoinHash).map(
+            (coin) => coin?.symbol
+        );
+        const setObj = new Set(coinSymbols.map((o) => JSON.stringify(o)));
+        const newCoinSymbolList = Array.from(setObj).map((s) => JSON.parse(s));
+        const priceMap = await fetchCoinMap(newCoinSymbolList);
+        if (priceMap) {
+            const newMap = priceMap.map((item: TokenRate) => ({
+                symbol: item.code,
+                rate: item.rate,
+            }));
+            setCoinRates(newMap);
+        }
+    };
+
     const handleClick = () => {
         if (isLive) {
             const algebraicCoordinate = `${file}${rank}`;
@@ -104,6 +123,8 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
                     rank,
                     piece,
                 });
+            } else {
+                updateCoinPrices();
             }
 
             // Move to vacant position
