@@ -173,12 +173,7 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
                         justify="center"
                         className="relative w-full aspect-square"
                     >
-                        <div className="absolute top-1 left-2">
-                            <AssociatedCoin
-                                pieceName={piece.name}
-                                squareColor={color}
-                            />
-                        </div>
+                        {isLive && <AssociatedCoin pieceName={piece.name} />}
 
                         <Image
                             src={piece.component!}

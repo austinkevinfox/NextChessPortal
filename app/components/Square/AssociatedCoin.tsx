@@ -6,10 +6,9 @@ import { ImSpinner } from "react-icons/im";
 
 interface Props {
     pieceName: string;
-    squareColor: "white" | "black";
 }
 
-const AssociatedCoin = ({ pieceName, squareColor }: Props) => {
+const AssociatedCoin = ({ pieceName }: Props) => {
     const { pieceCoinHash } = useCryptoPieceStore();
     const coin: Token | undefined = pieceCoinHash[pieceName];
     const { loading, error, image } = useCryptoIcon({
@@ -24,13 +23,9 @@ const AssociatedCoin = ({ pieceName, squareColor }: Props) => {
     if (loading) return <ImSpinner size="32" className="animate-spin" />;
 
     return image ? (
-        <Image
-            src={image}
-            alt={coin.symbol}
-            className={`rounded-full border border-1 ${
-                squareColor === "black" ? "border-white" : "border-transparent"
-            }`}
-        />
+        <div className="absolute top-1 left-2">
+            <Image src={image} alt={coin.symbol} />
+        </div>
     ) : null;
 };
 
