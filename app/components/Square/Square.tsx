@@ -8,6 +8,7 @@ import Image from "next/image";
 import { Files } from "../PositionConstants";
 import AlgebraicChar from "./AlgebraicChar";
 import AssociatedCoin from "./AssociatedCoin";
+import { convertArrayToUniqueStrings } from "@/app/services/services";
 
 interface Props {
     color: "white" | "black";
@@ -94,19 +95,23 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
         setTargetSquarePotentials(potentialSquares);
     };
 
-    const updateCoinPrices = async () => {
-        const coinSymbols = Object.values(pieceCoinHash).map(
+    const updateCoinPrices = async (): Promise<void> => {
+        const coinList = Object.values(pieceCoinHash).filter(
             (coin) => coin?.symbol
         );
-        const setObj = new Set(coinSymbols.map((o) => JSON.stringify(o)));
-        const newCoinSymbolList = Array.from(setObj).map((s) => JSON.parse(s));
-        const priceMap = await fetchCoinMap(newCoinSymbolList);
-        if (priceMap) {
-            const newMap = priceMap.map((item: TokenRate) => ({
-                symbol: item.code,
-                rate: item.rate,
-            }));
-            setCoinRates(newMap);
+
+        if (coinList.length > 0) {
+            const coinSymbols: string[] = convertArrayToUniqueStrings(
+                coinList.map((coin) => coin!.symbol)
+            );
+            const priceMap = await fetchCoinMap(coinSymbols);
+            if (priceMap) {
+                const newMap = priceMap.map((item: TokenRate) => ({
+                    symbol: item.code,
+                    rate: item.rate,
+                }));
+                setCoinRates(newMap);
+            }
         }
     };
 
