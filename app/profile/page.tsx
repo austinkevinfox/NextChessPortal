@@ -14,7 +14,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         setLoaded(true);
-    }, []);
+    }, [setLoaded]);
 
     return (
         <div className="h-full flex flex-col my-1 mx-3">

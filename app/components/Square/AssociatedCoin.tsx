@@ -5,12 +5,13 @@ import Image from "next/image";
 import { ImSpinner } from "react-icons/im";
 
 interface Props {
+    pieceColor: "white" | "black";
     pieceName: string;
 }
 
-const AssociatedCoin = ({ pieceName }: Props) => {
-    const { pieceCoinHash } = useCryptoPieceStore();
-    const coin: Token | undefined = pieceCoinHash[pieceName];
+const AssociatedCoin = ({ pieceColor, pieceName }: Props) => {
+    const { pieceCoinAssociation } = useCryptoPieceStore();
+    const coin: Token | undefined = pieceCoinAssociation[pieceColor][pieceName];
     const { loading, error, image } = useCryptoIcon({
         symbol: coin?.symbol,
         type: "svg",

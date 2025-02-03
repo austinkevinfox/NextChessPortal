@@ -12,7 +12,7 @@ interface Props {
 
 const SidePanel = ({ playerColor }: Props) => {
     const { isLive, activePlayer, capturedPieces } = useStepStore();
-    const { pieceCoinHash } = useCryptoPieceStore();
+    const { pieceCoinAssociation } = useCryptoPieceStore();
     const captureColor = playerColor === "white" ? "black" : "white";
 
     return (
@@ -50,11 +50,12 @@ const SidePanel = ({ playerColor }: Props) => {
                 )}
 
                 {capturedPieces?.[captureColor] &&
-                    pieceCoinHash &&
-                    Object.values(pieceCoinHash).some(
+                    pieceCoinAssociation?.[captureColor] &&
+                    Object.values(pieceCoinAssociation[captureColor]).some(
                         (coin) => coin && coin.symbol.length > 0
                     ) && (
                         <CapturedCoins
+                            captureColor={captureColor}
                             capturedPiecesByKind={capturedPieces[captureColor]}
                         />
                     )}

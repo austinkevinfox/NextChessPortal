@@ -26,7 +26,7 @@ const bgColors: { [key: string]: string } = {
 };
 
 const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
-    const { pieceCoinHash, setCoinRates } = useCryptoPieceStore();
+    const { pieceCoinAssociation, setCoinRates } = useCryptoPieceStore();
     const {
         isLive,
         activePlayer,
@@ -96,9 +96,14 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
     };
 
     const updateCoinPrices = async (): Promise<void> => {
-        const coinList = Object.values(pieceCoinHash).filter(
-            (coin) => coin?.symbol
-        );
+        const coinList = [
+            ...Object.values(pieceCoinAssociation.white).filter(
+                (coin) => coin?.symbol
+            ),
+            ...Object.values(pieceCoinAssociation.black).filter(
+                (coin) => coin?.symbol
+            ),
+        ];
 
         if (coinList.length > 0) {
             const coinSymbols: string[] = convertArrayToUniqueStrings(
@@ -173,7 +178,12 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
                         justify="center"
                         className="relative w-full aspect-square"
                     >
-                        {isLive && <AssociatedCoin pieceName={piece.name} />}
+                        {isLive && (
+                            <AssociatedCoin
+                                pieceColor={piece.color}
+                                pieceName={piece.name}
+                            />
+                        )}
 
                         <Image
                             src={piece.component!}

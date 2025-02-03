@@ -11,6 +11,10 @@ export interface PieceCoinHash {
     [pieceName: string]: Token | undefined;
 }
 
+export interface PieceCoinAssociation {
+    [color: string]: PieceCoinHash;
+}
+
 export interface BoardPositionHash {
     [notation: string]: Piece | null;
 }

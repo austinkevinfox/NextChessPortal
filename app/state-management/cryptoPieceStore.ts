@@ -1,33 +1,47 @@
-import { PieceCoinHash, Token } from "@/app/Interfaces";
+import { PieceCoinAssociation, PieceCoinHash, Token } from "@/app/Interfaces";
 import { create } from "zustand";
 
 interface CryptoPieceStore {
-    pieceCoinHash: PieceCoinHash;
+    pieceCoinAssociation: PieceCoinAssociation;
     coinInDrag: undefined | Token;
     setCoinInDrag: (coin?: Token) => void;
-    setCoinToPiece: (pieceName: string, coin?: Token) => void;
+    setCoinToPiece: (
+        color: "white" | "black",
+        pieceName: string,
+        coin?: Token
+    ) => void;
     setCoinRates: (coins: { symbol: string; rate: number }[]) => void;
 }
 
 const useCryptoPieceStore = create<CryptoPieceStore>((set) => ({
-    pieceCoinHash: {},
+    pieceCoinAssociation: { white: {}, black: {} },
     coinInDrag: undefined,
     setCoinInDrag: (coin) => set(() => ({ coinInDrag: coin })),
-    setCoinToPiece: (pieceName, coin) =>
-        set((state) => ({
-            pieceCoinHash: { ...state.pieceCoinHash, [pieceName]: coin },
-        })),
+    setCoinToPiece: (color, pieceName, coin) =>
+        set((state) => {
+            const tmpPieceCoinAssociation = { ...state.pieceCoinAssociation };
+            tmpPieceCoinAssociation[color][pieceName] = coin;
+            return { pieceCoinAssociation: tmpPieceCoinAssociation };
+        }),
     setCoinRates: (coins) =>
         set((state) => {
-            const tmpPieceCoinHash = { ...state.pieceCoinHash };
+            const tmpPieceCoinAssociation = { ...state.pieceCoinAssociation };
             coins.forEach((coin) => {
-                Object.keys(tmpPieceCoinHash).forEach((key) => {
-                    if (tmpPieceCoinHash[key]?.symbol === coin.symbol) {
-                        tmpPieceCoinHash[key].rate = coin.rate;
-                    }
+                ["white", "black"].forEach((color) => {
+                    Object.keys(tmpPieceCoinAssociation[color]).forEach(
+                        (key) => {
+                            if (
+                                tmpPieceCoinAssociation[color][key]?.symbol ===
+                                coin.symbol
+                            ) {
+                                tmpPieceCoinAssociation[color][key].rate =
+                                    coin.rate;
+                            }
+                        }
+                    );
                 });
             });
-            return { pieceCoinHash: tmpPieceCoinHash };
+            return { pieceCoinAssociation: tmpPieceCoinAssociation };
         }),
 }));
 

@@ -28,6 +28,7 @@
         "next": "^15.1.5",
         "next-auth": "^4.24.11",
         "prisma": "^5.20.0",
+        "radix-ui": "^1.1.2",
         "react": "^18",
         "react-dom": "^18",
         "react-hook-form": "^7.53.0",

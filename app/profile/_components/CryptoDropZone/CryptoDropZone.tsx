@@ -3,11 +3,12 @@ import { DragEvent } from "react";
 import CoinDisplay from "../PieceCoinTable/CoinDisplay";
 
 interface Props {
+    color: "white" | "black";
     pieceName: string;
 }
 
-const CryptoDropZone = ({ pieceName }: Props) => {
-    const { coinInDrag, setCoinInDrag, setCoinToPiece, pieceCoinHash } =
+const CryptoDropZone = ({ color, pieceName }: Props) => {
+    const { coinInDrag, setCoinInDrag, setCoinToPiece, pieceCoinAssociation } =
         useCryptoPieceStore();
 
     const allowDrop = (event: DragEvent) => {
@@ -18,17 +19,17 @@ const CryptoDropZone = ({ pieceName }: Props) => {
         event.preventDefault();
 
         if (coinInDrag) {
-            setCoinToPiece(pieceName, coinInDrag);
+            setCoinToPiece(color, pieceName, coinInDrag);
             setCoinInDrag();
         }
     };
 
     return (
         <div onDragOver={allowDrop} onDrop={drop}>
-            {pieceCoinHash[pieceName] ? (
+            {pieceCoinAssociation[color][pieceName] ? (
                 <CoinDisplay
-                    coin={pieceCoinHash[pieceName]}
-                    onDelete={() => setCoinToPiece(pieceName)}
+                    coin={pieceCoinAssociation[color][pieceName]}
+                    onDelete={() => setCoinToPiece(color, pieceName)}
                 />
             ) : (
                 <div className="h-10 min-w-40 border border-solid border-1 rounded-lg"></div>
