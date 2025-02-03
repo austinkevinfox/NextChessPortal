@@ -1,4 +1,4 @@
-import { PieceCoinAssociation, PieceCoinHash, Token } from "@/app/Interfaces";
+import { PieceCoinAssociation, Token } from "@/app/Interfaces";
 import { create } from "zustand";
 
 interface CryptoPieceStore {

@@ -30,7 +30,7 @@ const Clock = ({ isActive }: ClockProps) => {
 
             return () => clearInterval(interval);
         }
-    }, [isActive, checkNotice, time]);
+    }, [isActive, liveMoves, checkNotice, time]);
     return (
         <div className="w-16 pl-1">
             <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>

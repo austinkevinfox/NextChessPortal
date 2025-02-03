@@ -19,7 +19,7 @@ const ClientPanel = ({ game }: { game: Game }) => {
     useEffect(() => {
         setBoardPositions(stepData[stepIndex].boardPositions);
         setCapturedPieces(stepData[stepIndex].capturedPieces);
-    }, [stepIndex]);
+    }, [stepIndex, setBoardPositions, setCapturedPieces]);
 
     const { moves, stepData } = useMemo(() => {
         const tmpMoves = getArrayOfMoves(game.moves!);

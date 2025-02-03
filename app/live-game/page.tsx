@@ -11,7 +11,7 @@ const LiveGame = () => {
     useEffect(() => {
         setLoaded(true);
         setLive(true);
-    }, []);
+    }, [setLive, setLoaded]);
 
     useEffect(() => {
         setMoves(liveMoves);

@@ -1,4 +1,4 @@
-import { Box, Button } from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
 
 interface Props {
     color: "white" | "black";
