@@ -19,8 +19,11 @@ import CryptoDropZone from "../CryptoDropZone/CryptoDropZone";
 import { Piece } from "@/app/Interfaces";
 import ColorButton from "./ColorButton";
 
-const PieceCoinTable = () => {
-    const [selectedColor, setSelectedColor] = useState("white");
+interface Props {
+    selectedColor: 'white' | 'black';
+};
+
+const PieceCoinTable = ({selectedColor}: Props) => {
     const whitePieces: Piece[] = [
         { name: "king", code: "K", color: "white", component: WhiteKing },
         { name: "queen", code: "Q", color: "white", component: WhiteQueen },
@@ -41,51 +44,42 @@ const PieceCoinTable = () => {
     const profilePieces: Piece[] = [...whitePieces, ...blackPieces];
 
     return (
-        <Table.Root variant="surface" className="h-fit">
-            <Table.Header>
-                <Table.Row>
-                    <Table.ColumnHeaderCell className="table-cell">
-                        <div>Piece</div>
-                        <Flex gap="1">
-                            <ColorButton
-                                color="white"
-                                isSelected={selectedColor === "white"}
-                                onClick={() => setSelectedColor("white")}
-                            />
-                            <ColorButton
-                                color="black"
-                                isSelected={selectedColor === "black"}
-                                onClick={() => setSelectedColor("black")}
-                            />
-                        </Flex>
-                    </Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell className="table-cell">
-                        Coin
-                    </Table.ColumnHeaderCell>
-                </Table.Row>
-            </Table.Header>
+        
+            
+            <Table.Root variant="surface" className="h-fit">
+                <Table.Header>
+                    <Table.Row>
+                        <Table.ColumnHeaderCell className="table-cell">
+                            Piece
+                        </Table.ColumnHeaderCell>
+                        <Table.ColumnHeaderCell className="table-cell">
+                            Coin
+                        </Table.ColumnHeaderCell>
+                    </Table.Row>
+                </Table.Header>
 
-            <Table.Body>
-                {profilePieces
-                    .filter((piece) => piece.color === selectedColor)
-                    .map((piece) => (
-                        <Table.Row key={piece.name}>
-                            <Table.Cell className="table-cell">
-                                {piece.component && (
-                                    <Image
-                                        src={piece.component!}
-                                        alt={piece.name}
-                                        className={`w-8`}
-                                    />
-                                )}
-                            </Table.Cell>
-                            <Table.Cell className="table-cell">
-                                <CryptoDropZone pieceName={piece.name} />
-                            </Table.Cell>
-                        </Table.Row>
-                    ))}
-            </Table.Body>
-        </Table.Root>
+                <Table.Body>
+                    {profilePieces
+                        .filter((piece) => piece.color === selectedColor)
+                        .map((piece) => (
+                            <Table.Row key={piece.name}>
+                                <Table.Cell className="table-cell">
+                                    {piece.component && (
+                                        <Image
+                                            src={piece.component!}
+                                            alt={piece.name}
+                                            className={`w-8`}
+                                        />
+                                    )}
+                                </Table.Cell>
+                                <Table.Cell className="table-cell">
+                                    <CryptoDropZone pieceName={piece.name} />
+                                </Table.Cell>
+                            </Table.Row>
+                        ))}
+                </Table.Body>
+            </Table.Root>
+        
     );
 };
 
