@@ -1,20 +1,34 @@
 "use client";
 import useStepStore from "@/app/state-management/store";
-import { useEffect, useState } from "react";
-import CryptoSearch from "./_components/CryptoSearch";
-import PieceCoinTable from "./_components/PieceCoinTable/PieceCoinTable";
 import { Flex } from "@radix-ui/themes";
+import { useEffect, useState } from "react";
+import useCryptoPieceStore from "../state-management/cryptoPieceStore";
+import CryptoSearch from "./_components/CryptoSearch";
 import ColorButton from "./_components/PieceCoinTable/ColorButton";
+import PieceCoinTable from "./_components/PieceCoinTable/PieceCoinTable";
 
 const ProfilePage = () => {
     const [selectedColor, setSelectedColor] = useState<"white" | "black">(
         "white"
     );
     const { setLoaded } = useStepStore();
+    const {
+        isApplyCoinBothSides,
+        setIsApplyCoinBothSides,
+        copyCoinAssociationToOtherSide,
+    } = useCryptoPieceStore();
 
     useEffect(() => {
         setLoaded(true);
     }, [setLoaded]);
+
+    const toggleApplyToBoth = () => {
+        const newToggleState = !isApplyCoinBothSides;
+        if (newToggleState) {
+            copyCoinAssociationToOtherSide(selectedColor);
+        }
+        setIsApplyCoinBothSides(newToggleState);
+    };
 
     return (
         <div className="h-full flex flex-col my-1 mx-3">
@@ -35,11 +49,10 @@ const ProfilePage = () => {
                 />
                 <Flex gap="1" align="center" className="ml-3">
                     <input
-                        id="both"
+                        id="both-colors"
                         type="checkbox"
-                        value="true"
-                        checked={true}
-                        onChange={() => console.log("toggle")}
+                        checked={isApplyCoinBothSides}
+                        onChange={toggleApplyToBoth}
                     />
                     <label htmlFor="both">Apply to black and white</label>
                 </Flex>

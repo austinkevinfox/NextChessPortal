@@ -8,8 +8,14 @@ interface Props {
 }
 
 const CryptoDropZone = ({ color, pieceName }: Props) => {
-    const { coinInDrag, setCoinInDrag, setCoinToPiece, pieceCoinAssociation } =
-        useCryptoPieceStore();
+    const {
+        coinInDrag,
+        setCoinInDrag,
+        setCoinToPiece,
+        setCoinToPieceBothSides,
+        pieceCoinAssociation,
+        isApplyCoinBothSides,
+    } = useCryptoPieceStore();
 
     const allowDrop = (event: DragEvent) => {
         event.preventDefault();
@@ -19,7 +25,12 @@ const CryptoDropZone = ({ color, pieceName }: Props) => {
         event.preventDefault();
 
         if (coinInDrag) {
-            setCoinToPiece(color, pieceName, coinInDrag);
+            if (isApplyCoinBothSides) {
+                setCoinToPieceBothSides(pieceName, coinInDrag);
+            } else {
+                setCoinToPiece(color, pieceName, coinInDrag);
+            }
+
             setCoinInDrag();
         }
     };
