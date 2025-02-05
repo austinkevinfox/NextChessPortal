@@ -1,4 +1,4 @@
-import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";
+import { PiecesByKind } from "@/app/Interfaces";
 import useStepStore from "@/app/state-management/store";
 import { Box, Flex } from "@radix-ui/themes";
 import Clock from "../live-game/_components/Clock";
@@ -9,10 +9,10 @@ import Score from "./Score";
 interface Props {
     playerColor: "white" | "black";
 }
+declare type PieceType = keyof PiecesByKind;
 
 const SidePanel = ({ playerColor }: Props) => {
     const { isLive, activePlayer, capturedPieces } = useStepStore();
-    const { pieceCoinAssociation } = useCryptoPieceStore();
     const captureColor = playerColor === "white" ? "black" : "white";
 
     return (
@@ -42,23 +42,15 @@ const SidePanel = ({ playerColor }: Props) => {
                     playerColor === "white" ? "rounded-br-lg" : "rounded-bl-lg"
                 }`}
             >
-                {capturedPieces?.[captureColor] && (
-                    <CapturedPieces
-                        capturedPiecesByKind={capturedPieces[captureColor]}
-                        captureColor={captureColor}
-                    />
-                )}
+                <CapturedPieces
+                    capturedPiecesByKind={capturedPieces[captureColor]}
+                    captureColor={captureColor}
+                />
 
-                {capturedPieces?.[captureColor] &&
-                    pieceCoinAssociation?.[captureColor] &&
-                    Object.values(pieceCoinAssociation[captureColor]).some(
-                        (coin) => coin && coin.symbol.length > 0
-                    ) && (
-                        <CapturedCoins
-                            captureColor={captureColor}
-                            capturedPiecesByKind={capturedPieces[captureColor]}
-                        />
-                    )}
+                <CapturedCoins
+                    playerColor={playerColor}
+                    captureColor={captureColor}
+                />
             </div>
         </div>
     );

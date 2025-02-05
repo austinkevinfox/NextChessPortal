@@ -1,7 +1,7 @@
 import { Flex } from "@radix-ui/themes";
 import CryptoIcon from "../CryptoIcon";
 
-interface Props {
+export interface Props {
     coinSymbol: string;
     count: number;
     price: number;
