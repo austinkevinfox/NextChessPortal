@@ -11,10 +11,6 @@ const useCryptoIcon = ({ symbol, type }: Props) => {
     const [error, setError] = useState(false);
     const [image, setImage] = useState(null);
 
-    useEffect(() => {
-        fetchImage();
-    }, [symbol, type]);
-
     const fetchImage = async () => {
         try {
             let response;
@@ -41,6 +37,10 @@ const useCryptoIcon = ({ symbol, type }: Props) => {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        fetchImage();
+    }, [fetchImage, symbol, type]);
 
     return {
         loading,

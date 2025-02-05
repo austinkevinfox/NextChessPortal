@@ -39,7 +39,7 @@ const Board = () => {
 
     useEffect(() => {
         setBoardPositions(initialPositions);
-    }, []);
+    }, [setBoardPositions]);
 
     const getColor = (rank: number, fileIndex: number): "white" | "black" => {
         if (rank % 2 === 0) {

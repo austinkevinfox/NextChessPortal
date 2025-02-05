@@ -1,4 +1,3 @@
-import { PiecesByKind } from "@/app/Interfaces";
 import useStepStore from "@/app/state-management/store";
 import { Box, Flex } from "@radix-ui/themes";
 import Clock from "../live-game/_components/Clock";
@@ -9,8 +8,6 @@ import Score from "./Score";
 interface Props {
     playerColor: "white" | "black";
 }
-declare type PieceType = keyof PiecesByKind;
-
 const SidePanel = ({ playerColor }: Props) => {
     const { isLive, activePlayer, capturedPieces } = useStepStore();
     const captureColor = playerColor === "white" ? "black" : "white";

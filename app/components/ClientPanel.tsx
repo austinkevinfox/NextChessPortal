@@ -12,6 +12,12 @@ const ClientPanel = ({ game }: { game: Game }) => {
     const { stepIndex, setStep, setBoardPositions, setCapturedPieces } =
         useStepStore();
 
+    const { moves, stepData } = useMemo(() => {
+        const tmpMoves = getArrayOfMoves(game.moves!);
+        const tmpStepData = getStepData(tmpMoves);
+        return { moves: tmpMoves, stepData: tmpStepData };
+    }, [game.moves]);
+
     useEffect(() => {
         setStep(0);
     }, [setStep]);
@@ -19,13 +25,7 @@ const ClientPanel = ({ game }: { game: Game }) => {
     useEffect(() => {
         setBoardPositions(stepData[stepIndex].boardPositions);
         setCapturedPieces(stepData[stepIndex].capturedPieces);
-    }, [stepIndex, setBoardPositions, setCapturedPieces]);
-
-    const { moves, stepData } = useMemo(() => {
-        const tmpMoves = getArrayOfMoves(game.moves!);
-        const tmpStepData = getStepData(tmpMoves);
-        return { moves: tmpMoves, stepData: tmpStepData };
-    }, [game.moves]);
+    }, [stepData, stepIndex, setBoardPositions, setCapturedPieces]);
 
     return (
         <>
