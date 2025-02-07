@@ -1,7 +1,7 @@
 "use client";
 import { Board } from "@/app/components";
 import { ReactElement } from "react";
-import SidePanel from "./SidePanel";
+import SidePanel from "./SidePanel/SidePanel";
 import { Flex } from "@radix-ui/themes";
 
 interface Props {

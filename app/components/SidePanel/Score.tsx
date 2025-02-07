@@ -1,4 +1,4 @@
-import { CapturedPieces } from "../Interfaces";
+import { CapturedPieces } from "@/app/Interfaces";
 
 interface Props {
     playerColor: "white" | "black";

@@ -2,7 +2,10 @@ import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";
 import useStepStore from "@/app/state-management/store";
 import CapturedCoinDisplay from "./CapturedCoinDisplay";
 import CoinAccountTotal from "./CoinAccountTotal";
-import { getAccumulatedCoinValue, getCoinAccount } from "./caturedCoinServices";
+import {
+    getAccumulatedCoinValue,
+    getCoinAccount,
+} from "./capturedCoinServices";
 
 interface Props {
     playerColor: "white" | "black";
@@ -12,6 +15,12 @@ interface Props {
 const CapturedCoins = ({ playerColor, captureColor }: Props) => {
     const { pieceCoinAssociation } = useCryptoPieceStore();
     const { capturedPieces } = useStepStore();
+
+    if (
+        JSON.stringify(pieceCoinAssociation) ===
+        JSON.stringify({ white: {}, black: {} })
+    )
+        return null;
 
     const coinAccount = getCoinAccount({
         pieceCoinAssociation,
