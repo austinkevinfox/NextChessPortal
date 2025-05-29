@@ -14,7 +14,9 @@ const ProfilePage = () => {
     const { setLoaded } = useStepStore();
     const {
         isApplyCoinBothSides,
+        isTouchMoveRuleActive,
         setIsApplyCoinBothSides,
+        setIsTouchMoveRuleActive,
         copyCoinAssociationToOtherSide,
     } = useCryptoPieceStore();
 
@@ -28,6 +30,10 @@ const ProfilePage = () => {
             copyCoinAssociationToOtherSide(selectedColor);
         }
         setIsApplyCoinBothSides(newToggleState);
+    };
+
+    const toggleTouchMove = () => {
+        setIsTouchMoveRuleActive(!isTouchMoveRuleActive);
     };
 
     return (
@@ -55,6 +61,15 @@ const ProfilePage = () => {
                         onChange={toggleApplyToBoth}
                     />
                     <label htmlFor="both">Apply to black and white</label>
+                </Flex>
+                <Flex gap="1" align="center" className="ml-3">
+                    <input
+                        id="touch-move-rule"
+                        type="checkbox"
+                        checked={isTouchMoveRuleActive}
+                        onChange={toggleTouchMove}
+                    />
+                    <label htmlFor="both">Apply Touch-Move Rule</label>
                 </Flex>
             </Flex>
             <div className="h-full flex flex-col my-1 md:flex-row">

@@ -5,7 +5,9 @@ interface CryptoPieceStore {
     pieceCoinAssociation: PieceCoinAssociation;
     coinInDrag: undefined | Token;
     isApplyCoinBothSides: boolean;
+    isTouchMoveRuleActive: boolean;
     setIsApplyCoinBothSides: (option: boolean) => void;
+    setIsTouchMoveRuleActive: (option: boolean) => void;
     setCoinInDrag: (coin?: Token) => void;
     setCoinToPiece: (
         color: "white" | "black",
@@ -21,8 +23,11 @@ const useCryptoPieceStore = create<CryptoPieceStore>((set) => ({
     pieceCoinAssociation: { white: {}, black: {} },
     coinInDrag: undefined,
     isApplyCoinBothSides: true,
+    isTouchMoveRuleActive: false,
     setIsApplyCoinBothSides: (option) =>
         set(() => ({ isApplyCoinBothSides: option })),
+    setIsTouchMoveRuleActive: (option) =>
+        set(() => ({ isTouchMoveRuleActive: option })),
     setCoinInDrag: (coin) => set(() => ({ coinInDrag: coin })),
     setCoinToPiece: (color, pieceName, coin) =>
         set((state) => {

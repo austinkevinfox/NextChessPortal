@@ -26,7 +26,8 @@ const bgColors: { [key: string]: string } = {
 };
 
 const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
-    const { pieceCoinAssociation, setCoinRates } = useCryptoPieceStore();
+    const { pieceCoinAssociation, setCoinRates, isTouchMoveRuleActive } =
+        useCryptoPieceStore();
     const {
         isLive,
         activePlayer,
@@ -135,6 +136,18 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
                 });
             } else {
                 updateCoinPrices();
+            }
+
+            /* Clear source and target potentials
+             * when user clicks selected source
+             * and Touch-Move rule is not active.
+             */
+            if (
+                !isTouchMoveRuleActive &&
+                source.square === algebraicCoordinate
+            ) {
+                setSource({ square: "", piece: null });
+                setTargetSquarePotentials([]);
             }
 
             // Move to vacant position
