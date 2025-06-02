@@ -1,4 +1,4 @@
-import { Piece, TokenRate } from "@/app/Interfaces";
+import { Piece, Token, TokenRate } from "@/app/Interfaces";
 import { getMovesByPiece } from "@/app/live-game/services";
 import { fetchCoinMap } from "@/app/services/crypto";
 import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";
@@ -97,27 +97,26 @@ const Square = ({ color, rank, fileIndex, piece, onTargetClick }: Props) => {
     };
 
     const updateCoinPrices = async (): Promise<void> => {
-        const coinList = [
-            ...Object.values(pieceCoinAssociation.white).filter(
-                (coin) => coin?.symbol
-            ),
-            ...Object.values(pieceCoinAssociation.black).filter(
-                (coin) => coin?.symbol
-            ),
-        ];
+        // Combine and filter coins in one step
+        const coinSymbols = [
+            ...Object.values(pieceCoinAssociation.white),
+            ...Object.values(pieceCoinAssociation.black),
+        ]
+            .filter((coin): coin is Token => !!coin?.symbol)
+            .map((coin) => coin.symbol);
 
-        if (coinList.length > 0) {
-            const coinSymbols: string[] = convertArrayToUniqueStrings(
-                coinList.map((coin) => coin!.symbol)
+        // Early return if no valid symbols
+        if (!coinSymbols.length) return;
+
+        // Fetch prices and update state in one go
+        const priceMap = await fetchCoinMap([...new Set(coinSymbols)]);
+        if (priceMap) {
+            setCoinRates(
+                priceMap.map(({ code, rate }: TokenRate) => ({
+                    symbol: code,
+                    rate,
+                }))
             );
-            const priceMap = await fetchCoinMap(coinSymbols);
-            if (priceMap) {
-                const newMap = priceMap.map((item: TokenRate) => ({
-                    symbol: item.code,
-                    rate: item.rate,
-                }));
-                setCoinRates(newMap);
-            }
         }
     };
 
