@@ -67,11 +67,6 @@ const isUpperCase = (str: string): boolean => {
     return str.toUpperCase() == str;
 };
 
-export const convertArrayToUniqueStrings = (rawArray: string[]): string[] => {
-    const setObj = new Set(rawArray.map((o) => JSON.stringify(o)));
-    return Array.from(setObj).map((s) => JSON.parse(s));
-};
-
 const getCapturedPieces = (
     gameState: GameState,
     annotatedMove: AnnotatedMove,

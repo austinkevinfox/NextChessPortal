@@ -8,7 +8,6 @@ import Image from "next/image";
 import { Files } from "../PositionConstants";
 import AlgebraicChar from "./AlgebraicChar";
 import AssociatedCoin from "./AssociatedCoin";
-import { convertArrayToUniqueStrings } from "@/app/services/services";
 
 interface Props {
     color: "white" | "black";
