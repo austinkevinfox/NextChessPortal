@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaChessKing } from "react-icons/fa";
+import OnboardingModal from "./OnboardingModal";
 import useStepStore from "./state-management/store";
 
 const NavBar = () => {
@@ -69,41 +70,45 @@ const NavBar = () => {
     };
 
     return (
-        <nav className="flex space-x-6 border-b mb-5 px-5 h-14 items-center">
-            <Link href="/">
-                <FaChessKing />
-            </Link>
-            <ul className="flex space-x-6">
-                {links.map((link) => (
-                    <li key={link.id}>
-                        <Link
-                            className={classnames({
-                                "text-zinc-500": !includesComponentRoot(
-                                    link.href
-                                ),
-                                "text-zinc-900": includesComponentRoot(
-                                    link.href
-                                ),
-                                "hover:text-zinc-800 transition-colors": true,
-                            })}
-                            href={link.href}
-                            prefetch={true}
-                            onClick={() => onClick(link.id)}
-                        >
-                            <Flex align="center" gap="1">
-                                {link.label}
-                                <Spinner
-                                    className={`${
-                                        navigatingId === link.id
-                                            ? "visible"
-                                            : "invisible"
-                                    }`}
-                                />
-                            </Flex>
-                        </Link>
-                    </li>
-                ))}
-            </ul>
+        <nav className="flex justify-between items-center border-b mb-5 px-5 h-14">
+            <div className="flex items-center space-x-6">
+                <Link href="/">
+                    <FaChessKing />
+                </Link>
+                <ul className="flex space-x-6">
+                    {links.map((link) => (
+                        <li key={link.id}>
+                            <Link
+                                className={classnames({
+                                    "text-zinc-500": !includesComponentRoot(
+                                        link.href
+                                    ),
+                                    "text-zinc-900": includesComponentRoot(
+                                        link.href
+                                    ),
+                                    "hover:text-zinc-800 transition-colors":
+                                        true,
+                                })}
+                                href={link.href}
+                                prefetch={true}
+                                onClick={() => onClick(link.id)}
+                            >
+                                <Flex align="center" gap="1">
+                                    {link.label}
+                                    <Spinner
+                                        className={`${
+                                            navigatingId === link.id
+                                                ? "visible"
+                                                : "invisible"
+                                        }`}
+                                    />
+                                </Flex>
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <OnboardingModal />
         </nav>
     );
 };

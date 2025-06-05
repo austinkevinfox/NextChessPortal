@@ -3,6 +3,7 @@ import { Token } from "@/app/Interfaces";
 import { Flex, TextField } from "@radix-ui/themes";
 import { default as cryptoManifest } from "cryptocurrency-icons/manifest.json";
 import { useState } from "react";
+import { RxMagnifyingGlass } from "react-icons/rx";
 import CryptoSearchResultItem from "./CryptoSearchResultItem";
 
 const CryptoSearch = () => {
@@ -49,12 +50,20 @@ const CryptoSearch = () => {
     };
 
     return (
-        <Flex direction="column" gap="1" className="h-5/6 mt-3 md:mt-0 md:ml-8">
+        <Flex
+            direction="column"
+            gap="1"
+            className="w-52 h-5/6 mt-3 md:mt-0 md:ml-8"
+        >
             <TextField.Root
                 id="searchBox"
                 placeholder="Search cryptocurrencies"
                 onChange={handleChange}
-            ></TextField.Root>
+            >
+                <TextField.Slot>
+                    <RxMagnifyingGlass />
+                </TextField.Slot>
+            </TextField.Root>
 
             <Flex direction="column" gap="1" className="overflow-auto">
                 {cryptoList.map((coin) => (
