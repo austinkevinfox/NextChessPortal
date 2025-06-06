@@ -18,7 +18,7 @@ const CryptoSearchResultItem = ({ coin }: Props) => {
         <Flex
             gap="1"
             align="center"
-            className="border border-1 border-solid border-transparent rounded-l-full rounded-r-lg cursor-pointer hover:border-slate-200"
+            className="border border-1 border-solid border-transparent rounded-l-full rounded-r-lg cursor-pointer pr-3 hover:border-slate-200"
             draggable={true}
             onDragStart={drag}
         >

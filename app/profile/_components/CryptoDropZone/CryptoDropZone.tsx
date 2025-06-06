@@ -1,4 +1,5 @@
 import useCryptoPieceStore from "@/app/state-management/cryptoPieceStore";
+import { Flex } from "@radix-ui/themes";
 import { DragEvent } from "react";
 import CoinDisplay from "../PieceCoinTable/CoinDisplay";
 
@@ -36,7 +37,7 @@ const CryptoDropZone = ({ color, pieceName }: Props) => {
     };
 
     return (
-        <div onDragOver={allowDrop} onDrop={drop}>
+        <Flex onDragOver={allowDrop} onDrop={drop} className="w-full">
             {pieceCoinAssociation[color][pieceName] ? (
                 <CoinDisplay
                     coin={pieceCoinAssociation[color][pieceName]}
@@ -45,7 +46,7 @@ const CryptoDropZone = ({ color, pieceName }: Props) => {
             ) : (
                 <div className="h-10 min-w-40 border border-solid border-1 rounded-lg"></div>
             )}
-        </div>
+        </Flex>
     );
 };
 

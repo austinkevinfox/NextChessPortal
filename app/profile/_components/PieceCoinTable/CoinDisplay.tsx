@@ -6,6 +6,7 @@ import { Flex } from "@radix-ui/themes";
 import { useState } from "react";
 import { MdCancel } from "react-icons/md";
 import CoinNameSymbol from "../CoinNameSymbol";
+import CryptoRate from "../CryptoRate";
 
 interface Props {
     coin: Token;
@@ -23,14 +24,17 @@ const CoinDisplay = ({ coin, onDelete }: Props) => {
         <Flex
             gap="1"
             align="center"
-            className="relative rounded-l-full rounded-r-lg cursor-pointer hover:bg-slate-100"
+            className="relative rounded-l-full rounded-r-lg cursor-pointer hover:bg-slate-100 w-full pr-16"
             draggable={true}
             onDragStart={drag}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
         >
             <CryptoIcon symbol={coin.symbol} type="32" />
-            <CoinNameSymbol coin={coin} />
+            <div className="flex flex-col flex-1">
+                <CoinNameSymbol coin={coin} />
+                <CryptoRate rate={coin.rate} />
+            </div>
             <MdCancel
                 className={`absolute top-0 right-0 ${
                     isHover ? "visible" : "invisible"
