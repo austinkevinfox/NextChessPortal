@@ -1,5 +1,3 @@
-
-
 ## CryptoChess
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
@@ -65,3 +63,8 @@ npm run dev
 yarn dev
 
 Once the app is running, visit http://localhost:3000 in your browser.
+
+# Chat and 2 player mode
+
+ChessChat is a separate Node.js WebSocket server designed to handle real-time communication for a this chess application.
+ChessChat must be deployed to support chat and 2 player mode in this chess application.

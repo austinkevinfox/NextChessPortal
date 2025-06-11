@@ -62,6 +62,11 @@ const NavBar = () => {
             label: "Profile",
             href: "/profile",
         },
+        {
+            id: 3,
+            label: "Chat",
+            href: "/chat",
+        },
     ];
 
     const includesComponentRoot = (componentRootPath: string) => {
