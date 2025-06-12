@@ -1,7 +1,7 @@
 "use client";
 
-import { Box, Button, Flex, TextField } from "@radix-ui/themes";
-import { useState, useEffect } from "react";
+import { Box, Button, Flex, Spinner, TextField } from "@radix-ui/themes";
+import { useEffect, useRef, useState } from "react";
 
 interface Message {
     type: "connection" | "message";
@@ -16,14 +16,32 @@ const Chat = () => {
     const [input, setInput] = useState<string>("");
     const [clientId, setClientId] = useState<string | null>(null);
     const [connected, setConnected] = useState(false);
+    const [connectionTimeout, setConnectionTimeout] = useState(false);
+    const connectedRef = useRef(connected);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        connectedRef.current = connected;
+    }, [connected]);
 
     useEffect(() => {
         // Connect to WebSocket server
-        const websocket = new WebSocket("https://chesschat-a85b.onrender.com/");
+        const wsUrl = process.env.NEXT_PUBLIC_WEBSOCKET_URL;
+        if (!wsUrl) {
+            setConnectionTimeout(true);
+            return;
+        }
+        const websocket = new WebSocket(wsUrl);
+
+        // Set a 5 second timeout for connection
+        const timeoutId = setTimeout(() => {
+            if (!connectedRef.current) setConnectionTimeout(true);
+        }, 5000);
 
         websocket.onopen = () => {
             setConnected(true);
             setMessages((prev) => [...prev, "Connected to server"]);
+            clearTimeout(timeoutId); // Cancel the timeout when connected
         };
 
         websocket.onmessage = (event: MessageEvent) => {
@@ -72,8 +90,13 @@ const Chat = () => {
         // Cleanup on component unmount
         return () => {
             websocket.close();
+            clearTimeout(timeoutId);
         };
     }, []);
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
     const sendMessage = () => {
         if (input.trim() && ws && ws.readyState === WebSocket.OPEN) {
@@ -93,12 +116,33 @@ const Chat = () => {
         }
     };
 
+    if (connectionTimeout) {
+        return (
+            <Box className="border border-solid border-red-300 bg-red-100 rounded-md my-1 mx-3 p-4 text-red-700">
+                Unable to connect: WebSocket server is not running.
+            </Box>
+        );
+    }
+
+    if (!connected)
+        return (
+            <Flex
+                gap="1"
+                align="center"
+                className="border border-solid border-slate-200 bg-slate-100 rounded-md my-1 mx-3 p-4"
+            >
+                <Box>Connecting</Box>
+                <Spinner />
+            </Flex>
+        );
+
     return (
         <Flex direction="column" gap="3" className="my-1 mx-3">
             <Box className="border border-solid border-slate-200 bg-slate-100 rounded-md p-4">
                 {messages.map((msg, index) => (
                     <div key={index}>{msg}</div>
                 ))}
+                <div ref={messagesEndRef} />
             </Box>
 
             <Flex gap="3">
