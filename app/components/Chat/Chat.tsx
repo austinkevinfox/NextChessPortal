@@ -61,7 +61,9 @@ const Chat = () => {
 
         websocket.onerror = (error: Event) => {
             if (connected) {
-                setMessages((prev) => [...prev, "Error occurred"]);
+                setMessages((prev) => [...prev, "WebSocket error occurred"]);
+                // Optionally log the event for debugging:
+                console.error("WebSocket error event:", error);
             }
         };
 
