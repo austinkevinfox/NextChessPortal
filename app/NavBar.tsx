@@ -1,15 +1,18 @@
 "use client";
 import { Flex, Spinner } from "@radix-ui/themes";
 import classnames from "classnames";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaChessKing } from "react-icons/fa";
 import OnboardingModal from "./OnboardingModal";
+import SignInSignOutLink from "./SignInSignOutLink";
 import useStepStore from "./state-management/store";
 
 const NavBar = () => {
     const [navigatingId, setNavigatingId] = useState(-1);
+    const { data: session, status } = useSession();
     const currentPath = usePathname();
     const {
         isLoaded,
@@ -46,28 +49,33 @@ const NavBar = () => {
         resetStore(selectedLink?.href === "/live-game");
     };
 
-    const links = [
-        {
-            id: 0,
-            label: "Historic Games",
-            href: "/historic-games",
-        },
-        {
-            id: 1,
-            label: "Live Game",
-            href: "/live-game",
-        },
-        {
-            id: 2,
-            label: "Profile",
-            href: "/profile",
-        },
-        {
-            id: 3,
-            label: "Chat",
-            href: "/chat",
-        },
-    ];
+    const links = session
+        ? [
+              {
+                  id: 0,
+                  label: "Historic Games",
+                  href: "/historic-games",
+                  hasSpinner: true,
+              },
+              {
+                  id: 1,
+                  label: "Live Game",
+                  href: "/live-game",
+                  hasSpinner: true,
+              },
+              {
+                  id: 2,
+                  label: "Profile",
+                  href: "/profile",
+                  hasSpinner: true,
+              },
+              {
+                  id: 3,
+                  label: "Chat",
+                  href: "/chat",
+              },
+          ]
+        : [];
 
     const includesComponentRoot = (componentRootPath: string) => {
         const pattern = RegExp(`^${componentRootPath}`);
@@ -102,7 +110,8 @@ const NavBar = () => {
                                     {link.label}
                                     <Spinner
                                         className={`${
-                                            navigatingId === link.id
+                                            navigatingId === link.id &&
+                                            link.hasSpinner
                                                 ? "visible"
                                                 : "invisible"
                                         }`}
@@ -113,7 +122,10 @@ const NavBar = () => {
                     ))}
                 </ul>
             </div>
-            <OnboardingModal />
+            <Flex gap="3">
+                <SignInSignOutLink />
+                <OnboardingModal />
+            </Flex>
         </nav>
     );
 };

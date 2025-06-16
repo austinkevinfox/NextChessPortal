@@ -1,6 +1,8 @@
 "use client";
 import useStepStore from "@/app/state-management/store";
 import { Flex } from "@radix-ui/themes";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useCryptoPieceStore from "../state-management/cryptoPieceStore";
 import CryptoSearch from "./_components/CryptoSearch";
@@ -8,6 +10,8 @@ import ColorButton from "./_components/PieceCoinTable/ColorButton";
 import PieceCoinTable from "./_components/PieceCoinTable/PieceCoinTable";
 
 const ProfilePage = () => {
+    const { data: session, status } = useSession();
+    const router = useRouter();
     const [selectedColor, setSelectedColor] = useState<"white" | "black">(
         "white"
     );
@@ -19,6 +23,12 @@ const ProfilePage = () => {
         setIsTouchMoveRuleActive,
         copyCoinAssociationToOtherSide,
     } = useCryptoPieceStore();
+
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            router.push("/api/auth/signin");
+        }
+    }, [status, router]);
 
     useEffect(() => {
         setLoaded(true);
