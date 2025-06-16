@@ -1,9 +1,11 @@
+import NextAuth, { AuthOptions, SessionStrategy, Session } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import NextAuth, { AuthOptions, SessionStrategy } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
+import { JWT } from "next-auth/jwt";
+import { ISession } from "@/app/Interfaces";
 
 // Extend the Session type to include user.id
 declare module "next-auth" {
@@ -67,7 +69,7 @@ export const authOptions: AuthOptions = {
         strategy: "jwt" as SessionStrategy,
     },
     callbacks: {
-        async session({ session, token }: any) {
+        async session({ session, token }: ISession) {
             if (session.user) {
                 session.user.id = token.sub!;
                 session.user.image = token.picture; // Include image from Google

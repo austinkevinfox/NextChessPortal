@@ -1,3 +1,5 @@
+import { Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 export interface Piece {
@@ -96,4 +98,9 @@ export interface Token {
 export interface TokenRate {
     code: string;
     rate: number;
+}
+
+export interface ISession {
+    session: Session;
+    token: JWT;
 }
