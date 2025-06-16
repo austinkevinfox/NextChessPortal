@@ -12,7 +12,7 @@ import useStepStore from "./state-management/store";
 
 const NavBar = () => {
     const [navigatingId, setNavigatingId] = useState(-1);
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
     const currentPath = usePathname();
     const {
         isLoaded,

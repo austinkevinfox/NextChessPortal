@@ -10,7 +10,7 @@ import ColorButton from "./_components/PieceCoinTable/ColorButton";
 import PieceCoinTable from "./_components/PieceCoinTable/PieceCoinTable";
 
 const ProfilePage = () => {
-    const { data: session, status } = useSession();
+    const { status } = useSession();
     const router = useRouter();
     const [selectedColor, setSelectedColor] = useState<"white" | "black">(
         "white"
